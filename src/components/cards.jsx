@@ -161,6 +161,10 @@ export const TourCardPro = ({ tour, index = 0 }) => {
 };
 
 export const ZanzibarCardPro = ({ tour }) => {
+  return <p>hhddh</p>;
+};
+
+export const DayTripCardPro = ({ tour }) => {
   return (
     <div className="bg-white rounded-xl border border-secondary/20 overflow-hidden hover:shadow-xl transition-all duration-300 max-w-4xl">
       <div className="flex flex-col md:flex-row">
@@ -207,29 +211,6 @@ export const ZanzibarCardPro = ({ tour }) => {
         </div>
       </div>
     </div>
-  );
-};
-
-export const DayTripCardPro = ({ tour }) => {
-  return (
-    <Link
-      href={`/tours/day-trips/${tour?.slug}`}
-      className="relative overflow-hidden rounded-lg transitions group h-80 flex flex-col justify-end p-6 text-white shadow-md"
-    >
-      <Image
-        src={tour?.photos[0] || "/placeholder.svg"}
-        alt={tour?.title}
-        fill
-        className="object-cover transition-transform duration-500 group-hover:scale-110 brightness-75"
-      />
-      <div className="relative z-10 p-4 rounded bg-highlight/80">
-        <h3 className="font-bold font-jua line-clamp-2">{tour.title}</h3>
-        <button className="py-2 px-6 text-sm bg-secondary border border-primary text-black transitions rounded-full group-hover:bg-transparent group-hover:text-primary mt-3">
-          <span className="font-bold">${tour.prices} /</span>{" "}
-          <span className="font-extralight">Pp</span>
-        </button>
-      </div>
-    </Link>
   );
 };
 

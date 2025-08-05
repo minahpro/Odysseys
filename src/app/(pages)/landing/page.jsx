@@ -38,6 +38,8 @@ function Home() {
       <FeaturesDestinations />
       <AboutHome />
       <DayTripsHome />
+      <ListBanner />
+      <ZanzibarTripsHome />
     </main>
   );
 }

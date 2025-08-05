@@ -1,24 +1,13 @@
 "use client";
-import React, { useCallback, useRef } from "react";
+import React from "react";
 import { Title } from "../texties";
 import { useAppContext } from "@/context/AppContext";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y, Autoplay } from "swiper/modules";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { DayTripCardPro, ZanzibarCardPro } from "../cards";
-import { findItArray, findItTitle } from "../Functions";
+import { findItArray } from "../Functions";
 import { NoDataFound } from "../Loadings/ErrorComp";
 import { TourLoading } from "../Loadings/LoadingComp";
-import {
-  ArrowRight,
-  Clock,
-  Heart,
-  MapPin,
-  Search,
-  Star,
-  Users,
-} from "lucide-react";
-import { PrimaryButton, SecondaryButton } from "../buttons";
+import { Search } from "lucide-react";
+import { SecondaryButton } from "../buttons";
 
 function DayTripsHome() {
   const { allFetchedDayTrips, isLoading, fetchedDestinations } =
@@ -36,7 +25,7 @@ function DayTripsHome() {
   }));
 
   return (
-    <div className="respons">
+    <div className="respons lg:pb-20 pb-10">
       {/* banner */}
 
       <div className="relative rounded-2xl py-16 bg-primary overflow-hidden">
@@ -76,7 +65,7 @@ function DayTripsHome() {
           ) : dayTripsData?.length > 0 ? (
             <div className="grid-cols-2 grid gap-12">
               {dayTripsData?.map((dayTrip, index) => (
-                <ZanzibarCardPro key={index} tour={dayTrip} />
+                <DayTripCardPro key={index} tour={dayTrip} />
               ))}
             </div>
           ) : (
