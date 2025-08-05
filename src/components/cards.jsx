@@ -162,7 +162,7 @@ export const TourCardPro = ({ tour, index = 0 }) => {
 
 export const ZanzibarCardPro = ({ tour }) => {
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 max-w-4xl">
+    <div className="bg-white rounded-xl border border-secondary/20 overflow-hidden hover:shadow-xl transition-all duration-300 max-w-4xl">
       <div className="flex flex-col md:flex-row">
         <div className="relative w-full md:w-48 md:h-auto flex-shrink-0">
           <Image
@@ -194,11 +194,7 @@ export const ZanzibarCardPro = ({ tour }) => {
             className="font-quicksand text-primary text-sm line-clamp-2 mb-4 leading-relaxed"
           />
           <div className="flex items-center justify-between">
-            <PrimaryButton
-              className={`${tour?.bg ? "bg-secondary text-white" : ""} py-4  text-sm`}
-            >
-              Book Now
-            </PrimaryButton>
+            <PrimaryButton className={`py-4 text-sm`}>Book Now</PrimaryButton>
             <div className="text-right">
               <div className="font-bold text-primary text-xl">
                 ${tour?.price || 0}

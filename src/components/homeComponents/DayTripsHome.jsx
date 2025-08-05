@@ -19,37 +19,14 @@ import {
   Users,
 } from "lucide-react";
 import { PrimaryButton, SecondaryButton } from "../buttons";
-import Image from "next/image";
-import useFetchAll from "@/lib/hooks/useFetchAll";
 
 function DayTripsHome() {
   const { allFetchedDayTrips, isLoading, fetchedDestinations } =
     useAppContext();
-  const { data: tourTags, isLoading: isFetchingTags } =
-    useFetchAll("tour-tags");
-
-  // ************* fetch Zanzibar trips *************
-  const finalZanzibarTrips = allFetchedDayTrips
-    ?.filter((trip) =>
-      trip.tags.includes(findItTitle({ data: tourTags, title: "zanzibar" }))
-    )
-    .map((trip) => {
-      return {
-        ...trip,
-        bg: true,
-        price: trip?.price?.foreigner || 0,
-        destinations: findItArray({
-          ids: trip?.destinations,
-          datas: fetchedDestinations,
-          dest: true, // destination has name not title
-        }),
-      };
-    });
 
   // ************* fetch non-Zanzibar trips *************
   const dayTripsData = allFetchedDayTrips?.slice(0, 3)?.map((dayTrip) => ({
     ...dayTrip,
-    bg: false,
     destinations: findItArray({
       ids: dayTrip?.destinations,
       datas: fetchedDestinations,
@@ -79,9 +56,6 @@ function DayTripsHome() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <SecondaryButton>View All Day Trips</SecondaryButton>
-            <PrimaryButton className="border border-accent">
-              View Zanzibar Trips
-            </PrimaryButton>
           </div>
         </div>
         {/* Decorative Elements */}
@@ -99,37 +73,14 @@ function DayTripsHome() {
                 <TourLoading key={i} />
               ))}
             </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <h2 className="font-jua text-xl md:text-2xl text-primary">
-                  Day Trips
-                </h2>
-                {dayTripsData?.length > 0 ? (
-                  <div className="space-y-4">
-                    {dayTripsData?.map((dayTrip, index) => (
-                      <ZanzibarCardPro key={index} tour={dayTrip} />
-                    ))}
-                  </div>
-                ) : (
-                  <NoDataFound text={"No Day Trips Found"} />
-                )}
-              </div>
-              <div className="space-y-6">
-                <h2 className="font-jua text-xl md:text-2xl text-primary">
-                  Zanzibar Trips
-                </h2>
-                {finalZanzibarTrips?.length > 0 ? (
-                  <div className="space-y-4">
-                    {finalZanzibarTrips?.map((dayTrip, index) => (
-                      <ZanzibarCardPro key={index} tour={dayTrip} />
-                    ))}
-                  </div>
-                ) : (
-                  <NoDataFound text={"No zanzibar Trips Found"} />
-                )}
-              </div>
+          ) : dayTripsData?.length > 0 ? (
+            <div className="grid-cols-2 grid gap-12">
+              {dayTripsData?.map((dayTrip, index) => (
+                <ZanzibarCardPro key={index} tour={dayTrip} />
+              ))}
             </div>
+          ) : (
+            <NoDataFound text={"No Day Trips Found"} />
           )
         }
       </div>
