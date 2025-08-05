@@ -1,0 +1,221 @@
+// pages/tours.js
+"use client";
+
+import { Title } from '@/components/texties';
+import TitleHeader from '@/components/titleHeader';
+import { tourData } from '@/data/tourData';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import { FaHeart } from 'react-icons/fa6';
+
+
+export default function Tours() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [filteredTours, setFilteredTours] = useState(tourData);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+    filterTours(e.target.value, selectedCategory);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+    filterTours(searchTerm, e.target.value);
+  };
+
+  const filterTours = (search, category) => {
+    let filtered = tourData;
+
+    if (search) {
+      filtered = filtered.filter(tour =>
+        tour.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    if (category) {
+      filtered = filtered.filter(tour => tour.category === category);
+    }
+
+    setFilteredTours(filtered);
+  };
+
+  return (
+    <div className="">
+      <TitleHeader title="Our Tours" />
+      <div className="psektion respons">
+         <div className=" sektion md:grid-cols-3">
+           {/* Left Section */}
+            <div className="space-y-10">
+              <div className="rounded-md space-y-5 text-center  bg-primary">
+                 <Title first="Filter Tours "/>
+          
+              </div>
+              <div className="space-y-5 px-5 py-5 border border-accent rounded-md shadow">
+                     {/* Filter price */}
+                     <div className="space-y-3">   
+                        <h2 className='font-semibold text-lg'>Tour Length </h2>
+                        <select
+                          value={selectedCategory}
+                          onChange={handleCategoryChange}
+                          className="p-2 border border-gray-300 rounded-md w-full"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="Safari">Safari</option>
+                            <option value="Expedition">Expedition</option>
+                            <option value="Beach">Beach</option>
+                        </select>
+                    </div>
+
+
+                      {/* Filter price */}
+                      <div className="space-y-3">   
+                        <h2 className='font-semibold text-lg'>Price </h2>
+                        <select
+                          value={selectedCategory}
+                          onChange={handleCategoryChange}
+                          className="p-2 border border-gray-300 rounded-md w-full"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="Safari">Safari</option>
+                            <option value="Expedition">Expedition</option>
+                            <option value="Beach">Beach</option>
+                        </select>
+                    </div>
+                   
+                     {/* TOur cateory */}
+                    <div className="space-y-3">   
+                        <h2 className='font-semibold text-lg'>Categories</h2>
+                        <select
+                          value={selectedCategory}
+                          onChange={handleCategoryChange}
+                          className="p-2 border border-gray-300 rounded-md w-full"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="Safari">Safari</option>
+                            <option value="Expedition">Expedition</option>
+                            <option value="Beach">Beach</option>
+                        </select>
+                    </div>
+
+                    {/* TOur Rating */}
+                    <div className="space-y-3">   
+                        <h2 className='font-semibold text-lg'>Rating</h2>
+                        <select
+                          value={selectedCategory}
+                          onChange={handleCategoryChange}
+                          className="p-2 border border-gray-300 rounded-md w-full"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="Safari">Safari</option>
+                            <option value="Expedition">Expedition</option>
+                            <option value="Beach">Beach</option>
+                        </select>
+                    </div>
+
+                    {/* Specials */}
+                    <div className="space-y-3">   
+                        <h2 className='font-semibold text-lg'>Specials</h2>
+                        <select
+                          value={selectedCategory}
+                          onChange={handleCategoryChange}
+                          className="p-2 border border-gray-300 rounded-md w-full"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="Safari">Safari</option>
+                            <option value="Expedition">Expedition</option>
+                            <option value="Beach">Beach</option>
+                        </select>
+                    </div>
+
+                    {/* Activitites */}
+                    <div className="space-y-3">   
+                        <h2 className='font-semibold text-lg'>Activities</h2>
+                        <select
+                          value={selectedCategory}
+                          onChange={handleCategoryChange}
+                          className="p-2 border border-gray-300 rounded-md w-full"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="Safari">Safari</option>
+                            <option value="Expedition">Expedition</option>
+                            <option value="Beach">Beach</option>
+                        </select>
+                    </div>
+
+               
+              </div>
+            </div>
+
+            {/* right section */}
+            <div className="col-span-2 space-y-10">
+              <div className="">
+                <input
+                  type="text"
+                  placeholder="Search tours..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="p-2 border w-full border-gray-300 rounded-md mb-4 md:mb-0 md:mr-4"
+                />
+              </div>
+
+              
+              <div className="">
+               {filteredTours.map((tour,index) => (
+                        <div key={index} className="md:p-5 rounded-md sektion mb-5 md:grid-cols-3 shadow border border-accent">
+                            <div className="col-span-2 flex items-center justify-between">
+                              <div className="grid grid-cols-2 gap-5 ">
+                              
+                                <div className="">
+                                <Image
+                                    src="/images/tourImages/sere.jpg"
+                                    alt="blog"
+                                    width={1000}
+                                    height={240}
+                                    style={{
+                                    maxWidth: "100%",
+                                    height: "220px",
+                                    objectFit: "cover",
+                                    }}
+                                    className=" max-w-full max-h-50 rounded-md"
+                                />
+                                </div>
+
+
+                                <div className="flex-col space-y-4">
+                                  <div className="flex items-center justify-between ">
+                                      <h5 className='fredoka text-sm py-1 px-2 border border-primary rounded-md '>Budgeted</h5>  
+                                      <h5 className='font-semibold fredoka text-sm flex items-center space-x-2'><FaHeart/><span>4.8(8)</span> </h5>
+                                  </div>
+                                  <div className="">
+                                      <Link href="">  <h2 className='font-semibold fredoka text-lg '>{tour.title} </h2></Link>
+                                  </div>
+                                  <div className=""><p>{tour.overview}</p></div>
+                                  <div className=""></div>
+                                </div>                            
+                              </div>
+                              </div>
+
+
+                              <div className="flex md:flex-col items-center justify-between md:justify-evenly bg-accent rounded-md"> 
+                                  {/* <Separator className="bg-primary"/> */}
+                                  
+                                  <div className="space-y-2 text-center">                                                      
+                                      <h2 className='fredoka text-sm '>{tour.duration}</h2>  
+                                      <h2 className='font-semibold fredoka text-lg '>From $ {tour.agesWithPrice[0].price}</h2>
+                                  </div>
+                                  <div className="">             
+                                      <Link href="" className='text-textcolor border rounded-full py-2 px-4 text-sm md:text-lg bg-primary text-white hover:shadow-lg'>Book Now</Link>
+                                  </div>
+                              </div>
+                        </div>
+                   
+               ))}
+               </div>
+            </div>
+         </div>
+      </div>
+    </div>
+  );
+}

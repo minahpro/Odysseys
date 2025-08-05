@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.slick-slide div {
+  margin: 3px;
+}
+
+.respons {
+  @apply container mx-auto max-w-[1200px] sm:px-8 px-4;
+}
+.transitions {
+  @apply transition ease-in-out duration-300;
+}
+.flex-all {
+  @apply flex justify-center items-center;
+}
+.hoverPegShow:hover .pegs {
+  @apply opacity-100 transition duration-500 ease-in-out !important;
+}
+.pegs {
+  @apply opacity-0 !important;
+}
+.dialogContent {
+  display: block !important;
+}
+
+.sektion {
+  @apply grid grid-cols-1 gap-5;
+}
+
+.sektion2 {
+  @apply grid grid-cols-2 gap-x-2 md:gap-x-5 gap-5;
+}
+
+.psektion {
+  @apply pt-10 md:pt-20;
+}
+.swiper-pagination-bullet {
+  background: #ffd825 !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffd102 !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ffd825 !important;
+}
+
+.leaflet-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(255, 216, 37, 0.1) 100%
+  );
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0px 20px rgba(255, 216, 37, 0.2);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #ffd825 0%, #ffd102 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-glow {
+  box-shadow: 0 0 20px rgba(255, 216, 37, 0.3);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 30px rgba(255, 216, 37, 0.5);
+}
+
+.parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 768px) {
+  .parallax-bg {
+    background-attachment: scroll;
+  }
+}
+
+/* Price slider */
+.base div div div {
+  background-color: #e3bd10 !important;
+}
+
+.slider-class div label,
+.slider-class div output {
+  display: none !important;
+}
+/* div data-slot="track" */
+div[data-slot="track"] {
+  background-color: #9ca3af !important;
+  height: 5px !important;
+}
+
+.leaflet-container {
+  height: 100% !important;
+  z-index: 10 !important;
+}
