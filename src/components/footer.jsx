@@ -42,7 +42,7 @@ function Footer() {
   return (
     <>
       {/* <SubscribeSection /> */}
-      <footer className="text-white sm:py-20 py-16">
+      <footer className="text-white bg-primary sm:py-20 py-16">
         <div className="respons">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
@@ -152,7 +152,7 @@ function Footer() {
               <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-primary" />
+                  <Phone className="h-5 w-5 text-accent" />
                   <span className="text-white/80">
                     {isLoading
                       ? "Loading..."
@@ -161,7 +161,7 @@ function Footer() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-primary" />
+                  <Mail className="h-5 w-5 text-accent" />
                   <span className="text-white/80 truncate">
                     {isLoading
                       ? "Loading..."
@@ -170,7 +170,7 @@ function Footer() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-primary" />
+                  <MapPin className="h-5 w-5 text-accent" />
                   <span className="text-white/80">
                     {isLoading ? "Loading..." : CompDetails?.address || "---"}
                   </span>
