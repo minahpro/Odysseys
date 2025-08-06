@@ -105,7 +105,7 @@ export default function WildlifeBanner() {
             </div>
 
             <div data-aos="fade-up" className="pt-8">
-              <Link href="/plan-your-safari">
+              <Link href="/tours">
                 <SecondaryButton className="px-12 py-6">
                   Begin Your Journey
                 </SecondaryButton>

@@ -161,7 +161,53 @@ export const TourCardPro = ({ tour, index = 0 }) => {
 };
 
 export const ZanzibarCardPro = ({ tour }) => {
-  return <p>hhddh</p>;
+  return (
+    <div className="bg-accent/20 rounded-xl group border border-secondary/20 overflow-hidden hover:shadow-xl transition-all duration-300 max-w-4xl">
+      <div className="relative h-48">
+        <Image
+          src={tour?.photos[0] || "/placeholder.svg"}
+          alt={tour?.title}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-primary/20" />
+      </div>
+      <div className="p-6 relative">
+        <div className="bg-white -mt-16 group-hover:scale-90 transitions rounded p-4 mb-5">
+          <div className="space-y-2 mb-2">
+            <h3 className="font-bold text-primary">{tour?.title}</h3>
+            <div className="flex items-center gap-1 text-secondary">
+              <MapPin className="w-3 h-3" />
+              <span className="font-quicksand text-sm">
+                {" "}
+                {tour?.destinations
+                  ?.slice(0, 1)
+                  ?.map((dest) => dest)
+                  .join(", ")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          dangerouslySetInnerHTML={{
+            __html: tour?.overview,
+          }}
+          className="font-quicksand text-primary text-sm line-clamp-2 mb-4 leading-relaxed"
+        />
+        <div className="grid sm:grid-cols-2 grid-cols-1 gap-2">
+          <button className="flex-1 rounded bg-accent font-bold text-primary py-2 px-4 hover:bg-accent/80 transitions">
+            ${tour?.price || 0}
+          </button>
+          <Link href={`/tours/day-trips/${tour?.slug}`}>
+            <PrimaryButton className="flex-1 py-2 text-sm">
+              Book Now
+            </PrimaryButton>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export const DayTripCardPro = ({ tour }) => {
@@ -198,7 +244,9 @@ export const DayTripCardPro = ({ tour }) => {
             className="font-quicksand text-primary text-sm line-clamp-2 mb-4 leading-relaxed"
           />
           <div className="flex items-center justify-between">
-            <PrimaryButton className={`py-4 text-sm`}>Book Now</PrimaryButton>
+            <Link href={`/tours/day-trips/${tour?.slug}`}>
+              <PrimaryButton className={`py-4 text-sm`}>Book Now</PrimaryButton>
+            </Link>
             <div className="text-right">
               <div className="font-bold text-primary text-xl">
                 ${tour?.price || 0}
@@ -272,28 +320,41 @@ export const AccommodationCardPro = ({ item: accommodation }) => {
 
 export const BlogCardPro = ({ item }) => {
   return (
-    <div className="relative">
-      {" "}
-      <Link
-        href={`blog/${item?.slug}`}
-        className="w-fullgroup bg-white overflow-hidden"
-      >
-        <Image
-          src={item?.photos[0]}
-          alt="acc1"
-          width={500}
-          height={500}
-          className="w-full h-[400px] object-cover"
-        />
-        <div className="absolute left-2 bottom-2 bg-black/30 rounded backdrop-blur-lg right-2 px-6 pb-6 pt-4 space-y-4">
-          <h2 className="font-semibold text-white text-md border-l-4 border-secondary pl-3 line-clamp-3">
-            {item?.title}
-          </h2>
+    <article className="bg-white rounded-2xl shadow-sm border border-highlight hover:shadow-xl transitions group">
+      <Link href={`/blog/${item?.slug}`}>
+        <div className="p-6">
+          <div className="relative h-48 rounded-xl overflow-hidden mb-6">
+            <Image
+              src={item?.photos[0] || "/placeholder.svg"}
+              alt={item?.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="capitalize font-bold text-secondary text-sm">
+                {item?.category}
+              </span>
+              <span className="text-secondary text-sm">{item?.date}</span>
+            </div>
+            <h3 className="font-bold text-primary group-hover:underline transition-colors cursor-pointer line-clamp-2">
+              {item?.title}
+            </h3>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: item?.overview,
+              }}
+              className="text-primary text-sm leading-relaxed line-clamp-3"
+            />
 
-          <PrimaryButton>Read More</PrimaryButton>
+            <SecondaryButton className="font-bold text-sm">
+              Read More
+            </SecondaryButton>
+          </div>
         </div>
       </Link>
-    </div>
+    </article>
   );
 };
 

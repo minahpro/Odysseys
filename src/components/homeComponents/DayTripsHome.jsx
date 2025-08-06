@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import { Title } from "../texties";
 import { useAppContext } from "@/context/AppContext";
-import { DayTripCardPro, ZanzibarCardPro } from "../cards";
+import { DayTripCardPro } from "../cards";
 import { findItArray } from "../Functions";
 import { NoDataFound } from "../Loadings/ErrorComp";
 import { TourLoading } from "../Loadings/LoadingComp";
 import { Search } from "lucide-react";
 import { SecondaryButton } from "../buttons";
+import Link from "next/link";
 
 function DayTripsHome() {
   const { allFetchedDayTrips, isLoading, fetchedDestinations } =
@@ -29,22 +29,23 @@ function DayTripsHome() {
       {/* banner */}
 
       <div className="relative rounded-2xl py-16 bg-primary overflow-hidden">
-        <div className="px-8 text-center">
+        <div data-aos="fade-up" className="px-8 text-center">
           <div className="flex justify-center mb-6">
             <div className="bg-accent p-5 rounded-full">
               <Search className="w-10 h-10 text-primary" />
             </div>
           </div>
           <h2 className="font-jua text-3xl md:text-4xl text-accent mb-4">
-            Unforgettable Experiences
+            Perfect Day Adventures
           </h2>
           <p className="font-quicksand text-lg text-accent/80 mb-8 max-w-3xl mx-auto">
-            From cultural heritage to marine adventures, discover the magic of
-            the Spice Island. Experience Tanzania's wonders in single-day
-            excursions
+            Explore Tanzania's highlights in single-day adventures from major
+            towns - perfect for busy schedules
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <SecondaryButton>View All Day Trips</SecondaryButton>
+            <Link href="/tours/day-trips">
+              <SecondaryButton>View All Day Trips</SecondaryButton>
+            </Link>
           </div>
         </div>
         {/* Decorative Elements */}
@@ -65,7 +66,17 @@ function DayTripsHome() {
           ) : dayTripsData?.length > 0 ? (
             <div className="grid-cols-2 grid gap-12">
               {dayTripsData?.map((dayTrip, index) => (
-                <DayTripCardPro key={index} tour={dayTrip} />
+                <div
+                  className="w-full"
+                  data-aos={
+                    // 2 should fade right and 2 should fade left
+                    index % 2 === 0 ? "fade-right" : "fade-left"
+                  }
+                  data-aos-delay={index * 200}
+                  key={dayTrip?.id}
+                >
+                  <DayTripCardPro tour={dayTrip} />
+                </div>
               ))}
             </div>
           ) : (

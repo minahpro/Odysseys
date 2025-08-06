@@ -4,6 +4,7 @@ import { Title } from "../texties";
 import { useAppContext } from "@/context/AppContext";
 import { TourLoading } from "../Loadings/LoadingComp";
 import { NoDataFound } from "../Loadings/ErrorComp";
+import { UsersRound } from "lucide-react";
 
 function PatinersSection() {
   const { companyDetails, isLoading, didSucceed } = useAppContext();
@@ -13,7 +14,7 @@ function PatinersSection() {
     <section className="sm:pb-28 pb-10 pt-10">
       <div className="respons">
         <Title
-          badge={"👥 Meet Our Team"}
+          badge={<UsersRound />}
           title={"People Behind Your Adventure"}
           subHeading={
             "Our passionate team of local experts, guides, and travel specialists are dedicated to making your Tanzanian adventure extraordinary."
@@ -32,19 +33,24 @@ function PatinersSection() {
               {stuff?.slice(0, 4)?.map((team, index) => (
                 <div
                   key={index}
-                  className="text-center border-0 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden"
+                  className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group"
                 >
-                  <div className="relative">
+                  <div className="relative overflow-hidden">
                     <img
                       src={team?.photo || "/placeholder.svg"}
                       alt={team?.name}
-                      className="w-full h-64 object-cover"
+                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <h3 className="text-xl font-bold mb-1">{team?.name}</h3>
-                      <p className="text-sm text-white/90">{team?.position}</p>
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <div className="p-6 text-center">
+                    <h3 className="font-bold text-primary mb-2 group-hover:text-secondary transition-colors duration-300">
+                      {team?.name}
+                    </h3>
+                    <p className="text-secondary/80 font-medium mb-3">
+                      {team?.position}
+                    </p>
+                    <div className="w-12 h-1 bg-secondary mx-auto rounded-full"></div>
                   </div>
                 </div>
               ))}

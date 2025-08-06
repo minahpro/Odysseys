@@ -40,6 +40,12 @@ function Home() {
       <DayTripsHome />
       <ListBanner />
       <ZanzibarTripsHome />
+      <AdventureBanner />
+      <TrekkingTours />
+      <AccommodationsHome />
+      <TestimonialsSection />
+      <BlogsHome />
+      <SubscribeSection />
     </main>
   );
 }

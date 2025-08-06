@@ -1,80 +1,45 @@
-import { Shield, Award, Users, Clock, Globe, Star } from "lucide-react";
-import { PlainTitle } from "../texties";
-import { PrimaryButton } from "../buttons";
-import Image from "next/image";
-
-const reasons = [
-  {
-    icon: Award,
-    title: "Expert Local Guides",
-    description:
-      "Our guides are born and raised in Tanzania, offering unparalleled local knowledge.",
-  },
-  {
-    icon: Users,
-    title: "Eco-Friendly Tours",
-    description:
-      "We are committed to sustainable tourism that respects wildlife and local communities.",
-  },
-  {
-    icon: Shield,
-    title: "Safety First",
-    description:
-      "We prioritize your safety with well-maintained vehicles and certified guides.",
-  },
-  {
-    icon: Clock,
-    title: "Tailor-Made Itineraries",
-    description:
-      "We customize every trip to match your interests, budget, and travel style.",
-  },
-];
+import { Globe } from "lucide-react";
 
 export default function WhyChooseUs() {
   return (
-    <section className="sm:py-28 py-10">
-      <div className="respons">
-        <div
-          data-aos="fade-right"
-          className="grid lg:grid-cols-2 gap-16 items-center"
+    <section className="sm:py-28 py-10 bg-accent/40">
+      <div className="respons flex-all flex-col">
+        <span
+          data-aos="fade-up"
+          className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
         >
-          <div className="lg:grid hidden grid-cols-2 gap-2 items-center">
-            <Image
-              src="/images/copy.jpg"
-              alt="Local community"
-              width={300}
-              height={200}
-              className="rounded-2xl w-full h-[500px] object-cover"
-            />
-            <Image
-              src="/images/gallery/kili3.png"
-              alt="Local community"
-              width={300}
-              height={200}
-              className="rounded-2xl w-full h-[500px] object-cover"
-            />
-          </div>
-          <div data-aos="fade-left" data-aos-delay="100" className="space-y-8">
-            <span
-              className={`bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-bold border border-primary/30 inline-block mb-6`}
-            >
-              ⭐ Why Travel With Us?
-            </span>
-
-            {reasons?.map((point, index) => (
-              <div key={index} className="flex items-start gap-4">
-                <div className="bg-primary/10 p-3 rounded-full mt-1">
-                  <point.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-jua font-bold text-white">
-                    {point.title}
-                  </h3>
-                  <p className="text-textcolor">{point.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Globe />
+        </span>
+        <h2
+          data-aos="fade-up"
+          data-aos-delay="100"
+          className="md:text-4xl text-3xl text-secondary font-jua mb-4"
+        >
+          Our Story
+        </h2>
+        <div className="max-w-4xl text-center">
+          <p
+            className="text-lg text-gray-800 leading-relaxed mb-6"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            Wild Odysseys was founded with a singular vision: to share the
+            unparalleled beauty and magic of Tanzania with the world,
+            responsibly and authentically. As a locally-owned and operated
+            company, we bring an intimate knowledge of the land, its wildlife,
+            and its people to every journey we craft.
+          </p>
+          <p
+            className="text-lg text-gray-800 leading-relaxed"
+            data-aos="fade-up"
+            data-aos-delay="300"
+          >
+            Our roots are deeply embedded in the Tanzanian soil, allowing us to
+            offer unique insights and access to experiences that go beyond the
+            typical tourist trail. We believe in creating connections – between
+            our guests and nature, between travelers and local communities, and
+            between dreams and reality.
+          </p>
         </div>
       </div>
     </section>

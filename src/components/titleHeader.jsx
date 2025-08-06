@@ -1,39 +1,45 @@
 import React from "react";
 import Image from "next/image";
+import { SecondaryButton } from "./buttons";
+import Link from "next/link";
 
-export default function TitleHeader({ first, last, image }) {
+export default function TitleHeader({ first, last, link, sub, image }) {
   return (
-    <section className={`w-full relative md:h-[400px] h-[250px]`}>
+    <section className={`w-full pt-20 relative grid grid-cols-2 gap-12`}>
+      <div className="bg-white flex-all h-full">
+        <div className=" space-y-6 pl-32 w-full">
+          <h1
+            data-aos="fade-right"
+            className={`font-jua text-3xl md:text-4xl xl:text-5xl font-semibold text-primary `}
+          >
+            <span>{first}</span>
+            <span className="text-secondary">{last}</span>
+          </h1>
+
+          <p
+            data-aos="fade-right"
+            data-aos-delay="100"
+            className="font-medium text-primary"
+          >
+            {sub ||
+              "Our team of experienced guides, commitment to sustainable tourism, and dedication to exceptional service ensure that every journey with us is not just a trip."}
+          </p>
+          <div data-aos="fade-right" data-aos-delay="200">
+            <Link href={link?.href || "/contact"}>
+              <SecondaryButton className="text-sm font-bold">
+                {link?.text || "Contact Us"}
+              </SecondaryButton>
+            </Link>
+          </div>
+        </div>
+      </div>
       <Image
         width={1000}
         height={500}
         alt="Loading.."
         src={image ? image : "/images/header.jpeg"}
-        className="w-full h-full object-cover"
+        className="w-full md:h-[450px] h-[300px] object-cover"
       />
-      <div className="absolute inset-0 bg-black/50  ">
-        <div className="respons flex-all gap-4 flex-col w-full h-full">
-          <h1
-            data-aos="fade-down"
-            className="text-2xl md:text-4xl text-white lg:text-5xl font-black font-jua uppercase tracking-wider"
-          >
-            <span>{first}</span>
-            <span className="text-primary">{last}</span>
-          </h1>
-          <div
-            data-aos="fade-up"
-            className="flex items-center justify-center w-full max-w-md mx-auto"
-          >
-            <div className="w-24 h-2 bg-gradient-to-r from-transparent to-primary/70"></div>
-            <div className="px-4 flex items-center gap-1">
-              <span className="text-primary text-lg">★</span>
-              <span className="text-primary text-xl">★</span>
-              <span className="text-primary text-lg">★</span>
-            </div>
-            <div className="w-24 h-2 bg-gradient-to-l from-transparent to-primary/70"></div>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }

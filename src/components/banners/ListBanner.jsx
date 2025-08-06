@@ -10,6 +10,7 @@ import {
   Heart,
   Box,
 } from "lucide-react";
+import { downloadFile } from "../Functions";
 
 function ListBanner() {
   const packingItems = [
@@ -50,7 +51,10 @@ function ListBanner() {
       <div className="respons">
         <div className="max-w-6xl mx-auto px-4 py-12">
           {/* Header */}
-          <div className="text-center flex-all flex-col mb-12">
+          <div
+            data-aos="fade-down"
+            className="text-center flex-all flex-col mb-12"
+          >
             <span
               className={`bg-secondary text-white h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
             >
@@ -73,6 +77,8 @@ function ListBanner() {
               return (
                 <div
                   key={index}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 200}
                   className="rounded-xl p-6 hover:bg-accent transitions"
                 >
                   <div className="text-center">
@@ -91,7 +97,15 @@ function ListBanner() {
 
           {/* Call to Action */}
           <div className="text-center mt-12">
-            <PrimaryButton className="px-8 py-3">
+            <PrimaryButton
+              onClick={() => {
+                downloadFile({
+                  fileName: "kili.pdf",
+                  name: "Wild Odysseys Packing List",
+                });
+              }}
+              className="px-8 py-3"
+            >
               Download Complete Packing List
             </PrimaryButton>
           </div>

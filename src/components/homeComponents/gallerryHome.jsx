@@ -4,15 +4,16 @@ import { FreeMode, Navigation, Thumbs, Pagination } from "swiper/modules";
 import { useCallback, useRef, useState } from "react";
 import { Title } from "../texties";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { Camera } from "lucide-react";
 
 const galleryImages = [
-  { id: 2, src: "/images/bg/elephants.avif", alt: "Serengeti wildlife" },
+  { id: 6, src: "/images/bg/6.png", alt: "Serengeti wildlife" },
   { id: 2, src: "/images/gallery/zanzi3.png", alt: "Serengeti wildlife" },
-  { id: 3, src: "/images/gallery/kili3.png", alt: "Serengeti wildlife" },
+  { id: 3, src: "/images/bg/6.png", alt: "Serengeti wildlife" },
   { id: 4, src: "/images/gallery/team5.png", alt: "Serengeti wildlife" },
-  { id: 5, src: "/images/gallery/zanzi1.png", alt: "Serengeti wildlife" },
+  { id: 5, src: "/images/bg/11.png", alt: "Serengeti wildlife" },
   { id: 1, src: "/images/gallery/team6.png", alt: "Serengeti wildlife" },
-  { id: 6, src: "/images/gallery/kili5.png", alt: "Serengeti wildlife" },
+  { id: 2, src: "/images/bg/3.png", alt: "Serengeti wildlife" },
   { id: 7, src: "/images/gallery/team3.png", alt: "Serengeti wildlife" },
 ];
 
@@ -34,7 +35,7 @@ export default function GallerySection() {
     <section className="sm:py-28 py-10">
       <div className="respons">
         <Title
-          badge={"📸 Our Adventures"}
+          badge={<Camera />}
           title={"Photo Gallery"}
           subHeading={
             "Relive the magic of Tanzania through our stunning collection of photographs from unforgettable safaris and treks."
@@ -65,13 +66,13 @@ export default function GallerySection() {
             <div className=" z-30 absolute px-2 top-1/2 -translate-y-1/2 left-0 w-full h-12 flex justify-between items-center">
               <button
                 onClick={handlePrev}
-                className="w-10 h-10 flex-all transitions hover:bg-primary/50 hover:text-white rounded-full bg-primary border border-primary/30 text-xl  shadow-md"
+                className="w-10 h-10 flex-all transitions text-accent hover:bg-primary/50 hover:text-white rounded-full bg-primary border border-primary/30 text-xl  shadow-md"
               >
                 <MdKeyboardArrowLeft />
               </button>
               <button
                 onClick={handleNext}
-                className="w-10 h-10 flex-all transitions hover:bg-primary/50 hover:text-white rounded-full bg-primary border border-primary/30 text-xl  shadow-md"
+                className="w-10 h-10 flex-all transitions text-accent hover:bg-primary/50 hover:text-white rounded-full bg-primary border border-primary/30 text-xl  shadow-md"
               >
                 <MdKeyboardArrowRight />
               </button>

@@ -15,7 +15,10 @@ const FetchTags = () => {
   return (
     <div className="flex flex-wrap gap-3">
       {[...Array(5)].map((_, i) => (
-        <button key={i} className="h-6 rounded w-20 bg-accent animate-pulse" />
+        <button
+          key={i}
+          className="h-6 rounded w-20 bg-highlight animate-pulse"
+        />
       ))}
     </div>
   );
@@ -25,7 +28,10 @@ const FetchCategories = () => {
   return (
     <div className="space-y-3">
       {[...Array(3)].map((_, i) => (
-        <div key={i} className="h-6 w-full rounded bg-accent animate-pulse" />
+        <div
+          key={i}
+          className="h-6 w-full rounded bg-highlight animate-pulse"
+        />
       ))}
     </div>
   );
@@ -42,14 +48,14 @@ const SingleDetailsLoading = () => {
 };
 
 const InputLoading = () => {
-  return <div className="w-full h-12 rounded bg-accent animate-pulse" />;
+  return <div className="w-full h-12 rounded bg-highlight animate-pulse" />;
 };
 
 const PageLoading = () => {
   return (
     <div className="respons">
-      <div className="w-full md:py-12 py-4 my-6">
-        <div className="w-full md:h-screen h-80 border border-gray-800 bg-accent rounded flex-all">
+      <div className="w-full my-6">
+        <div className="w-full md:h-screen h-80 bg-accent rounded flex-all">
           <PropagateLoader color={"#083633"} loading={true} size={15} />
         </div>
       </div>

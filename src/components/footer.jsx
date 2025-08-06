@@ -11,6 +11,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa6";
 import SubscribeSection from "./homeComponents/SubscribeHome";
+import Image from "next/image";
 
 function Footer() {
   const { companyDetails, isLoading, didSucceed } = useAppContext();
@@ -47,9 +48,15 @@ function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div>
-              <h3 className="text-2xl font-bold mb-4">
-                Go<span className="text-primary">Africa</span>
-              </h3>
+              <Link href="/" className="flex mb-4 items-center">
+                <Image
+                  src="/white2.png"
+                  alt="Wild Odysseys Tanzania"
+                  width={180}
+                  height={60}
+                  className="h-14 w-auto"
+                />
+              </Link>
               <p className="text-white/80 mb-4 leading-relaxed">
                 Your gateway to authentic Tanzania. Creating unforgettable
                 safari experiences since 2015.
@@ -61,7 +68,7 @@ function Footer() {
                     href={item.link || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white hover:text-primary cursor-pointer transitions"
+                    className="text-white hover:text-accent cursor-pointer transitions"
                   >
                     <item.icon />
                   </Link>
@@ -76,7 +83,7 @@ function Footer() {
                 <li>
                   <a
                     href="/"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     Home
                   </a>
@@ -84,7 +91,7 @@ function Footer() {
                 <li>
                   <a
                     href="/about"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     About Us
                   </a>
@@ -92,7 +99,7 @@ function Footer() {
                 <li>
                   <a
                     href="/destinations"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     Destinations
                   </a>
@@ -100,7 +107,7 @@ function Footer() {
                 <li>
                   <a
                     href="/accommodations"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     Accommodations
                   </a>
@@ -115,7 +122,7 @@ function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     All Packages
                   </a>
@@ -123,7 +130,7 @@ function Footer() {
                 <li>
                   <a
                     href="/tours/climbing-trips"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     Trekking Trips
                   </a>
@@ -131,7 +138,7 @@ function Footer() {
                 <li>
                   <a
                     href="/tours/zanzibar-trips"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     Zanzibar Tours
                   </a>
@@ -139,7 +146,7 @@ function Footer() {
                 <li>
                   <a
                     href="/tours/day-trips"
-                    className="text-white/80 hover:text-primary transitions"
+                    className="text-white/80 hover:text-accent transitions"
                   >
                     Day Trips
                   </a>

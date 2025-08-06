@@ -9,7 +9,7 @@ function BookingBanner() {
       <section className="py-16 bg-accent">
         <div className="container mx-auto px-4">
           <div className="relative rounded-2xl overflow-hidden" data-animate>
-            <div className="py-16 px-8 text-center">
+            <div data-aos="fade-up" className="py-16 px-8 text-center">
               <div className="flex justify-center mb-6">
                 <div className="bg-primary p-4 rounded-full">
                   <Search className="w-12 h-12 text-accent" />

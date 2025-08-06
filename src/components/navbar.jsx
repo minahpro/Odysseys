@@ -18,6 +18,7 @@ import {
   Youtube,
 } from "lucide-react";
 import { PrimaryButton } from "./buttons";
+import MenuLink from "./menuLink";
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -57,97 +58,6 @@ export default function Navigation() {
     }
   };
 
-  const menuItems = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
-    {
-      name: "Packages",
-      href: "/packages",
-      dropdown: {
-        title: "Safari Packages",
-        subtitle: "Choose your perfect Tanzania adventure",
-        items: [
-          {
-            name: "Zanzibar Beach Tours",
-            href: "/packages?type=zanzibar",
-            description:
-              "Pristine beaches, spice tours, and cultural experiences",
-            image: "/placeholder.svg?height=120&width=180",
-            price: "From $1,200",
-          },
-          {
-            name: "Kilimanjaro Packages",
-            href: "/packages?type=kilimanjaro",
-            description: "Conquer Africa's highest peak with expert guides",
-            image: "/placeholder.svg?height=120&width=180",
-            price: "From $2,800",
-          },
-          {
-            name: "Day Trips",
-            href: "/packages?type=day-trips",
-            description: "Perfect for short visits and quick adventures",
-            image: "/placeholder.svg?height=120&width=180",
-            price: "From $150",
-          },
-          {
-            name: "All Safari Packages",
-            href: "/packages",
-            description: "Browse our complete collection of adventures",
-            image: "/placeholder.svg?height=120&width=180",
-            price: "View All",
-          },
-        ],
-      },
-    },
-    { name: "Destinations", href: "/destinations" },
-    { name: "Accommodations", href: "/accommodations" },
-    {
-      name: "Others",
-      href: "#",
-      dropdown: {
-        title: "Resources & More",
-        subtitle: "Everything you need to plan your trip",
-        items: [
-          {
-            name: "Contact Us",
-            href: "/contact",
-            description: "Get in touch with us for more information",
-            image: "/placeholder.svg?height=120&width=180",
-            badge: "Contact Us Now",
-          },
-          {
-            name: "Safari Blog",
-            href: "/blogs",
-            description: "Expert tips, guides, and safari stories",
-            image: "/placeholder.svg?height=120&width=180",
-            badge: "Latest Tips",
-          },
-          {
-            name: "Photo Gallery",
-            href: "/gallery",
-            description: "Stunning wildlife and landscape photography",
-            image: "/placeholder.svg?height=120&width=180",
-            badge: "500+ Photos",
-          },
-          {
-            name: "FAQs",
-            href: "/faqs",
-            description: "Common questions about Tanzania safaris",
-            image: "/placeholder.svg?height=120&width=180",
-            badge: "Quick Answers",
-          },
-          {
-            name: "Privacy Policy",
-            href: "/privacy",
-            description: "How we protect your personal information",
-            image: "/placeholder.svg?height=120&width=180",
-            badge: "Updated 2024",
-          },
-        ],
-      },
-    },
-  ];
-
   const handleMouseEnter = (itemName) => {
     setActiveDropdown(itemName);
   };
@@ -156,6 +66,7 @@ export default function Navigation() {
     setActiveDropdown(null);
   };
 
+  const menuLink = MenuLink();
   return (
     <>
       {/* Top Bar */}
@@ -262,7 +173,7 @@ export default function Navigation() {
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center space-x-6">
-              {menuItems.map((item) =>
+              {menuLink?.map((item) =>
                 item.dropdown ? (
                   <div
                     key={item.name}
@@ -307,7 +218,7 @@ export default function Navigation() {
                               <Link
                                 key={dropdownItem.name}
                                 href={dropdownItem.href}
-                                className="group relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200 hover:border-primary/20"
+                                className="group relative bg-accent/20 rounded-xl p-6 hover:shadow-lg transitions hover:-translate-y-1 border border-secondary/10"
                               >
                                 <div className="flex items-start space-x-4">
                                   {/* Image */}
@@ -318,19 +229,19 @@ export default function Navigation() {
                                       }
                                       alt={dropdownItem.name}
                                       fill
-                                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                                      className="object-cover rounded group-hover:scale-110 transition-transform duration-300"
                                     />
                                   </div>
 
                                   {/* Content */}
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-start justify-between mb-2">
-                                      <h4 className="font-jua text-primary text-lg group-hover:text-secondary transition-colors">
+                                      <h4 className="text-primary font-bold group-hover:text-secondary transition-colors">
                                         {dropdownItem.name}
                                       </h4>
                                       <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 duration-300" />
                                     </div>
-                                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                                    <p className="text-primary text-sm mb-3 line-clamp-2">
                                       {dropdownItem.description}
                                     </p>
                                     <div className="flex items-center justify-between">
@@ -369,7 +280,7 @@ export default function Navigation() {
             {/* Contact Buttons */}
             <div className="hidden md:flex items-center space-x-3">
               <PrimaryButton className="text-sm py-5">
-                Call Us Now
+                <Link href="/contact">Contact Us</Link>
               </PrimaryButton>
             </div>
 
@@ -384,7 +295,7 @@ export default function Navigation() {
                 <div className="flex flex-col h-full">
                   <div className="flex items-center justify-between mb-8">
                     <Image
-                      src="/images/logo-black2.png"
+                      src="/black2.png"
                       alt="Wild Odysseys Tanzania"
                       width={150}
                       height={50}
@@ -393,7 +304,7 @@ export default function Navigation() {
                   </div>
 
                   <div className="flex flex-col space-y-1 flex-1">
-                    {menuItems.map((item) =>
+                    {menuLink?.map((item) =>
                       item.dropdown ? (
                         <div
                           key={item.name}
