@@ -55,7 +55,7 @@ const PageLoading = () => {
   return (
     <div className="respons">
       <div className="w-full my-6">
-        <div className="w-full md:h-screen h-80 bg-accent rounded flex-all">
+        <div className="w-full md:h-screen h-80 rounded flex-all">
           <PropagateLoader color={"#083633"} loading={true} size={15} />
         </div>
       </div>

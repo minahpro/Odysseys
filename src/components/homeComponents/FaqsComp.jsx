@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Title } from "../texties";
 import useFetchMultipleDocsByFieldNames from "@/lib/hooks/useFetchMultipleDocsByFieldNames";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, FileQuestion, Pen } from "lucide-react";
 import { NoDataFound } from "../Loadings/ErrorComp";
 import { FaqsLoadingComp } from "../Loadings/LoadingComp";
 
@@ -27,10 +27,10 @@ function FaqsComp() {
     }));
   };
   return (
-    <section className="sm:py-28 py-10 bg-highlight/30">
+    <section className="sm:py-28 py-10 bg-accent/40">
       <div className="respons">
         <Title
-          badge={"✍ Frequently Asked Questions"}
+          badge={<FileQuestion />}
           title={"Answers to Common Questions"}
           subHeading={
             "Can't find what you're looking for? Contact us directly and we'll be happy to help."
@@ -51,13 +51,13 @@ function FaqsComp() {
                 {faqsDatas?.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-highlight/40 rounded-xl border border-gray-800 overflow-hidden hover:border-highlight transitions"
+                    className="bg-accent/40 rounded-xl border border-secondary/30 overflow-hidden hover:border-secondary transitions"
                   >
                     <button
                       onClick={() => toggleItem(index)}
                       className="w-full px-6 py-4 text-left flex items-center justify-between"
                     >
-                      <h3 className="font-semibold text-textcolor pr-4">
+                      <h3 className="font-semibold text-primary pr-4">
                         {item?.question}
                       </h3>
                       <ChevronDown
@@ -68,8 +68,8 @@ function FaqsComp() {
                     </button>
                     {openItems[index] && (
                       <div className="px-6 pb-4">
-                        <div className="pt-2 border-t border-gray-800">
-                          <p className="text-textcolor leading-relaxed">
+                        <div className="p-6 bg-white rounded">
+                          <p className="text-primary leading-relaxed">
                             {item?.answer}
                           </p>
                         </div>

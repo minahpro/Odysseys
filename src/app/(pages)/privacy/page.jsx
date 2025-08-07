@@ -1,6 +1,8 @@
 // pages/Privacy.js
 "use client";
+import AboutHome from "@/components/homeComponents/AboutHome";
 import FeaturesDestinations from "@/components/homeComponents/DestinationsHome";
+import TestimonialsSection from "@/components/homeComponents/ReviewsHome";
 import { NoDataFound } from "@/components/Loadings/ErrorComp";
 import {
   PageLoading,
@@ -30,85 +32,105 @@ function Privacy() {
         first={"Privacy "}
         last={"Policy."}
         image={"/images/tourImages/epso55.jpg"}
-      />
-      <main className="respons lg:pt-20 pt-10">
-        {/* Page Introduction */}
-        <div className="text-center max-w-4xl mx-auto mb-12">
-          <PlainTitle first={"Your Privacy "} last={"Matters"} />
-          <p className="text-lg text-textcolor/70 max-w-3xl mx-auto mb-8 mt-4">
-            We are committed to protecting your privacy and ensuring the
+        sub="We are committed to protecting your privacy and ensuring the
             security of your personal information. This policy explains how we
-            collect, use, and safeguard your data.
-          </p>
-          <div className="bg-primary/20 rounded-lg p-4 border border-primary/20">
-            <p className="text-sm text-white">
-              <strong>Last Updated:</strong> December 2024 |{" "}
-              <strong>Effective Date:</strong> January 1, 2024
+            collect, use, and safeguard your data."
+        link={{
+          href: "/about",
+          text: "Read About Us",
+        }}
+      />
+
+      <section className="sm:py-28 py-10 bg-accent/40">
+        <div className="respons flex-all flex-col">
+          <span
+            data-aos="fade-up"
+            className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
+          >
+            <Shield />
+          </span>
+          <h2
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="md:text-4xl text-3xl text-secondary font-jua mb-4"
+          >
+            Your Privacy Matters
+          </h2>
+          <div className="max-w-4xl text-center space-y-6">
+            <p
+              className="text-lg text-gray-800 leading-relaxed"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              Wild Odysseys was founded with a singular vision: to share the
+              unparalleled beauty and magic of Tanzania with the world,
+              responsibly and authentically. As a locally-owned and operated
+              company, we bring an intimate knowledge of the land, its wildlife,
+              and its people to every journey we craft.
+              <br />
+              <br />
+              Our roots are deeply embedded in the Tanzanian soil, allowing us
+              to offer unique insights and access to experiences that go beyond
+              the typical tourist trail. We believe in creating connections –
+              between our guests and nature, between travelers and local
+              communities, and between dreams and reality.
+              <br />
+              <br />
+              Wild Odysseys was founded with a singular vision: to share the
+              unparalleled beauty and magic of Tanzania with the world,
+              responsibly and authentically. As a locally-owned and operated
+              company, we bring an intimate knowledge of the land, its wildlife,
+              and its people to every journey we craft.
             </p>
           </div>
-        </div>
-        <div className="mb-12 max-w-4xl mx-auto">
+
           {/* Privacy Highlights */}
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
             <div
               data-aos="fade-up"
               data-aos-delay="300"
-              className="bg-highlight/40 rounded-xl p-6 border border-highlight text-center"
+              className="bg-white rounded-xl p-6 border border-highlight text-center"
             >
-              <div className="bg-rose-100/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield className="h-6 w-6 text-rose-600" />
+              <div className="bg-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Shield className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-white mb-2">Secure Data</h3>
-              <p className="text-sm text-textcolor">
+              <h3 className="font-bold text-primary mb-2">Secure Data</h3>
+              <p className="text-sm text-primary">
                 Your information is encrypted and stored securely
               </p>
             </div>
             <div
               data-aos="fade-up"
               data-aos-delay="500"
-              className="bg-highlight/40 rounded-xl p-6 border border-highlight text-center"
+              className="bg-white rounded-xl p-6 border border-highlight text-center"
             >
-              <div className="bg-blue-100/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Eye className="h-6 w-6 text-blue-600" />
+              <div className="bg-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Eye className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-white mb-2">Transparent</h3>
-              <p className="text-sm text-textcolor">
+              <h3 className="font-bold text-primary mb-2">Transparent</h3>
+              <p className="text-sm text-primary">
                 Clear information about data collection and use
               </p>
             </div>
             <div
               data-aos="fade-up"
               data-aos-delay="700"
-              className="bg-highlight/40 rounded-xl p-6 border border-highlight text-center"
+              className="bg-white rounded-xl p-6 border border-highlight text-center"
             >
-              <div className="bg-purple-100/10 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-6 w-6 text-purple-600" />
+              <div className="bg-accent w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="font-semibold text-white mb-2">Your Control</h3>
-              <p className="text-sm text-textcolor">
+              <h3 className="font-bold text-primary mb-2">Your Control</h3>
+              <p className="text-sm text-primary">
                 You control your data and privacy preferences
               </p>
             </div>
           </div>
-
-          <div className="bg-highlight/20 rounded-xl shadow-sm border border-highlight p-8">
-            {
-              // loading
-              isLoading ? (
-                <PrivacyLoadingComp />
-              ) : didSucceed ? (
-                <div
-                  dangerouslySetInnerHTML={{ __html: privacyData }}
-                  className="prose prose-lg max-w-none text-textcolor leading-relaxed"
-                />
-              ) : (
-                <NoDataFound text="No Data Found" />
-              )
-            }
-          </div>
         </div>
-      </main>
-      <FeaturesDestinations />
+      </section>
+
+      <AboutHome />
+      <TestimonialsSection />
     </>
   );
 }

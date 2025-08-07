@@ -38,7 +38,7 @@ export default function TitleHeader({ first, last, link, sub, image }) {
         height={500}
         alt="Loading.."
         src={image ? image : "/images/header.jpeg"}
-        className="w-full md:h-[450px] h-[300px] object-cover"
+        className="w-full bg-accent md:h-[450px] h-[300px] object-cover"
       />
     </section>
   );

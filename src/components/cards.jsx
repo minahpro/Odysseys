@@ -361,26 +361,30 @@ export const BlogCardPro = ({ item }) => {
 // Contact Info Card Component
 export const ContactInfoCard = ({ icon: Icon, title, info, description }) => {
   return (
-    <div className="bg-highlight border-gray-800 rounded-xl p-6 shadow-sm border hover:shadow-lg transition-all duration-300">
-      <div className="flex items-start gap-4">
-        <div className="bg-primary/10 p-3 rounded-lg">
-          <Icon className="h-6 w-6 text-primary" />
-        </div>
-        <div>
-          <h3 className="font-semibold text-primary mb-1">{title}</h3>
-          <p className="text-white font-medium mb-1">{info}</p>
-          <p className="text-sm text-textcolor">{description}</p>
-        </div>
+    <div className="rounded-xl space-y-5 p-8 flex-all flex-col bg-white hover:shadow-xl transitions">
+      <div className="bg-accent flex-all w-14 h-14 rounded-full">
+        <Icon className="h-6 w-6 text-primary" />
+      </div>
+      <div className="space-y-2 w-full bg-highlight/30 p-4 rounded text-center">
+        <h3 className="font-bold text-primary">{title}</h3>
+        <p className="font-medium text-primary break-words">{info}</p>
+        <p className="text-sm text-secondary">{description}</p>
       </div>
     </div>
   );
 };
 
 // Gallery Item Component
-export function GalleryItem({ item, onClick }) {
+export function GalleryItem({ item, onClick, index }) {
+  // Create varied heights for masonry effect
+  const getRandomHeight = (index) => {
+    const heights = ['h-48', 'h-56', 'h-64', 'h-72', 'h-80', 'h-60'];
+    return heights[index % heights.length];
+  };
+
   return (
     <div
-      className="group bg-white/60 relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+      className="group bg-white/60 relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl w-full"
       onClick={() => onClick()}
     >
       <Image
@@ -388,7 +392,7 @@ export function GalleryItem({ item, onClick }) {
         height={500}
         src={item.image || "/placeholder.svg"}
         alt={item.title}
-        className="w-full h-64 object-cover"
+        className={`w-full ${getRandomHeight(index)} object-cover`}
         loading="lazy"
         quality={75}
       />

@@ -1,30 +1,16 @@
 // pages/Faqs.js
 "use client";
-import { QuickTipsBanner } from "@/components/banners/SmallBanners";
 import { NoDataFound } from "@/components/Loadings/ErrorComp";
-import {
-  FaqsLoadingComp,
-  PageLoading,
-} from "@/components/Loadings/LoadingComp";
-import { PlainTitle } from "@/components/texties";
+import { PageLoading } from "@/components/Loadings/LoadingComp";
 import TitleHeader from "@/components/titleHeader";
-import useFetchMultipleDocsByFieldNames from "@/lib/hooks/useFetchMultipleDocsByFieldNames";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ShieldQuestion } from "lucide-react";
 import React, { Suspense, useState } from "react";
+import { faqsData } from "@/data/randomData";
+import AccommodationsHome from "@/components/homeComponents/AccommodationsHome";
 
 function Faqs() {
   const [openItems, setOpenItems] = useState({});
-
-  const {
-    data: faqs,
-    isLoading,
-    didSucceed,
-  } = useFetchMultipleDocsByFieldNames("faqs", [], {
-    fieldName: "createdAt",
-    value: "desc",
-  });
-
-  const faqsDatas = (didSucceed && faqs[0]?.items) || [];
+  const [activeTab, setActiveTab] = useState(faqsData[0]?.title || "Bookings");
 
   const toggleItem = (index) => {
     setOpenItems((prev) => ({
@@ -33,71 +19,129 @@ function Faqs() {
     }));
   };
 
+  // Get all categories from faqsData (excluding "All Questions")
+  const categories = faqsData.map((category) => category.title);
+
+  // Get filtered questions based on active tab
+  const getFilteredQuestions = () => {
+    const selectedCategory = faqsData.find(
+      (category) => category.title === activeTab
+    );
+    return selectedCategory
+      ? selectedCategory.questions.map((question, questionIndex) => ({
+          ...question,
+          category: selectedCategory.title,
+          id: `${activeTab}-${questionIndex}`,
+        }))
+      : [];
+  };
+
+  const filteredQuestions = getFilteredQuestions();
+
   return (
     <>
       <TitleHeader
         first={"FA"}
         last={"Qs"}
-        image={"/images/tourImages/epso44.jpg"}
+        link={{
+          text: "Our Destinations",
+          link: "/destinations",
+        }}
+        sub={
+          " Find answers to the most common questions about traveling to Tanzania, safari experiences, trekking adventures, and accommodations."
+        }
+        image={"/images/bg/13.png"}
       />
-      <main className="respons lg:pt-20 pt-10">
-        {/* Page Introduction */}
-        <div className="text-center mb-12">
-          <PlainTitle first={"Got "} last={"Questions?"} />
-          <p className="text-lg text-textcolor/70 max-w-3xl mx-auto mb-8 mt-4">
-            Find answers to the most common questions about traveling to
-            Tanzania, safari experiences, trekking adventures, and
-            accommodations.
-          </p>
-        </div>
-        <div className="mb-12">
-          {
-            // loading
-            isLoading ? (
-              <div className="w-full lg:grid-cols-2 grid gap-4">
-                {[...Array(6)].map((_, i) => (
-                  <FaqsLoadingComp key={i} />
-                ))}
+
+      <section className="sm:py-28 py-10 bg-accent/40">
+        <div className="respons flex-all flex-col">
+          <span
+            data-aos="fade-up"
+            className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
+          >
+            <ShieldQuestion />
+          </span>
+          <h2
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="md:text-4xl text-3xl text-secondary font-jua mb-4"
+          >
+            Frequently Asked Questions
+          </h2>
+          <div className="grid w-full grid-cols-12 mt-12 gap-6">
+            <div
+              data-aos="fade-right"
+              className="col-span-12 lg:col-span-3 bg-white rounded p-4 space-y-2"
+            >
+              {categories.map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setActiveTab(category);
+                    setOpenItems({}); // Reset open items when switching tabs
+                  }}
+                  className={`${
+                    activeTab === category
+                      ? "bg-primary text-accent"
+                      : "bg-accent/15 text-primary hover:bg-accent/25"
+                  } border border-accent/30 text-sm font-bold w-full py-3 rounded transition-all duration-200`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+            <div className="col-span-12 lg:col-span-9">
+              <div className="bg-white rounded p-6 mb-6">
+                <h3 className="text-xl font-bold text-primary mb-2">
+                  {activeTab}
+                </h3>
+                <p className="text-textcolor/70 text-sm">
+                  {filteredQuestions.length} questions in this category
+                </p>
               </div>
-            ) : didSucceed && faqsDatas?.length > 0 ? (
-              <div className="grid grid-cols-2 gap-6">
-                {faqsDatas?.map((item, index) => (
-                  <div
-                    key={index}
-                    className="bg-highlight/40 rounded-xl border border-gray-800 overflow-hidden hover:border-highlight transitions"
-                  >
-                    <button
-                      onClick={() => toggleItem(index)}
-                      className="w-full px-6 py-4 text-left flex items-center justify-between"
+              {filteredQuestions?.length > 0 ? (
+                <div className="space-y-4">
+                  {filteredQuestions?.map((item, index) => (
+                    <div
+                      key={item.id || index}
+                      className="bg-accent/40 rounded-xl border border-secondary/30 overflow-hidden hover:border-secondary transitions"
                     >
-                      <h3 className="font-semibold text-textcolor pr-4">
-                        {item?.question}
-                      </h3>
-                      <ChevronDown
-                        className={`h-5 w-5 text-primary transition-transform duration-200 ${
-                          openItems[index] ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {openItems[index] && (
-                      <div className="px-6 pb-4">
-                        <div className="pt-2 border-t border-gray-800">
-                          <p className="text-textcolor leading-relaxed">
-                            {item?.answer}
-                          </p>
+                      <button
+                        onClick={() => toggleItem(item.id || index)}
+                        className="w-full px-6 py-4 text-left flex items-center justify-between"
+                      >
+                        <div className="flex-1 pr-4">
+                          <h3 className="font-medium text-primary">
+                            {item?.question}
+                          </h3>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <NoDataFound text="No Question Found" />
-            )
-          }
-          <QuickTipsBanner />
+                        <ChevronDown
+                          className={`h-5 w-5 text-primary transition-transform duration-200 flex-shrink-0 ${
+                            openItems[item.id || index] ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                      {openItems[item.id || index] && (
+                        <div className="px-6 pb-4">
+                          <div className="p-6 bg-white rounded">
+                            <p className="text-primary leading-relaxed">
+                              {item?.answer}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <NoDataFound text="No Questions Found" />
+              )}
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
+
+      <AccommodationsHome />
     </>
   );
 }

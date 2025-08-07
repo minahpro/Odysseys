@@ -246,12 +246,12 @@ export default function Navigation() {
                                     </p>
                                     <div className="flex items-center justify-between">
                                       {dropdownItem.price && (
-                                        <span className="text-secondary font-semibold text-sm">
+                                        <span className="text-secondary font-bold text-sm">
                                           {dropdownItem.price}
                                         </span>
                                       )}
                                       {dropdownItem.badge && (
-                                        <span className="bg-accent text-primary px-2 py-1 rounded-full text-xs font-medium">
+                                        <span className="bg-accent text-primary px-2 py-1 rounded-full text-xs font-bold">
                                           {dropdownItem.badge}
                                         </span>
                                       )}

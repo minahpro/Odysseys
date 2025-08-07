@@ -1,16 +1,18 @@
 // pages/Blogs.js
 "use client";
+import WildlifeBanner from "@/components/banners/WildlifeBanner";
 import { BlogCardPro } from "@/components/cards";
 import { findItTitle } from "@/components/Functions";
-import TrekkingTours from "@/components/homeComponents/TrekkingHome";
+import ZanzibarTripsHome from "@/components/homeComponents/ZanzibarTrips";
 import { InputField } from "@/components/inputField";
 import { NoDataFound } from "@/components/Loadings/ErrorComp";
-import { PageLoading, TourLoading } from "@/components/Loadings/LoadingComp";
+import { PageLoading } from "@/components/Loadings/LoadingComp";
 import PaginationSet from "@/components/paginationSet";
-import { PlainTitle } from "@/components/texties";
 import TitleHeader from "@/components/titleHeader";
 import useFetchAll from "@/lib/hooks/useFetchAll";
 import useFetchMultipleDocsByFieldNames from "@/lib/hooks/useFetchMultipleDocsByFieldNames";
+import { PenBox } from "lucide-react";
+import moment from "moment";
 import React, { Suspense, useEffect, useState } from "react";
 
 function Blogs() {
@@ -43,7 +45,7 @@ function Blogs() {
 
   // *************** FILTERED BLOGS ***************
   useEffect(() => {
-    let filteredBlogs = blogsData;
+    let filteredBlogs = blogsData || [];
 
     // Filter by category
     if (selectedCategory !== "all") {
@@ -55,97 +57,234 @@ function Blogs() {
     }
     // Filter by search term
     if (searchTerm) {
-      filteredBlogs = filteredBlogs.filter((blog) =>
-        blog?.title?.toLowerCase().includes(searchTerm.toLowerCase())
+      filteredBlogs = filteredBlogs.filter(
+        (blog) =>
+          blog?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          blog?.overview?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     setBlogs(filteredBlogs);
-  });
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [blogsData, selectedCategory, searchTerm, blogCategoriesdata]);
 
   // ************ PAGINATION VARIABLES *************
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = blogs?.slice(firstPostIndex, lastPostIndex);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  // Handle category selection
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
   return (
     <>
       <TitleHeader
         first={"Travel "}
-        last={"Blog."}
-        image={"/images/tourImages/manya.jpg"}
-      />
-      <main className="respons lg:py-20 py-10">
-        {/* Page Introduction */}
-
-        <div className="text-center mb-12">
-          <PlainTitle first={"Stories from"} last={"Tanzania"} />
-          <p className="text-lg text-textcolor max-w-3xl mx-auto mb-8 mt-4">
-            Discover insider tips, travel guides, and inspiring stories from our
-            adventures across Tanzania's most incredible destinations.
-          </p>
-        </div>
-        {/* Search and Categories */}
-        <div className="mb-12 flex justify-between md:flex-nowrap flex-wrap items-center gap-6">
-          <InputField
-            placeholder="Search articles..."
-            name="search"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-            }}
-            className="w-96"
-          />
-
-          {/* Category Filter */}
-          <div className="flex sm:flex-nowrap flex-wrap justify-center gap-3">
-            {blogCategories?.map((category, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedCategory(category?.title)}
-                className={`px-6 py-2 rounded-full capitalize font-medium transition-all duration-300 ${
-                  selectedCategory === category?.title
-                    ? "bg-primary"
-                    : "bg-highlight/40 text-textcolor hover:bg-highlight border border-gray-800"
-                }`}
-              >
-                {category?.title}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* blogs */}
-        {
-          // loading
-          isLoading || isFetchingBlogCategories ? (
-            <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {[...Array(6)].map((_, i) => (
-                <TourLoading key={i} />
-              ))}
-            </div>
-          ) : currentPosts?.length > 0 ? (
-            <div className="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {currentPosts?.map((item, index) => (
-                <BlogCardPro item={item} key={index} />
-              ))}
-            </div>
-          ) : (
-            <NoDataFound text="No Blog Post Found" />
-          )
+        last={"News."}
+        image={"/images/bg/7.png"}
+        sub={
+          " Discover insider tips, travel guides, and inspiring stories from our  adventures across Tanzania's most incredible destinations."
         }
-        {/* Paginations */}
-        {blogs?.length > postsPerPage && (
-          <div className="mt-12">
-            <PaginationSet
-              totalPosts={blogs?.length}
-              postsPerPage={postsPerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
-            />
+      />
+
+      <section className="sm:py-28 py-10 bg-accent/40">
+        <div className="respons flex-all flex-col">
+          <span
+            data-aos="fade-up"
+            className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
+          >
+            <PenBox />
+          </span>
+          <h2
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="md:text-4xl text-3xl text-secondary font-jua mb-4"
+          >
+            All About Tanzania
+          </h2>
+
+          <div className="grid w-full grid-cols-12 mt-12 gap-6">
+            {/* Sidebar with Search and Categories */}
+            <div
+              data-aos="fade-right"
+              className="col-span-12 lg:col-span-3 space-y-6"
+            >
+              {/* Search Section */}
+              <div className="bg-white border border-secondary/20 rounded-xl p-6">
+                <h3 className="font-bold text-primary mb-4">Search Blogs</h3>
+                <InputField
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="!border-accent/30"
+                />
+              </div>
+
+              {/* Categories Section */}
+              <div className="bg-white rounded-xl p-6 border border-secondary/20">
+                <h3 className="font-bold text-primary mb-4">Categories</h3>
+                <div className="space-y-2">
+                  {isFetchingBlogCategories ? (
+                    <div className="space-y-2">
+                      {[...Array(5)].map((_, index) => (
+                        <div
+                          key={index}
+                          className="h-10 bg-accent/20 rounded animate-pulse"
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    blogCategories.map((category, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleCategoryChange(category.title)}
+                        className={`${
+                          selectedCategory === category.title
+                            ? "bg-primary text-accent"
+                            : "bg-accent/15 text-primary hover:bg-accent/25"
+                        } border text-start border-accent/30 text-sm font-bold w-full py-3 rounded transitions capitalize`}
+                      >
+                        {category.title}
+                        {category.title !== "all" && (
+                          <span className="ml-2 text-xs opacity-70">
+                            (
+                            {blogsData?.filter(
+                              (blog) =>
+                                blog?.category ===
+                                findItTitle({
+                                  data: blogCategoriesdata,
+                                  title: category.title,
+                                })
+                            ).length || 0}
+                            )
+                          </span>
+                        )}
+                        {category.title === "all" && (
+                          <span className="ml-2 text-xs opacity-70">
+                            ({blogsData?.length || 0})
+                          </span>
+                        )}
+                      </button>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Main Content Area */}
+            <div className="col-span-12 lg:col-span-9">
+              {/* Results Header */}
+              <div className="bg-secondary rounded p-6 mb-6 border border-secondary/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      {selectedCategory === "all"
+                        ? "All Blogs"
+                        : selectedCategory}
+                    </h3>
+                    <p className="text-accent text-sm">
+                      {blogs.length} {blogs.length === 1 ? "blog" : "blogs"}{" "}
+                      found
+                      {searchTerm && ` for "${searchTerm}"`}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="text-sm bg-accent py-2 px-4 font-bold text-primary hover:text-secondary transition-colors"
+                  >
+                    Clear search
+                  </button>
+                </div>
+              </div>
+
+              {/* Blog Grid */}
+              {isLoading ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {[...Array(6)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-2xl p-6 shadow-sm animate-pulse"
+                    >
+                      <div className="h-48 bg-accent/20 rounded-xl mb-6" />
+                      <div className="space-y-4">
+                        <div className="flex justify-between">
+                          <div className="h-4 bg-accent/20 rounded w-20" />
+                          <div className="h-4 bg-accent/20 rounded w-16" />
+                        </div>
+                        <div className="h-6 bg-accent/20 rounded w-3/4" />
+                        <div className="space-y-2">
+                          <div className="h-4 bg-accent/20 rounded" />
+                          <div className="h-4 bg-accent/20 rounded w-5/6" />
+                        </div>
+                        <div className="h-8 bg-accent/20 rounded w-24" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : blogs.length === 0 ? (
+                <NoDataFound
+                  message={
+                    searchTerm
+                      ? `No blogs found for "${searchTerm}"`
+                      : selectedCategory === "all"
+                        ? "No blogs available"
+                        : `No blogs found in "${selectedCategory}" category`
+                  }
+                />
+              ) : (
+                <>
+                  <div
+                    data-aos="fade-up"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                  >
+                    {currentPosts?.map((blog, index) => (
+                      <div
+                        key={blog.id || index}
+                        data-aos="fade-up"
+                        data-aos-delay={index * 100}
+                      >
+                        <BlogCardPro
+                          item={{
+                            ...blog,
+                            category: blogCategoriesdata?.find(
+                              (cat) => cat?.id === blog?.category
+                            )?.title,
+                            date: moment(
+                              blog?.createdAt?.seconds * 1000
+                            ).format("ll"),
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pagination */}
+                  {blogs?.length > postsPerPage && (
+                    <div className="mt-12">
+                      <PaginationSet
+                        totalPosts={blogs?.length}
+                        postsPerPage={postsPerPage}
+                        setCurrentPage={setCurrentPage}
+                        currentPage={currentPage}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        )}
-      </main>
-      <TrekkingTours />
+        </div>
+      </section>
+      <WildlifeBanner />
+      <ZanzibarTripsHome />
     </>
   );
 }

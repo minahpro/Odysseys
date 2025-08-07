@@ -35,7 +35,7 @@ export default function PaginationSet({
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
       // scroll to top of the page
-      window.scrollTo({ top: 400, behavior: "smooth" });
+      window.scrollTo({ top: 600, behavior: "smooth" });
     }
   };
 
@@ -43,9 +43,20 @@ export default function PaginationSet({
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
       // scroll to top of the page
-      window.scrollTo({ top: 400, behavior: "smooth" });
+      window.scrollTo({ top: 600, behavior: "smooth" });
     }
   };
+
+  // Consistent button styles
+  const baseButtonStyles =
+    "transition-all duration-200 cursor-pointer border rounded-lg px-3 py-2 text-sm font-medium hover:shadow-md hover:scale-105 transform";
+  const activeButtonStyles =
+    "bg-primary text-accent hover:bg-secondary hover:text-white border-primary/10 shadow-lg scale-105";
+
+  const inactiveButtonStyles =
+    "bg-white text-primary border-accent/30 hover:bg-accent/20 hover:border-secondary";
+  const disabledButtonStyles =
+    "opacity-50 cursor-not-allowed bg-accent/10 border-accent/30 text-primary/50";
 
   // Function to render page numbers with ellipsis
   const renderPages = () => {
@@ -53,18 +64,12 @@ export default function PaginationSet({
       <PaginationItem key={idx}>
         <PaginationLink
           onClick={() => {
-            setCurrentPage(page); // scroll to top of the page
-            window.scrollTo({ top: 400, behavior: "smooth" });
+            setCurrentPage(page);
+            window.scrollTo({ top: 600, behavior: "smooth" });
           }}
-          className={`
-            transition-all duration-200 cursor-pointer border rounded-lg px-3 py-2 text-sm font-medium
-            hover:shadow-md hover:scale-105 transform
-            ${
-              currentPage === page
-                ? "bg-primary text-white border-primary shadow-lg scale-105"
-                : "bg-white text-textcolor border-accent hover:bg-accent hover:border-primary"
-            }
-          `}
+          className={`${baseButtonStyles} ${
+            currentPage === page ? activeButtonStyles : inactiveButtonStyles
+          }`}
         >
           {page}
         </PaginationLink>
@@ -77,10 +82,10 @@ export default function PaginationSet({
         <PaginationItem key="ellipsis-start">
           <PaginationEllipsis
             onClick={() => {
-              setCurrentPage(activePages[0] - 1); // scroll to top of the page
-              window.scrollTo({ top: 400, behavior: "smooth" });
+              setCurrentPage(activePages[0] - 1);
+              window.scrollTo({ top: 600, behavior: "smooth" });
             }}
-            className="cursor-pointer px-3 py-2 text-sm transition-colors duration-200 text-secondary hover:bg-accent rounded-lg"
+            className="cursor-pointer px-3 py-2 text-sm transition-all duration-200 text-primary hover:bg-accent/20 rounded-lg hover:scale-105"
           />
         </PaginationItem>
       );
@@ -92,10 +97,10 @@ export default function PaginationSet({
         <PaginationItem key="page-1">
           <PaginationLink
             onClick={() => {
-              setCurrentPage(1); // scroll to top of the page
-              window.scrollTo({ top: 400, behavior: "smooth" });
+              setCurrentPage(1);
+              window.scrollTo({ top: 600, behavior: "smooth" });
             }}
-            className="transition-all duration-200 cursor-pointer border rounded-lg px-3 py-2 text-sm font-medium bg-white border-accent text-textcolor hover:bg-accent hover:border-primary hover:shadow-md hover:scale-105 transform"
+            className={`${baseButtonStyles} ${inactiveButtonStyles}`}
           >
             1
           </PaginationLink>
@@ -110,10 +115,9 @@ export default function PaginationSet({
           <PaginationEllipsis
             onClick={() => {
               setCurrentPage(activePages[activePages.length - 1] + 1);
-              // scroll to top of the page
-              window.scrollTo({ top: 400, behavior: "smooth" });
+              window.scrollTo({ top: 600, behavior: "smooth" });
             }}
-            className="cursor-pointer px-3 py-2 text-sm transition-colors duration-200 text-secondary hover:bg-accent rounded-lg"
+            className="cursor-pointer px-3 py-2 text-sm transition-all duration-200 text-primary hover:bg-accent/20 rounded-lg hover:scale-105"
           />
         </PaginationItem>
       );
@@ -125,10 +129,10 @@ export default function PaginationSet({
         <PaginationItem key={`page-${totalPages}`}>
           <PaginationLink
             onClick={() => {
-              setCurrentPage(totalPages); // scroll to top of the page
-              window.scrollTo({ top: 400, behavior: "smooth" });
+              setCurrentPage(totalPages);
+              window.scrollTo({ top: 600, behavior: "smooth" });
             }}
-            className="transition-all duration-200 cursor-pointer border rounded-lg px-3 py-2 text-sm font-medium bg-white border-accent text-textcolor hover:bg-accent hover:border-primary hover:shadow-md hover:scale-105 transform"
+            className={`${baseButtonStyles} ${inactiveButtonStyles}`}
           >
             {totalPages}
           </PaginationLink>
@@ -139,22 +143,25 @@ export default function PaginationSet({
     return renderedPages;
   };
 
+  // Don't render pagination if there's only one page or no pages
+  if (totalPages <= 1) {
+    return null;
+  }
+
   return (
     <div className="my-8 flex justify-center">
       <div className="inline-flex items-center">
         <Pagination>
-          <PaginationContent className="gap-1 flex-wrap">
+          <PaginationContent className="gap-2 flex-wrap">
             <PaginationItem>
               <PaginationPrevious
                 onClick={handlePrevPage}
-                className={`
-                  transition-all duration-200 cursor-pointer border rounded-lg px-4 py-2 text-sm font-medium
-                  ${
-                    currentPage === 1
-                      ? "opacity-50 cursor-not-allowed bg-gray-100 border-accent text-gray-400"
-                      : "bg-white border-accent text-textcolor hover:bg-accent hover:border-primary hover:shadow-md hover:scale-105 transform"
-                  }
-                `}
+                className={`${baseButtonStyles} px-4 ${
+                  currentPage === 1
+                    ? disabledButtonStyles
+                    : inactiveButtonStyles
+                }`}
+                disabled={currentPage === 1}
               />
             </PaginationItem>
 
@@ -163,14 +170,12 @@ export default function PaginationSet({
             <PaginationItem>
               <PaginationNext
                 onClick={handleNextPage}
-                className={`
-                  transition-all duration-200 cursor-pointer border rounded-lg px-4 py-2 text-sm font-medium
-                  ${
-                    currentPage === totalPages
-                      ? "opacity-50 cursor-not-allowed bg-gray-100 border-accent text-gray-400"
-                      : "bg-white border-accent text-textcolor hover:bg-accent hover:border-primary hover:shadow-md hover:scale-105 transform"
-                  }
-                `}
+                className={`${baseButtonStyles} px-4 ${
+                  currentPage === totalPages
+                    ? disabledButtonStyles
+                    : inactiveButtonStyles
+                }`}
+                disabled={currentPage === totalPages}
               />
             </PaginationItem>
           </PaginationContent>

@@ -28,7 +28,7 @@ export const InputField = ({
   return (
     <div className="space-y-2 w-full">
       {label && (
-        <label className="flex items-center gap-2 text-sm font-medium text-primary/50">
+        <label className="flex items-center gap-2 text-sm font-semibold text-primary/70 mb-1">
           {label}
         </label>
       )}
@@ -42,7 +42,7 @@ export const InputField = ({
         required
         value={value}
         pattern={pattern}
-        className={`w-full font-semibold border focus:border-slate-600 text-sm rounded p-3.5 text-white placeholder:font-light placeholder:text-slate-500 bg-highlight/50 border-gray-900 ${className}`}
+        className={`w-full border focus:border-secondary text-sm rounded p-3.5 text-primary placeholder:font-light placeholder:text-primary/70 bg-white/60 border-secondary/60 ${className}`}
       />
 
       {/* {error && <span className="text-red-500 py-1">{error.message}</span>} */}
@@ -62,7 +62,7 @@ export const TextareaField = ({
   return (
     <div className="space-y-2 w-full">
       {label && (
-        <label className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-3">
+        <label className="flex items-center gap-2 text-sm font-semibold text-primary/70 mb-1">
           {label}
         </label>
       )}
@@ -74,7 +74,7 @@ export const TextareaField = ({
         required
         value={value}
         rows={rows || 4}
-        className={`w-full border focus:border-slate-600 text-sm font-semibold rounded p-3.5 text-white placeholder:font-light placeholder:text-slate-500 bg-highlight/50 border-gray-900 ${className}`}
+        className={`w-full border focus:border-secondary text-sm rounded p-3.5 text-primary placeholder:font-light placeholder:text-primary/70 bg-white/60 border-secondary/60 ${className}`}
       />
 
       {/* {error && <span className="text-red-500 py-1">{error.message}</span>} */}
@@ -99,7 +99,7 @@ export const AccordionFieldComp = ({
         >
           <div className="flex items-center gap-4">
             <Icon className="sm:text-xl text-md text-primary" />
-            <h1 className="sm:text-lg text-gray-300 text-md font-semibold leading-8">
+            <h1 className="sm:text-lg text-primary/70 text-md font-semibold leading-8">
               {title}
             </h1>
           </div>
@@ -115,9 +115,9 @@ export const SimpleAccordionFieldComp = ({ title, children }) => {
     <Accordion type="single" collapsible className="">
       <AccordionItem value={"one"} className={`border-b-0`}>
         <AccordionTrigger
-          className={`border bg-highlight/40 rounded border-slate-800 py-3 px-4 hover:no-underline no-underline`}
+          className={`border bg-white/60 rounded border-secondary/60 py-3 px-4 hover:no-underline no-underline`}
         >
-          <h4 className="text-[15px] text-gray-300 leading-8 font-normal">
+          <h4 className="text-[15px] text-primary/70 leading-8 font-normal">
             {title}
           </h4>
         </AccordionTrigger>
@@ -149,7 +149,7 @@ export const SelectField = ({
   ) : (
     <div>
       {label && (
-        <label className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-3">
+        <label className="flex items-center gap-2 text-sm font-semibold text-primary/70 mb-3">
           {label}
         </label>
       )}
@@ -160,7 +160,7 @@ export const SelectField = ({
           setSelectedItem(value);
         }}
       >
-        <div className="flex text-textcolor overflow-hidden items-center border w-full bg-white/60 border-secondary/50 rounded">
+        <div className="flex text-textcolor overflow-hidden items-center border w-full bg-white/60 border-secondary/60 rounded">
           <span className="w-14 h-12 flex-all bg-bgcolor/40 rounded">
             <Icon className="h-5 w-5 text-primary" />
           </span>
@@ -201,7 +201,7 @@ export const RadioFilter = ({ options, handleChange, isLoading }) => {
             />
             <p
               htmlFor={option?.id}
-              className="text-sm text-textcolor capitalize"
+              className="text-sm text-primary/70 capitalize"
             >
               {option?.label}
             </p>
