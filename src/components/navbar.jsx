@@ -78,19 +78,19 @@ export default function Navigation() {
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
                 <a
-                  href="mailto:info@wildodysseystanzania.com"
+                  href="mailto:info@wild-odysseys.com"
                   className="hover:text-accent transition-colors"
                 >
-                  info@wildodysseystanzania.com
+                  info@wild-odysseys.com
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
                 <a
-                  href="tel:+255123456789"
+                  href="tel:+255753094275"
                   className="hover:text-accent transition-colors"
                 >
-                  +255 123 456 789
+                  +255 753 094 275
                 </a>
               </div>
             </div>
@@ -100,7 +100,7 @@ export default function Navigation() {
               <span className="text-xs text-gray-300">Follow us:</span>
               <div className="flex items-center space-x-3">
                 <a
-                  href="https://facebook.com/wildodysseystanzania"
+                  href="https://facebook.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
@@ -109,7 +109,7 @@ export default function Navigation() {
                   <Facebook className="h-4 w-4" />
                 </a>
                 <a
-                  href="https://instagram.com/wildodysseystanzania"
+                  href="https://instagram.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
@@ -118,7 +118,7 @@ export default function Navigation() {
                   <Instagram className="h-4 w-4" />
                 </a>
                 <a
-                  href="https://twitter.com/wildodysseystz"
+                  href="https://twitter.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
@@ -127,7 +127,7 @@ export default function Navigation() {
                   <Twitter className="h-4 w-4" />
                 </a>
                 <a
-                  href="https://youtube.com/@wildodysseystanzania"
+                  href="https://youtube.com/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
@@ -136,7 +136,7 @@ export default function Navigation() {
                   <Youtube className="h-4 w-4" />
                 </a>
                 <a
-                  href="https://wa.me/255123456789"
+                  href="https://wa.me/255753094275"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-accent transition-colors"
