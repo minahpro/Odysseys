@@ -56,7 +56,7 @@ export function ActionButton({
 }) {
   return (
     <Button
-      className={`bg-primary hover:bg-secondary px-6 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 ${className}`}
+      className={`bg-primary hover:bg-secondary px-6 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${className}`}
       {...props}
     >
       {Icon && <Icon className="mr-2 h-4 w-4" />}

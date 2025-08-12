@@ -45,7 +45,7 @@ function Faqs() {
         last={"Qs"}
         link={{
           text: "Our Destinations",
-          link: "/destinations",
+          href: "/destinations",
         }}
         sub={
           " Find answers to the most common questions about traveling to Tanzania, safari experiences, trekking adventures, and accommodations."

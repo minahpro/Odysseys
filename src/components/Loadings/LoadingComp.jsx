@@ -3,7 +3,7 @@ import { PropagateLoader } from "react-spinners";
 
 const TourLoading = () => {
   return (
-    <div className="w-full md:h-[300px] h-[150px] bg-accent animate-pulse border rounded-lg overflow-hidden border-gray-300"></div>
+    <div className="w-full md:h-[300px] h-[150px] bg-accent animate-pulse border rounded-xl overflow-hidden border-secondary/20"></div>
   );
 };
 
@@ -30,7 +30,7 @@ const FetchCategories = () => {
       {[...Array(3)].map((_, i) => (
         <div
           key={i}
-          className="h-6 w-full rounded bg-highlight animate-pulse"
+          className="h-8 w-full rounded bg-highlight animate-pulse"
         />
       ))}
     </div>
@@ -65,7 +65,7 @@ const PageLoading = () => {
 
 const FaqsLoadingComp = () => {
   return (
-    <div className="w-full rounded p-6 bg-accent animate-pulse border border-gray-300"></div>
+    <div className="w-full rounded p-6 bg-accent animate-pulse border border-secondary/20"></div>
   );
 };
 const PrivacyLoadingComp = () => {

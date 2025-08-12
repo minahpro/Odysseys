@@ -199,7 +199,7 @@ function Page() {
                   </div>
                   <button
                     onClick={handleCustomizeTour}
-                    className="px-8 text-sm py-3 hover:bg-white/80 hover:text-black bg-white/10 border border-primary/30 backdrop-blur-sm transitions text-primary font-bold rounded-lg"
+                    className="px-8 text-sm py-3 hover:bg-white/80 hover:text-black bg-white/10 border border-primary/30 backdrop-blur-sm transitions text-primary font-bold rounded-xl"
                   >
                     Customize This Tour
                   </button>
@@ -377,7 +377,7 @@ function Page() {
                           </div>
                         </div>
 
-                        <div className="bg-highlight/30 rounded-lg p-4 border border-primary/5">
+                        <div className="bg-highlight/30 rounded-xl p-4 border border-primary/5">
                           <h4 className="font-semibold text-white mb-2">
                             Tour Type
                           </h4>
@@ -560,7 +560,7 @@ function Page() {
                         <h3 className="text-xl font-bold text-white">
                           Location & Map
                         </h3>
-                        <div className="h-96 bg-highlight rounded-lg flex items-center justify-center mb-4">
+                        <div className="h-96 bg-highlight rounded-xl flex items-center justify-center mb-4">
                           <MapComp
                             idsData={[
                               ...tour?.itinerary?.map(
@@ -600,7 +600,7 @@ function Page() {
                         <h3 className="text-xl font-bold text-white">
                           Cancellation & Refund Policy
                         </h3>
-                        <div className="bg-primary/5 rounded-lg p-6">
+                        <div className="bg-primary/5 rounded-xl p-6">
                           <ul className="space-y-3">
                             {policiesTour?.map((policy, index) => (
                               <li
@@ -612,7 +612,7 @@ function Page() {
                               </li>
                             ))}
                           </ul>
-                          <div className="mt-4 p-4 bg-primary rounded-lg ">
+                          <div className="mt-4 p-4 bg-primary rounded-xl ">
                             <p className="text-sm font-bold text-black">
                               All cancellations must be made in writing. Refunds
                               will be processed within 14 business days.
@@ -620,7 +620,7 @@ function Page() {
                           </div>
                         </div>
 
-                        <div className="bg-highlight rounded-lg p-4 border border-highlight">
+                        <div className="bg-highlight rounded-xl p-4 border border-highlight">
                           <h4 className="font-semibold text-white mb-2">
                             Important Notes
                           </h4>

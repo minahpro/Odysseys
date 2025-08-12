@@ -143,7 +143,7 @@ function Page() {
                         onClick={() => {
                           setIsGalleryModalOpen(true);
                         }}
-                        className="relative h-40 cursor-pointer rounded-lg overflow-hidden"
+                        className="relative h-40 cursor-pointer rounded-xl overflow-hidden"
                       >
                         <Image
                           src={image || "/placeholder.svg"}
@@ -200,7 +200,7 @@ function Page() {
               </div>
 
               <div className="lg:col-span-1 space-y-8">
-                <div className="bg-highlight/50 rounded-lg border p-6 border-gray-900">
+                <div className="bg-highlight/50 rounded-xl border p-6 border-gray-900">
                   <h3 className="text-lg mb-5 font-jua font-bold text-white">
                     Quick Info
                   </h3>
@@ -236,16 +236,16 @@ function Page() {
                   linkText={"Contact Us"}
                 />
                 {/* map */}
-                <div className="bg-highlight/50 relative rounded-lg border p-6 border-gray-900">
+                <div className="bg-highlight/50 relative rounded-xl border p-6 border-gray-900">
                   <h3 className="text-lg mb-5 font-jua font-bold text-white">
                     Direction
                   </h3>
-                  <div className="w-full h-64 bg-highlight rounded-lg flex items-center justify-center">
+                  <div className="w-full h-64 bg-highlight rounded-xl flex items-center justify-center">
                     <MapComp idsData={[destination?.id]} single={true} />
                   </div>
                 </div>
 
-                <div className="bg-highlight/50 rounded-lg border p-6 border-gray-900">
+                <div className="bg-highlight/50 rounded-xl border p-6 border-gray-900">
                   <h3 className="text-lg mb-5 font-jua font-bold text-white">
                     Activities
                   </h3>

@@ -13,10 +13,12 @@ import React, { Suspense, useState } from "react";
 import { AccommodationCardPro } from "@/components/cards";
 import AccommodationFilter from "@/components/Filters/AccommodationFilter";
 import ListBanner from "@/components/banners/ListBanner";
+import { Home } from "lucide-react";
+import { FiHome } from "react-icons/fi";
+import { GrLocation } from "react-icons/gr";
+import PromoBanner from "@/components/banners/PromoBanner";
 
 function Tours() {
-  const [open, setOpen] = React.useState(false);
-  const [images, setImages] = React.useState([]);
   const searchParams = useSearchParams();
   const [finalAcc, setFinalAcc] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -137,109 +139,181 @@ function Tours() {
       <TitleHeader
         first={"Accommo"}
         last={"dations."}
-        image={"/images/tourImages/epso22.jpg"}
+        image={"/images/bg/16.png"}
+        sub="Our accommodations are designed to provide you with the best possible
+          experience. We have a wide range of accommodations to choose from,
+          including hotels, resorts, and guesthouses."
+        link={{
+          text: "Book Packages",
+          href: "/tours",
+        }}
       />
-      <main className="respons lg:pt-20 lg:pb-20 pt-4 pb-10">
-        <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
-          {/* filters */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="lg:block hidden">
-              <AccommodationFilter />
-            </div>
-            <div className="lg:hidden block">
-              <SimpleAccordionFieldComp
-                allDivClass={"rounded-lg px-6 py-0 border space-y-2 text-sm"}
-                Icon={() => {}}
-                title={"Safaris Filters"}
-              >
-                <div className="py-2">
+      <section className="sm:py-28 py-10 bg-accent/40">
+        <div className="respons flex-all flex-col">
+          <span
+            data-aos="fade-up"
+            className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
+          >
+            <Home />
+          </span>
+          <h2
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="md:text-4xl text-3xl text-secondary font-jua mb-4"
+          >
+            Our Handpicked Accommodations
+          </h2>
+          <div className="max-w-4xl text-center space-y-6">
+            <p
+              className="text-lg text-gray-800 leading-relaxed"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              After thrilling days of exploration, a comfortable and welcoming
+              retreat is essential. Our selection of lodges, tented camps, and
+              resorts are chosen for their quality, service, and ability to
+              enhance your Tanzanian experience, whether you seek luxury,
+              adventure, or a blend of both.
+            </p>
+          </div>
+          <div className="w-full mt-12">
+            <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
+              {/* filters */}
+              <div className="lg:col-span-1 space-y-6">
+                <div className="lg:block hidden">
                   <AccommodationFilter />
                 </div>
-              </SimpleAccordionFieldComp>
-            </div>
-          </div>
-          {/* packages */}
-          {/* Right Section */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="p-3 flex justify-between items-center gap-4 flex-wrap border border-highlight bg-highlight rounded">
-              <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium text-white">
-                  Showing {currentPosts?.length} Accomodations
-                </p>
-              </div>
-
-              <div className="flex items-center space-x-2 text-lg">
-                <button
-                  onClick={clearFilter}
-                  className={`text-white border border-primary transitions py-2 text-sm px-6 rounded flex-all hover:bg-secondary hover:text-black`}
-                >
-                  Clear filter
-                </button>
-              </div>
-            </div>
-
-            {/* show filters */}
-            {filter ? (
-              <p className="text-md text-textcolor">
-                Showing results for:{" "}
-                <span className="text-sm font-semibold">
-                  {categoryFilter && `Type: ${categoryFilter}`}{" "}
-                  {destinationFilter && `Destination: ${destinationFilter}`}{" "}
-                  {levelFilter && `Standard: ${levelFilter}`}
-                  {inOutParkFilter}
-                </span>
-              </p>
-            ) : null}
-
-            {
-              // loading
-              isLoading ||
-              isFetchingAccommodationTypes ||
-              isFetchingAccommodationStandards ? (
-                <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6">
-                  {[...Array(6)].map((_, i) => (
-                    <TourLoading key={i} />
-                  ))}
+                <div className="lg:hidden block">
+                  <SimpleAccordionFieldComp
+                    allDivClass={
+                      "rounded-xl px-6 py-0 border space-y-2 text-sm"
+                    }
+                    Icon={() => {}}
+                    title={"Safaris Filters"}
+                  >
+                    <div className="py-2">
+                      <AccommodationFilter />
+                    </div>
+                  </SimpleAccordionFieldComp>
                 </div>
-              ) : currentPosts?.length > 0 ? (
-                <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6">
-                  {currentPosts?.map((item, index) => (
-                    <AccommodationCardPro
-                      key={index}
-                      item={{
-                        ...item,
-                        category: findIt({
-                          data: accommodationTypes,
-                          id: item?.category,
-                        }),
-                        standard: findIt({
-                          data: accommodationStandards,
-                          id: item?.level,
-                        }),
-                        destination: getDestination(item?.destinationId),
-                      }}
+              </div>
+              {/* Right Section */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Results Header */}
+                <div className="bg-secondary rounded p-6 mb-6 border border-secondary/20">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-bold text-white mb-2">
+                        Showing {currentPosts?.length} Accomodations
+                      </h3>
+                      {filter ? (
+                        <p className="text-accent text-sm">
+                          Showing results for:{" "}
+                          <span className="font-semibold">
+                            {categoryFilter && `Type: ${categoryFilter}`}{" "}
+                            {destinationFilter &&
+                              `Destination: ${destinationFilter}`}{" "}
+                            {levelFilter && `Standard: ${levelFilter}`}
+                            {inOutParkFilter}
+                          </span>
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <button
+                      onClick={clearFilter}
+                      className="text-sm bg-accent py-2 px-4 font-bold text-primary hover:text-secondary transition-colors"
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                </div>
+                {
+                  // loading
+                  isLoading ||
+                  isFetchingAccommodationTypes ||
+                  isFetchingAccommodationStandards ? (
+                    <div className="space-y-10">
+                      {[...Array(6)].map((_, i) => (
+                        <TourLoading key={i} />
+                      ))}
+                    </div>
+                  ) : currentPosts?.length > 0 ? (
+                    <div className="space-y-10">
+                      {currentPosts?.map((item, index) => (
+                        <AccommodationCardPro
+                          key={index}
+                          item={{
+                            ...item,
+                            datas: [
+                              {
+                                title:
+                                  findIt({
+                                    data: accommodationTypes,
+                                    id: item?.category,
+                                  }) || "---",
+                                icon: FiHome,
+                              },
+
+                              {
+                                title: item?.isInPark
+                                  ? "In Park"
+                                  : "Out of Park",
+                                icon: GrLocation,
+                              },
+                            ],
+                            rating:
+                              Math.floor(Math.random() * (5 - 3 + 1) + 3) +
+                              ".0",
+                            destination: getDestination(item?.destinationId),
+                          }}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <NoDataFound text="No Accommodation Found" />
+                  )
+                }
+
+                {/* Paginations */}
+                {finalAcc?.length > postsPerPage && (
+                  <div className="mt-12">
+                    <PaginationSet
+                      totalPosts={finalAcc?.length}
+                      postsPerPage={postsPerPage}
+                      setCurrentPage={setCurrentPage}
+                      currentPage={currentPage}
                     />
-                  ))}
-                </div>
-              ) : (
-                <NoDataFound text="No Accommodation Found" />
-              )
-            }
-
-            {/* Paginations */}
-            {finalAcc?.length > postsPerPage && (
-              <div className="mt-12">
-                <PaginationSet
-                  totalPosts={finalAcc?.length}
-                  postsPerPage={postsPerPage}
-                  setCurrentPage={setCurrentPage}
-                  currentPage={currentPage}
-                />
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
         </div>
-      </main>
+      </section>
+      <PromoBanner
+        title="Beyond the Big Five"
+        subtitle="Discover hidden gems and unique experiences that go beyond the typical safari."
+        imageSrc="/images/bg/3.png"
+        contentList={[
+          {
+            icon: "Leaf",
+            text: "Walking safaris for an intimate bush experience",
+          },
+          {
+            icon: "Sun",
+            text: "Hot air balloon rides over the Serengeti at dawn",
+          },
+          {
+            icon: "Users",
+            text: "Authentic cultural visits to Maasai villages",
+          },
+          { icon: "Compass", text: "Birdwatching in diverse ecosystems" },
+        ]}
+        buttonText="Explore Unique Experiences"
+        buttonLink="/tours"
+        bgColor="bg-secondary"
+      />
       <ListBanner />
     </>
   );

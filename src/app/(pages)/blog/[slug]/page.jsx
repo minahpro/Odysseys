@@ -101,14 +101,16 @@ export default function BlogDetailsPage() {
                   >
                     {blogData?.title}
                   </h2>
-                  {blogData?.tags?.slice(0, 3).map((tag, index) => (
-                    <span
-                      key={index}
-                      className="border-secondary/30 bg-accent border text-primary text-sm py-1 px-4 rounded-full"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
+                  <div className="flex-all flex-wrap gap-4">
+                    {blogData?.tags?.slice(0, 3).map((tag, index) => (
+                      <span
+                        key={index}
+                        className="border-secondary/30 bg-accent border text-primary text-xs font-semibold py-1 px-3 rounded-full"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>
@@ -138,6 +140,7 @@ export default function BlogDetailsPage() {
                     <span>{blogData?.category || "---"}</span>
                   </div>
                 </div>
+
                 <PrimaryButton className="bg-secondary py-4 text-sm text-white hover:bg-primary hover:text-accent">
                   Book Tour With Us
                 </PrimaryButton>

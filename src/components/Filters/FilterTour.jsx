@@ -23,7 +23,7 @@ function FilterTour({ passingDatas }) {
   const { availableTours, clearFilter, valuePrice, setCurrentPage } =
     passingDatas;
   const sharedClassBox =
-    "border border-highlight/40 text-white bg-highlight/40 rounded-xl shadow-[0_0px_40px_-8px_rgba(0,0,0,0.1)] sm:p-10 p-6 space-y-4";
+    "w-full mb-6 text-sm border border-secondary/10 font-bold bg-accent text-primary py-4 px-6 rounded";
 
   // *************** STATES ******************
   const [filterOptions, setFilterOptions] = React.useState({
@@ -42,7 +42,7 @@ function FilterTour({ passingDatas }) {
 
   // *************** FETCHING DATA ******************
 
-  const { fetchedDestinations, isLoading, allFetchedTours } = useAppContext();
+  const { fetchedDestinations, isLoading } = useAppContext();
   const { data: tourTags, isLoading: isFetchingTourTags } =
     useFetchAll("tour-tags");
   const { data: tourStandards, isLoading: isFetchingTourStandards } =
@@ -51,9 +51,6 @@ function FilterTour({ passingDatas }) {
     useFetchAll("tour-categories");
   const { data: tourTypes, isLoading: isFetchingTourTypes } =
     useFetchAll("tour-types");
-
-  // ****************** GET FEATURED TOURS ******************* //
-  const tours = allFetchedTours?.filter((item) => item?.isFeatured);
 
   // *************** GET TOUR COUNTS ON FILTERS ******************
   const getTourCount = ({ type, id }) => {
@@ -120,9 +117,11 @@ function FilterTour({ passingDatas }) {
   };
 
   return (
-    <div className="space-y-8">
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Advanced Search </h1>
+    <div className="space-y-8 bg-white border border-secondary/10 p-10 rounded-xl">
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Advanced Search </h1>
+        </div>
         <div className="space-y-5">
           <SelectField
             isLoading={isFetchingTourTypes}
@@ -183,16 +182,10 @@ function FilterTour({ passingDatas }) {
         </div>
       </div>
 
-      <SideBanner4
-        title="Quick Safari Escape"
-        sub="Whether you have a single day or a few days, these trips are designed to showcase the best of Tanzania’s natural beauty and cultural heritage. "
-        link="/tours/day-trips"
-        image={"/images/tourImages/ngoro.jpg"}
-        Icon={Sun}
-        smallSub={"1 Day"}
-      />
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Filter by Price</h1>
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Filter by Price</h1>
+        </div>
         <div className="space-y-5">
           <TourPriceFilterPro
             handleChanges={handlePriceRangeChange}
@@ -200,8 +193,10 @@ function FilterTour({ passingDatas }) {
           />
         </div>
       </div>
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Duration</h1>
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Duration</h1>
+        </div>
         <div className="space-y-5">
           <RadioFilter
             options={[
@@ -214,8 +209,12 @@ function FilterTour({ passingDatas }) {
           />
         </div>
       </div>
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Group Size</h1>
+
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Group Size</h1>
+        </div>
+
         <div className="space-y-5">
           <RadioFilter
             options={removeZeroCounts({
@@ -228,8 +227,12 @@ function FilterTour({ passingDatas }) {
           />
         </div>
       </div>
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Tour Standard</h1>
+
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Tour Standard</h1>
+        </div>
+
         <div className="space-y-5">
           <RadioFilter
             options={removeZeroCounts({
@@ -242,8 +245,11 @@ function FilterTour({ passingDatas }) {
           />
         </div>
       </div>
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Tags</h1>
+
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Tags</h1>
+        </div>
         <div className="space-y-5">
           <TagsFilter
             handleChange={(value) => handleChange(value, { name: "tag" })}
@@ -253,15 +259,6 @@ function FilterTour({ passingDatas }) {
           />
         </div>
       </div>
-      <SideBanner3
-        title={"Under the Stars"}
-        sub={
-          "Authentic camping experiences with crackling campfires and endless skies"
-        }
-        link="/accommodations"
-        linkText={"View Accommodations"}
-        Icon={Home}
-      />
     </div>
   );
 }

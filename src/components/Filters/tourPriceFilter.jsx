@@ -11,7 +11,7 @@ const TourPriceFilterPro = ({ handleChanges, valuePrice }) => {
   };
   return (
     <div className="w-full flex-all flex-col gap-4">
-      <p className="text-textcolor text-xs font-medium">
+      <p className="text-primary text-xs font-medium">
         From ${values[0]} - ${values[1]}
       </p>
       <Slider
@@ -28,7 +28,7 @@ const TourPriceFilterPro = ({ handleChanges, valuePrice }) => {
         tooltipValueFormatOptions={{ style: "currency", currency: "USD" }}
         className={{
           base: "slider-class",
-          filler: "bg-primary",
+          filler: "bg-white",
         }}
       />
     </div>

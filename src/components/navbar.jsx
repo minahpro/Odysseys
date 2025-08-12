@@ -222,7 +222,7 @@ export default function Navigation() {
                               >
                                 <div className="flex items-start space-x-4">
                                   {/* Image */}
-                                  <div className="relative w-20 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                  <div className="relative w-20 h-16 rounded-xl overflow-hidden flex-shrink-0">
                                     <Image
                                       src={
                                         dropdownItem.image || "/placeholder.svg"
@@ -318,7 +318,7 @@ export default function Navigation() {
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
-                                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-highlight transition-colors"
+                                className="flex items-center space-x-3 p-3 rounded-xl hover:bg-highlight transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 <div className="relative w-12 h-10 rounded-md overflow-hidden flex-shrink-0">

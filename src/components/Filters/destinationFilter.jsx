@@ -4,11 +4,7 @@ import { useAppContext } from "@/context/AppContext";
 import { useSearchParams } from "next/navigation";
 import { InputField, RadioFilter } from "../inputField";
 import { removeZeroCounts } from "../Functions";
-import {
-  SideBanner1,
-  SideBanner2,
-  SideBanner3,
-} from "../banners/SidebarBanners";
+import { PrimaryButton } from "../buttons";
 
 function DestinationsFilter({ clearFilter, setCurrentPage }) {
   // *************** STATES ***************
@@ -16,7 +12,7 @@ function DestinationsFilter({ clearFilter, setCurrentPage }) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const sharedClassBox =
-    "border border-highlight/40 text-white bg-highlight/40 rounded-xl shadow-[0_0px_40px_-8px_rgba(0,0,0,0.1)] sm:p-10 p-6 space-y-4";
+    "w-full mb-6 text-sm border border-secondary/10 font-bold bg-accent text-primary py-4 px-6 rounded";
 
   // ************** FETCHING DATA **************
   const { data: destinationTypes, isLoading: isFetchingOptions } =
@@ -76,29 +72,26 @@ function DestinationsFilter({ clearFilter, setCurrentPage }) {
   });
 
   return (
-    <div className="space-y-8">
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Advanced Search </h1>
-        <InputField
-          type="text"
-          placeholder="Enter Destination Name"
-          name="destinationName"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          className={"w-full"}
-        />
-        <button
-          onClick={filterByName}
-          className="w-full font-semibold rounded-full py-3 bg-primary text-black hover:shadow"
-        >
-          Search
-        </button>
-      </div>
-
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Categories </h1>
+    <div className="space-y-8 bg-white border border-secondary/10 p-10 rounded-xl">
+      <div>
+        <div className={sharedClassBox}>
+          <h1 className="text-md font-semibold">Advanced Search </h1>
+        </div>
         <div className="space-y-5">
+          <InputField
+            type="text"
+            placeholder="Enter Destination Name"
+            name="destinationName"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            className={"w-full"}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                filterByName();
+              }
+            }}
+          />
           <RadioFilter
             options={removeZeroCounts({
               datas: allDestTypes,
@@ -111,25 +104,9 @@ function DestinationsFilter({ clearFilter, setCurrentPage }) {
         </div>
       </div>
 
-      <button
-        onClick={clearFilter}
-        className="w-full font-semibold text-primary"
-      >
+      <PrimaryButton onClick={clearFilter} className="w-full text-sm">
         Clear Filter
-      </button>
-      <SideBanner2
-        title="Kilimanjaro Summit"
-        sub="Conquer Africa's highest peak - 5,895m of pure determination"
-        link="/tours/climbing-trips"
-        linkText="Climbing Trips"
-      />
-      <SideBanner1
-        title="What to expect"
-        sub="In Tanzania, the allure of spotting the 'Big Five' lions, leopards, buffaloes, rhinos, and elephants—draws many to its safaris."
-        link="/plan-your-safari"
-        linkText="Plan Your Safari"
-        smallSub={"Now"}
-      />
+      </PrimaryButton>
     </div>
   );
 }

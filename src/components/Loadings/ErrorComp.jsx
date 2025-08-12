@@ -12,7 +12,7 @@ const InlineError = ({ error }) => {
   return (
     error && (
       <div
-        className={`flex items-center p-4 rounded-lg ${
+        className={`flex items-center p-4 rounded-xl ${
           error.type === "success"
             ? "bg-green-600/10 border border-green-600/40"
             : "bg-red-600/10 border border-red-600/40"

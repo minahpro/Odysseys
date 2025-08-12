@@ -149,7 +149,7 @@ function Blogs() {
                           selectedCategory === category.title
                             ? "bg-primary text-accent"
                             : "bg-accent/15 text-primary hover:bg-accent/25"
-                        } border text-start border-accent/30 text-sm font-bold w-full py-3 rounded transitions capitalize`}
+                        } border text-start border-accent/30 text-sm font-bold w-full py-3 px-4 rounded transitions capitalize`}
                       >
                         {category.title}
                         {category.title !== "all" && (

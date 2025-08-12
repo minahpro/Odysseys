@@ -1,6 +1,7 @@
 // pages/tours.js
 "use client";
 import AdventureBanner from "@/components/banners/AdventureBanner";
+import PromoBanner from "@/components/banners/PromoBanner";
 import TrekkingBanner from "@/components/banners/TrekkingBanner";
 import { TourCardPro } from "@/components/cards";
 import FilterTour from "@/components/Filters/FilterTour";
@@ -188,142 +189,186 @@ function Tours() {
         first={"Safari "}
         last={"Packages."}
         image={"/images/tourImages/epso55.jpg"}
+        sub={
+          "Ready to embark on your Tanzania adventure? Get in touch with our expert travel consultants who will help you create the perfect itinerary tailored to your interests and budget."
+        }
+        link={{
+          href: "/contact",
+          text: "Plan Your Adventure",
+        }}
       />
-      <main className="respons lg:pt-20 lg:pb-20 pt-4 pb-10">
-        <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
-          {/* filters */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="lg:block hidden">
-              <FilterTour
-                passingDatas={{
-                  availableTours,
-                  setCurrentPage,
-                  clearFilter,
-                  valuePrice: {
-                    values,
-                    min,
-                    max,
-                    setValues,
-                  },
-                }}
-              />
-            </div>
-            <div className="lg:hidden block">
-              <SimpleAccordionFieldComp
-                allDivClass={"rounded-lg px-6 py-0 border space-y-2 text-sm"}
-                Icon={() => {}}
-                title={"Safaris Filters"}
-              >
-                <div className="py-2">
-                  <FilterTour
-                    passingDatas={{
-                      availableTours,
-                      clearFilter,
-                      setCurrentPage,
-                      valuePrice: {
-                        values,
-                        min,
-                        max,
-                        setValues,
-                      },
-                    }}
-                  />
-                </div>
-              </SimpleAccordionFieldComp>
-            </div>
-          </div>
-          {/* packages */}
-          {/* Right Section */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="p-3 flex justify-between items-center gap-4 flex-wrap border border-highlight bg-highlight rounded">
-              <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium text-white">
-                  ({finalTours?.length}) Tour
-                  {finalTours?.length === 1 ? "" : "s"} Found
-                </p>
+      <section className="sm:py-28 py-10 bg-accent/40">
+        <div className="respons flex-all flex-col">
+          <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
+            {/* filters */}
+            <div className="lg:col-span-1 space-y-6">
+              <div className="lg:block hidden">
+                <FilterTour
+                  passingDatas={{
+                    availableTours,
+                    setCurrentPage,
+                    clearFilter,
+                    valuePrice: {
+                      values,
+                      min,
+                      max,
+                      setValues,
+                    },
+                  }}
+                />
               </div>
-
-              <div className="flex items-center space-x-2 text-lg">
-                <button
-                  onClick={clearFilter}
-                  className={`text-white border border-primary transitions py-2 text-sm px-6 rounded flex-all hover:bg-secondary hover:text-black`}
+              <div className="lg:hidden block">
+                <SimpleAccordionFieldComp
+                  allDivClass={"rounded-xl px-6 py-0 border space-y-2 text-sm"}
+                  Icon={() => {}}
+                  title={"Safaris Filters"}
                 >
-                  Clear filter
-                </button>
-              </div>
-            </div>
-
-            {/* show filters */}
-            {filter ? (
-              <p className="text-md text-textcolor">
-                Showing results for:{" "}
-                <span className="text-sm font-semibold">
-                  {categoryFilter && `Category: ${categoryFilter}`}{" "}
-                  {typeFilter && `Type: ${typeFilter}`}{" "}
-                  {destinationFilter && `Destination: ${destinationFilter}`}{" "}
-                  {standardFilter && `Standard: ${standardFilter}`}{" "}
-                  {tagFilter && `Tag: ${tagFilter}`}
-                  {durationFilter && `Duration: ${durationFilter} days`}
-                  {sortFilter && `Sort: ${sortFilter} packages`}
-                  {filterByFilter && `Filtered By: ${filterByFilter} packages`}
-                </span>
-                {
-                  // price filter
-                  priceFilter && (
-                    <span className="text-sm font-semibold">
-                      {" "}
-                      Price: ${minPrice} - ${maxPrice}
-                    </span>
-                  )
-                }
-              </p>
-            ) : null}
-
-            {
-              // loading
-              isLoading ||
-              isFetchingTourCategories ||
-              isFetchingTourTypes ||
-              isFetchingTourTags ||
-              isFetchingTourStandards ? (
-                <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6">
-                  {[...Array(6)].map((_, i) => (
-                    <TourLoading key={i} />
-                  ))}
-                </div>
-              ) : currentPosts?.length > 0 ? (
-                <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6">
-                  {currentPosts?.map((tour, index) => (
-                    <TourCardPro
-                      key={index}
-                      tour={{
-                        ...tour,
-                        prices: tour?.price?.foreigner?.adult?.highSeason,
-                        category: tourCategories?.find(
-                          (cat) => cat?.id === tour?.category
-                        )?.title, // get category title
+                  <div className="py-2">
+                    <FilterTour
+                      passingDatas={{
+                        availableTours,
+                        clearFilter,
+                        setCurrentPage,
+                        valuePrice: {
+                          values,
+                          min,
+                          max,
+                          setValues,
+                        },
                       }}
                     />
-                  ))}
-                </div>
-              ) : (
-                <NoDataFound text="No Tours Found" />
-              )
-            }
+                  </div>
+                </SimpleAccordionFieldComp>
+              </div>
+            </div>
+            {/* packages */}
 
-            {/* Paginations */}
-            {finalTours?.length > postsPerPage && (
-              <PaginationSet
-                totalPosts={finalTours?.length}
-                postsPerPage={postsPerPage}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-              />
-            )}
+            {/* Right Section */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Results Header */}
+              <div className="bg-secondary rounded p-6 mb-6 border border-secondary/20">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-white mb-2">
+                      ({finalTours?.length}) Tour
+                      {finalTours?.length === 1 ? "" : "s"} Found
+                    </h3>
+
+                    {/* show filters */}
+                    {filter ? (
+                      <p className="text-accent text-sm">
+                        Showing results for:{" "}
+                        <span className="font-semibold">
+                          {categoryFilter && `Category: ${categoryFilter}`}{" "}
+                          {typeFilter && `Type: ${typeFilter}`}{" "}
+                          {destinationFilter &&
+                            `Destination: ${destinationFilter}`}{" "}
+                          {standardFilter && `Standard: ${standardFilter}`}{" "}
+                          {tagFilter && `Tag: ${tagFilter}`}
+                          {durationFilter && `Duration: ${durationFilter} days`}
+                          {sortFilter && `Sort: ${sortFilter} packages`}
+                          {filterByFilter &&
+                            `Filtered By: ${filterByFilter} packages`}
+                        </span>
+                        {
+                          // price filter
+                          priceFilter && (
+                            <span className="text-sm font-semibold">
+                              {" "}
+                              Price: ${minPrice} - ${maxPrice}
+                            </span>
+                          )
+                        }
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <button
+                    onClick={clearFilter}
+                    className="text-sm bg-accent py-2 px-4 font-bold text-primary hover:text-secondary transition-colors"
+                  >
+                    Clear search
+                  </button>
+                </div>
+              </div>
+              {
+                // loading
+                isLoading ||
+                isFetchingTourCategories ||
+                isFetchingTourTypes ||
+                isFetchingTourTags ||
+                isFetchingTourStandards ? (
+                  <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6">
+                    {[...Array(6)].map((_, i) => (
+                      <TourLoading key={i} />
+                    ))}
+                  </div>
+                ) : currentPosts?.length > 0 ? (
+                  <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-6">
+                    {currentPosts?.map((tour, index) => (
+                      <TourCardPro
+                        key={index}
+                        tour={{
+                          ...tour,
+                          prices: tour?.price?.foreigner?.adult?.highSeason,
+                          category: tourCategories?.find(
+                            (cat) => cat?.id === tour?.category
+                          )?.title, // get category title
+                        }}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <NoDataFound text="No Tours Found" />
+                )
+              }
+
+              {/* Paginations */}
+              {finalTours?.length > postsPerPage && (
+                <PaginationSet
+                  totalPosts={finalTours?.length}
+                  postsPerPage={postsPerPage}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              )}
+            </div>
           </div>
         </div>
-      </main>
-      <TrekkingBanner />
+      </section>
+      <PromoBanner
+        title="About Our Company"
+        subtitle="Discover our passion for creating unforgettable journeys and our commitment to excellence."
+        imageSrc="/images/bg/9.png"
+        contentList={[
+          {
+            icon: "Settings",
+            text: "Trusted local experts with years of experience",
+          },
+          {
+            icon: "Compass",
+            text: "Passionate about sharing Tanzania's wonders",
+          },
+          {
+            icon: "Users",
+            text: "Personalized service for every traveler",
+          },
+          {
+            icon: "MapPin",
+            text: "Committed to responsible and sustainable tourism",
+          },
+        ]}
+        buttonText="Read About Us"
+        buttonLink="/about"
+        bgColor="bg-secondary"
+        textColor={{
+          title: "text-primary",
+          sub: "text-accent",
+          list: "text-accent",
+          icon: "text-accent",
+        }}
+        reverse={true}
+      />
     </>
   );
 }

@@ -35,7 +35,7 @@ function Galley() {
             heritage."
         link={{
           text: "Read Our Blogs",
-          link: "/blog",
+          href: "/blog",
         }}
       />
       <section className="sm:py-28 py-10 bg-accent/40">

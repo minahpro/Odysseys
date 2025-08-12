@@ -24,6 +24,7 @@ export const InputField = ({
   className,
   pattern,
   value,
+  onKeyDown,
 }) => {
   return (
     <div className="space-y-2 w-full">
@@ -42,6 +43,7 @@ export const InputField = ({
         required
         value={value}
         pattern={pattern}
+        onKeyDown={onKeyDown ? onKeyDown : null}
         className={`w-full border focus:border-secondary text-sm rounded p-3.5 text-primary placeholder:font-light placeholder:text-primary/70 bg-white/60 border-secondary/60 ${className}`}
       />
 
@@ -201,7 +203,7 @@ export const RadioFilter = ({ options, handleChange, isLoading }) => {
             />
             <p
               htmlFor={option?.id}
-              className="text-sm text-primary/70 capitalize"
+              className="text-sm text-primary font-medium capitalize"
             >
               {option?.label}
             </p>

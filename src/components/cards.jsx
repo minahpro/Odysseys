@@ -29,6 +29,7 @@ import { LuHouse } from "react-icons/lu";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { MdAccessTime } from "react-icons/md";
 import { IoPawSharp } from "react-icons/io5";
+import { FaStar } from "react-icons/fa6";
 
 // CARDS I USE ON SITE
 export const DestinationCardProHome = ({ item: destination }) => {
@@ -76,7 +77,7 @@ export const DestinationCardPro = ({ item: destination }) => {
   return (
     <Link
       href={`/destinations/${destination?.slug}`}
-      className="grid grid-cols-6 gap-6 hover:shadow-primary/40 shadow-md items-center py-3 px-3 bg-highlight/50 border border-gray-900 rounded-lg group transitions"
+      className="grid grid-cols-6 gap-6 hover:shadow-primary/40 shadow-md items-center py-3 px-3 bg-highlight/50 border border-gray-900 rounded-xl group transitions"
     >
       <Image
         src={imgSrc || "/placeholder.svg"}
@@ -262,58 +263,61 @@ export const DayTripCardPro = ({ tour }) => {
   );
 };
 
-export const AccommodationCardPro = ({ item: accommodation }) => {
+export const AccommodationCardPro = ({ item }) => {
   return (
-    <div className="group bg-highlight/50 border border-highlight hover:shadow-2xl transitions overflow-hidden rounded-xl">
-      <div className="relative overflow-hidden">
-        <img
-          src={accommodation?.photos?.length > 0 && accommodation?.photos[0]}
-          alt={accommodation?.name}
-          className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        <div className="absolute -bottom-4 left-0 right-0 top-0 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="w-full px-6 absolute -bottom-80 group-hover:bottom-4 transition-[bottom] duration-500">
-          <div className="w-full p-6 bg-black/30 rounded backdrop-blur-lg space-y-4">
-            <div className="flex items-center gap-2 text-white">
-              <LuHouse className="h-4 w-4 text-primary" />
-              <span className="text-sm capitalize">
-                {accommodation?.category}
-              </span>
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div className="grid lg:grid-cols-2 gap-0">
+        <div className="relative h-64 lg:h-full min-h-[200px]">
+          <Image
+            src={item?.photos[0]}
+            alt={item?.name}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute top-4 left-4 text-xs bg-accent text-primary px-3 py-1.5 rounded font-quicksand font-bold">
+            {item?.destination}
+          </div>
+        </div>
+        <div className="p-4 lg:p-8 border border-secondary/10 flex flex-col justify-center">
+          <div data-aos="fade-left">
+            <h3 className="font-black text-lg text-primary mb-4">
+              {item?.name}
+            </h3>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: item?.overview,
+              }}
+              className=" text-primary line-clamp-2 mb-6 leading-relaxed"
+            />
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              {item?.datas?.map((data, index) => (
+                <div
+                  className="flex-all flex-col p-6 bg-accent/40 rounded gap-3"
+                  key={index}
+                >
+                  <data.icon className="w-5 h-5 text-primary" />
+                  <span className="font-bold capitalize text-sm text-secondary">
+                    {data.title}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center gap-2 text-white">
-              <MapPin className="h-4 w-4 text-primary" />
-              <span className="text-sm">{accommodation?.destination}</span>
-            </div>
-            <div className="flex items-center gap-2 text-white">
-              <Building className="h-4 w-4 text-primary" />
-              <span className="text-sm capitalize">
-                {" "}
-                {accommodation?.standard}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 text-white">
-              {accommodation?.isInPark ? (
-                <TreePine className="h-4 w-4 text-primary" />
-              ) : (
-                <MapPin className="h-4 w-4 text-primary" />
-              )}
-              <span className="text-sm">
-                {accommodation?.isInPark ? "In Park" : "Out Park"}
-              </span>
+            <div className="flex items-center justify-between">
+              <Link href={`/accommodation/${item?.slug}`}>
+                <PrimaryButton>View Details</PrimaryButton>
+              </Link>
+              {/* stars */}
+              <div className="flex items-center gap-1">
+                <FaStar className="w-4 h-4 text-yellow-500" />
+                <span className="font-bold text-sm text-primary">
+                  {/* randomize number from 3-5 with points */}
+                  {item?.rating}
+                </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <Link href={`/accommodations/${accommodation?.slug}`}>
-        <div className="p-6 transition-all">
-          <h3 className="text-xl font-bold text-white mb-5 line-clamp-2">
-            {accommodation?.name}
-          </h3>
-
-          <PrimaryButton className="w-full">View Details</PrimaryButton>
-        </div>
-      </Link>
     </div>
   );
 };
@@ -378,7 +382,7 @@ export const ContactInfoCard = ({ icon: Icon, title, info, description }) => {
 export function GalleryItem({ item, onClick, index }) {
   // Create varied heights for masonry effect
   const getRandomHeight = (index) => {
-    const heights = ['h-48', 'h-56', 'h-64', 'h-72', 'h-80', 'h-60'];
+    const heights = ["h-48", "h-56", "h-64", "h-72", "h-80", "h-60"];
     return heights[index % heights.length];
   };
 
@@ -510,7 +514,7 @@ export const ListCustomBookingCardTour = ({ tour, onSelect }) => {
     },
   ];
   return (
-    <div className="bg-highlight/50 text-white transitions shadow-md hover:shadow-lg  rounded-lg  p-3 border border-gray-800">
+    <div className="bg-highlight/50 text-white transitions shadow-md hover:shadow-lg  rounded-xl  p-3 border border-gray-800">
       {/* image */}
       <Image
         src={tour?.photos[0]}
@@ -561,7 +565,7 @@ export const ListCustomBookingCardTour = ({ tour, onSelect }) => {
 
 export function PromoCard({ image, title, subtitle, buttonText, buttonLink }) {
   return (
-    <div className="relative rounded-lg overflow-hidden p-8 text-white min-h-[250px] md:min-h-[400px] flex flex-col justify-end group">
+    <div className="relative rounded-xl overflow-hidden p-8 text-white min-h-[250px] md:min-h-[400px] flex flex-col justify-end group">
       <Image
         src={image || "/placeholder.svg"}
         alt={title}

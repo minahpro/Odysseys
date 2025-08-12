@@ -190,7 +190,7 @@ function ReadyMadeTour() {
             {/* filter */}{" "}
             <div className="lg:hidden block w-full">
               <SimpleAccordionFieldComp
-                allDivClass={"rounded-lg px-6 py-0 border space-y-2 text-sm"}
+                allDivClass={"rounded-xl px-6 py-0 border space-y-2 text-sm"}
                 Icon={() => {}}
                 title={"Filter options"}
               >

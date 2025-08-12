@@ -4,7 +4,7 @@ import { Title } from "../texties";
 import { useAppContext } from "@/context/AppContext";
 import { DestinationLoading } from "../Loadings/LoadingComp";
 import { NoDataFound } from "../Loadings/ErrorComp";
-import { DestinationCardPro, DestinationCardProHome } from "../cards";
+import { DestinationCardProHome } from "../cards";
 import { MapPin } from "lucide-react";
 
 function FeaturesDestinations() {

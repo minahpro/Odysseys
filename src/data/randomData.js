@@ -237,43 +237,23 @@ export const heroImages = [
 export const routesData = [
   {
     name: "Machame Route",
-    duration: "7 days",
-    difficulty: "Challenging",
-    successRate: "85%",
     description:
       "Known as the 'Whiskey Route', this is the most popular and scenic route to the summit.",
-    pros: ["Most scenic route", "Good acclimatization", "Diverse landscapes"],
-    cons: ["More crowded", "Challenging terrain", "Steep sections"],
   },
   {
     name: "Lemosho Route",
-    duration: "8 days",
-    difficulty: "Moderate",
-    successRate: "90%",
     description:
       "The newest and most beautiful route with excellent acclimatization profile.",
-    pros: ["Highest success rate", "Less crowded", "Beautiful scenery"],
-    cons: ["More expensive", "Longer duration", "Remote start"],
   },
   {
     name: "Marangu Route",
-    duration: "5 days",
-    difficulty: "Easy",
-    successRate: "65%",
     description:
       "The 'Coca-Cola Route' with hut accommodation instead of camping.",
-    pros: ["Hut accommodation", "Shorter duration", "Less expensive"],
-    cons: ["Lower success rate", "Less scenic", "More crowded"],
   },
   {
     name: "Rongai Route",
-    duration: "6 days",
-    difficulty: "Moderate",
-    successRate: "80%",
     description:
       "The only route from the north, offering a unique wilderness experience.",
-    pros: ["Less crowded", "Unique perspective", "Good weather"],
-    cons: ["Less scenic", "Limited water", "Remote location"],
   },
 ];
 

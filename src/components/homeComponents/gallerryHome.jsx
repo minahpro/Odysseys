@@ -107,7 +107,7 @@ export default function GallerySection() {
                 <img
                   src={image.src || "/placeholder.svg"}
                   alt={image.alt}
-                  className="w-full h-24 object-cover rounded-lg cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
+                  className="w-full h-24 object-cover rounded-xl cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
                 />
               </SwiperSlide>
             ))}

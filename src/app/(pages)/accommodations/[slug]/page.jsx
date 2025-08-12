@@ -152,7 +152,7 @@ function Page() {
                         onClick={() => {
                           setIsGalleryModalOpen(true);
                         }}
-                        className="relative h-40 cursor-pointer rounded-lg overflow-hidden"
+                        className="relative h-40 cursor-pointer rounded-xl overflow-hidden"
                       >
                         <Image
                           src={image || "/placeholder.svg"}
@@ -175,7 +175,7 @@ function Page() {
                     {accommodationData?.facilities?.map((amenity, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 hover:bg-highlight/50 transitions group p-3 bg-highlight rounded-lg"
+                        className="flex items-center gap-2 hover:bg-highlight/50 transitions group p-3 bg-highlight rounded-xl"
                       >
                         <div className="w-2 h-2 bg-primary rounded-full"></div>
                         <span className="text-white/60 text-sm">{amenity}</span>
@@ -189,7 +189,7 @@ function Page() {
               <div className="lg:col-span-1 space-y-8">
                 <div
                   data-aos="fade-left"
-                  className="bg-highlight/50 rounded-lg border p-6 border-gray-900"
+                  className="bg-highlight/50 rounded-xl border p-6 border-gray-900"
                 >
                   <h3 className="text-lg mb-5 font-jua font-bold text-white">
                     Quick Info
@@ -240,7 +240,7 @@ function Page() {
 
                 <div
                   data-aos="fade-left"
-                  className="bg-highlight/50 rounded-lg border p-6 border-gray-900"
+                  className="bg-highlight/50 rounded-xl border p-6 border-gray-900"
                 >
                   <h3 className="text-lg mb-5 font-jua font-bold text-white">
                     Activities
@@ -261,16 +261,16 @@ function Page() {
                 {/* map */}
                 <div
                   data-aos="fade-left"
-                  className="bg-highlight/50 rounded-lg border p-6 border-gray-900"
+                  className="bg-highlight/50 rounded-xl border p-6 border-gray-900"
                 >
                   <h3 className="text-lg mb-5 font-jua font-bold text-white">
                     Direction
                   </h3>
-                  <div className="h-40 bg-highlight rounded-lg flex-all">
+                  <div className="h-40 bg-highlight rounded-xl flex-all">
                     {accommodationData?.mapLink ? (
                       <iframe
                         src={accommodationData?.mapLink}
-                        className="w-full h-full rounded-lg"
+                        className="w-full h-full rounded-xl"
                         allowFullScreen=""
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"

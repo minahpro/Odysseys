@@ -37,7 +37,7 @@ function ImagesSingle({ images }) {
         </button>
 
         {/* Image Counter */}
-        <div className="absolute bottom-4 left-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-lg">
+        <div className="absolute bottom-4 left-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-xl">
           <span className="text-white text-sm">
             {currentImage + 1} / {images.length}
           </span>
@@ -50,7 +50,7 @@ function ImagesSingle({ images }) {
           <button
             key={index}
             onClick={() => setCurrentImage(index)}
-            className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+            className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
               currentImage === index ? "border-primary" : "border-transparent"
             }`}
           >

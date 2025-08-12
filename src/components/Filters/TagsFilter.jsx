@@ -3,8 +3,8 @@ import React from "react";
 
 function TagsFilter({ isFetchingTags, tags, selectedTag, handleChange }) {
   const allClass =
-    "p-1 rounded hover:bg-primary transitions text-[13px] font-light hover:text-black px-3";
-  const selectedClass = "bg-primary text-black";
+    "p-1 rounded hover:bg-primary transitions text-[13px] font-light hover:text-accent px-3";
+  const selectedClass = "bg-primary text-accent";
 
   return isFetchingTags ? (
     <FetchTags />
@@ -18,7 +18,7 @@ function TagsFilter({ isFetchingTags, tags, selectedTag, handleChange }) {
           className={`${allClass} ${
             selectedTag === tag.title
               ? selectedClass
-              : "bg-primary/10  text-primary"
+              : "bg-highlight  text-primary"
           }`}
         >
           {tag?.title}

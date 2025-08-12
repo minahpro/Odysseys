@@ -49,7 +49,7 @@ export default function PaginationSet({
 
   // Consistent button styles
   const baseButtonStyles =
-    "transition-all duration-200 cursor-pointer border rounded-lg px-3 py-2 text-sm font-medium hover:shadow-md hover:scale-105 transform";
+    "transition-all duration-200 cursor-pointer border rounded-xl px-3 py-2 text-sm font-medium hover:shadow-md hover:scale-105 transform";
   const activeButtonStyles =
     "bg-primary text-accent hover:bg-secondary hover:text-white border-primary/10 shadow-lg scale-105";
 
@@ -85,7 +85,7 @@ export default function PaginationSet({
               setCurrentPage(activePages[0] - 1);
               window.scrollTo({ top: 600, behavior: "smooth" });
             }}
-            className="cursor-pointer px-3 py-2 text-sm transition-all duration-200 text-primary hover:bg-accent/20 rounded-lg hover:scale-105"
+            className="cursor-pointer px-3 py-2 text-sm transition-all duration-200 text-primary hover:bg-accent/20 rounded-xl hover:scale-105"
           />
         </PaginationItem>
       );
@@ -117,7 +117,7 @@ export default function PaginationSet({
               setCurrentPage(activePages[activePages.length - 1] + 1);
               window.scrollTo({ top: 600, behavior: "smooth" });
             }}
-            className="cursor-pointer px-3 py-2 text-sm transition-all duration-200 text-primary hover:bg-accent/20 rounded-lg hover:scale-105"
+            className="cursor-pointer px-3 py-2 text-sm transition-all duration-200 text-primary hover:bg-accent/20 rounded-xl hover:scale-105"
           />
         </PaginationItem>
       );

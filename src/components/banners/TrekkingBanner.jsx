@@ -33,7 +33,7 @@ function TrekkingBanner() {
           <div className="space-y-4 mb-8">
             <div
               data-aos="fade-right"
-              className="flex items-center gap-4 p-4 rounded-lg bg-primary/10"
+              className="flex items-center gap-4 p-4 rounded-xl bg-primary/10"
             >
               <Heart className="w-6 h-6 text-primary" />
               <div>
@@ -46,7 +46,7 @@ function TrekkingBanner() {
             <div
               data-aos="fade-right"
               data-aos-delay="200"
-              className="flex items-center gap-4 p-4 rounded-lg bg-primary/10"
+              className="flex items-center gap-4 p-4 rounded-xl bg-primary/10"
             >
               <Backpack className="w-6 h-6 text-primary" />
               <div>
@@ -59,7 +59,7 @@ function TrekkingBanner() {
             <div
               data-aos="fade-right"
               data-aos-delay="400"
-              className="flex items-center gap-4 p-4 rounded-lg bg-primary/10"
+              className="flex items-center gap-4 p-4 rounded-xl bg-primary/10"
             >
               <Clock className="w-6 h-6 text-primary" />
               <div>
@@ -92,12 +92,12 @@ function TrekkingBanner() {
           <div className="absolute inset-0 bg-gradient-to-br from-highlight/40 to-black/20"></div>
 
           {/* Floating Stats */}
-          <div className="absolute top-8 left-8 p-4 rounded-lg backdrop-blur-sm bg-highlight/80">
+          <div className="absolute top-8 left-8 p-4 rounded-xl backdrop-blur-sm bg-highlight/80">
             <div className="text-2xl font-bold text-primary">85%</div>
             <div className="text-sm text-white">Success Rate</div>
           </div>
 
-          <div className="absolute bottom-8 right-8 p-4 rounded-lg backdrop-blur-sm bg-highlight/80">
+          <div className="absolute bottom-8 right-8 p-4 rounded-xl backdrop-blur-sm bg-highlight/80">
             <div className="text-2xl font-bold text-primary">7</div>
             <div className="text-sm text-white">Days to Summit</div>
           </div>

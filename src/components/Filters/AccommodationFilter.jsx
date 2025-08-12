@@ -3,16 +3,8 @@ import useFetchAll from "@/lib/hooks/useFetchAll";
 import { useAppContext } from "@/context/AppContext";
 import { useSearchParams } from "next/navigation";
 import { removeZeroCounts } from "../Functions";
-import { Dog, MapPin, Umbrella } from "lucide-react";
+import { Dog, MapPin } from "lucide-react";
 import { RadioFilter, SelectField } from "../inputField";
-import {
-  SideBanner1,
-  SideBanner2,
-  SideBanner3,
-  SideBanner4,
-} from "../banners/SidebarBanners";
-import { MdEmail } from "react-icons/md";
-
 function AccommodationFilter() {
   // ************ STATES ************
   const [filterOptions, setFilterOptions] = React.useState({
@@ -24,7 +16,7 @@ function AccommodationFilter() {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams);
   const sharedClassBox =
-    "border border-highlight/40 text-white bg-highlight/40 rounded-xl shadow-[0_0px_40px_-8px_rgba(0,0,0,0.1)] sm:p-10 p-6 space-y-4";
+    "w-full mb-6 text-sm border border-secondary/10 font-bold bg-accent text-primary py-4 px-6 rounded";
 
   // *************** FETCHING DATA ******************
   const { fetchedAccommodations, fetchedDestinations, isLoading } =
@@ -78,9 +70,11 @@ function AccommodationFilter() {
   };
 
   return (
-    <div className="space-y-8">
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-sm font-semibold">Advanced Search </h1>
+    <div className="space-y-8 bg-white border border-secondary/10 p-10 rounded-xl">
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Advanced Search </h1>
+        </div>
         <div className="space-y-5">
           <SelectField
             Icon={MapPin}
@@ -125,15 +119,10 @@ function AccommodationFilter() {
         </div>
       </div>
 
-      <SideBanner2
-        title="Serengeti Spectacle"
-        sub="Witness the Great Migration across endless golden plains"
-        link="/destinations"
-        linkText="Big Five Territory"
-      />
-
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-sm font-semibold">Type</h1>
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Type</h1>
+        </div>
         <div className="space-y-5">
           <RadioFilter
             options={removeZeroCounts({
@@ -148,8 +137,10 @@ function AccommodationFilter() {
           />
         </div>
       </div>
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-sm font-semibold"> Standard</h1>
+      <div>
+        <div className={sharedClassBox}>
+          <h1>Standard</h1>
+        </div>
         <div className="space-y-5">
           <RadioFilter
             options={removeZeroCounts({
@@ -164,14 +155,6 @@ function AccommodationFilter() {
           />
         </div>
       </div>
-      <SideBanner4
-        title="Spice Island Discovery"
-        sub="Journey through fragrant plantations where cloves, cinnamon, and cardamom have grown for centuries. Discover the spices that once made Zanzibar the center of global trade."
-        link="/tours/zanzibar-trips"
-        image={"/images/gallery/zanzi3.png"}
-        Icon={Umbrella}
-        smallSub={"Aromatic"}
-      />
     </div>
   );
 }

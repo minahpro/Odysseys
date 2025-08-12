@@ -12,7 +12,7 @@ import { FaStar } from "react-icons/fa6";
 function DaysTripFilter({ availableTours }) {
   // *************** PROPS ******************
   const sharedClassBox =
-    "border border-highlight/40 text-white bg-highlight/40 rounded-xl shadow-[0_0px_40px_-8px_rgba(0,0,0,0.1)] sm:p-10 p-6 space-y-4";
+    "w-full mb-6 text-sm border border-secondary/10 font-bold bg-accent text-primary py-4 px-6 rounded";
 
   // *************** STATES ******************
   const [filterOptions, setFilterOptions] = React.useState({
@@ -65,9 +65,11 @@ function DaysTripFilter({ availableTours }) {
   };
 
   return (
-    <div className="space-y-8">
-      <div data-aos="fade-right" className={sharedClassBox}>
+    <div className="space-y-8 bg-white border border-secondary/10 p-10 rounded-xl">
+      <div className={sharedClassBox}>
         <h1 className="text-md font-semibold">Advanced Search </h1>
+      </div>
+      <div className="space-y-5">
         <SelectField
           Icon={MapPin}
           placeholder={"Choose Destination"}
@@ -81,33 +83,13 @@ function DaysTripFilter({ availableTours }) {
             getAmount: getTourCount,
           })}
         />
+        <TagsFilter
+          handleChange={(value) => handleChange(value, { name: "tag" })}
+          isFetchingTags={isFetchingTourTags}
+          tags={tourTags}
+          selectedTag={filterOptions?.tag}
+        />
       </div>
-      <SideBanner3
-        title={"Need Help Choosing?"}
-        sub="Our local experts are here to help you plan the perfect day trip experience."
-        link={"/contact"}
-        linkText="Contact Us"
-        Icon={FaStar}
-      />
-
-      <div data-aos="fade-right" className={sharedClassBox}>
-        <h1 className="text-md font-semibold">Tags</h1>
-        <div className="space-y-5">
-          <TagsFilter
-            handleChange={(value) => handleChange(value, { name: "tag" })}
-            isFetchingTags={isFetchingTourTags}
-            tags={tourTags}
-            selectedTag={filterOptions?.tag}
-          />
-        </div>
-      </div>
-      <SideBanner1
-        title="✨ Plan Your Dream Trip"
-        sub="Create your perfect adventure with our custom trip planner. Your journey, your way!"
-        link="/plan-trip"
-        linkText="Start Planning"
-        smallSub={"Featured"}
-      />
     </div>
   );
 }
