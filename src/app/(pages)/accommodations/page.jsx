@@ -180,7 +180,7 @@ function Tours() {
             <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
               {/* filters */}
               <div className="lg:col-span-1 space-y-6">
-                <div className="lg:block hidden">
+                <div className="lg:block hidden" data-aos="fade-right">
                   <AccommodationFilter />
                 </div>
                 <div className="lg:hidden block">

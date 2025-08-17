@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { PrimaryButton, SecondaryButton } from "./buttons";
+import { MapPin } from "lucide-react";
 
 export const HeaderTitle = ({ first, last, subHeading, className }) => {
   return (
@@ -70,28 +71,32 @@ export const PlainTitle = ({ first, last }) => {
   );
 };
 
-export const SingleHeader = ({ image, title, desc, OnClick, buttonText }) => {
+export const SingleHeader = ({ data }) => {
   return (
-    <section className="relative sm:h-[60vh] h-[50vh]">
-      <Image
-        src={image || "/placeholder.svg"}
-        alt={title || "---"}
-        fill
-        className="object-cover"
-        priority
-      />
-      <div className="absolute inset-0 bg-black/50 flex items-center">
-        <div className="respons space-y-4 text-white" data-aos="fade-right">
-          <h2 className="md:text-3xl text-2xl font-jua font-bold text-white">
-            {title}
-          </h2>
-          <p className="text-md capitalize md:text-lg max-w-2xl font-worksans sm:block hidden">
-            {desc || "---"}
-          </p>
+    <div className="relative h-[90vh] overflow-hidden">
+      <div className="absolute inset-0">
+        <img
+          src={data?.photos[0] || "/placeholder.svg?height=800&width=1200"}
+          alt={data?.title}
+          className="w-full h-full object-cover transitions bg-white"
+        />
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
 
-          <PrimaryButton onClick={OnClick}>{buttonText || "---"}</PrimaryButton>
+      {/* Hero Content */}
+      <div className="absolute inset-0 pt-20">
+        <div className="respons flex-all w-full h-full text-center text-white">
+          <div className="flex-all flex-col">
+            <h1 className="font-jua text-2xl md:text-4xl lg:text-5xl text-white mb-4">
+              {data?.title}
+            </h1>
+
+            <SecondaryButton onClick={data?.button?.onClick}>
+              {data?.button?.text}
+            </SecondaryButton>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };

@@ -1,135 +1,103 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { findItTitle } from "./Functions";
-import { useAppContext } from "@/context/AppContext";
-import useFetchAll from "@/lib/hooks/useFetchAll";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import React from "react";
+import { PrimaryButton } from "./buttons";
 
-function MenuLink() {
-  const { allFetchedTours, isLoading, allFetchedDayTrips } = useAppContext();
-  const { data: tourTypes, isLoading: isFetchingTourTypes } =
-    useFetchAll("tour-types");
-  const { data: tourTags, isLoading: isFetchingTags } =
-    useFetchAll("tour-tags");
-  const [trekkings, setTrekkings] = useState([]);
+function DestinationsDropDown({ item, index }) {
+  return (
+    <a
+      key={item.name}
+      href={`/destinations/${item?.slug}`}
+      className="group flex items-center bg-accent/20 rounded-xl p-4 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border border-secondary/10 hover:border-secondary/30"
+      style={{ animationDelay: `${index * 300}ms` }}
+    >
+      {/* Image */}
+      <div className="mr-4 overflow-hidden rounded-lg">
+        <Image
+          // src={item.image || "/placeholder.svg"}
+          src={`/images/bg/${index + 1}.png`}
+          alt={item.name}
+          width={80}
+          height={60}
+          className="w-32 h-28 bg-highlight object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+      </div>
 
-  // get all tours with hiking id on focus
-  useEffect(() => {
-    const hkId = findItTitle({ data: tourTypes, title: "hiking" });
-    if (allFetchedTours?.length > 0 && tourTypes?.length > 0) {
-      if (hkId) {
-        const trekkingTours = allFetchedTours?.filter((tour) =>
-          tour.focus.includes(hkId)
-        );
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <h4 className="font-semibold text-primary mb-1">{item.name}</h4>
+        <p className="text-sm text-secondary leading-relaxed line-clamp-2">
+          {item.description}
+        </p>
+      </div>
 
-        if (trekkingTours?.length) {
-          setTrekkings(trekkingTours);
-        }
-      } else {
-        console.log("hiking id was not found");
-      }
-    }
-  }, [allFetchedTours, tourTypes]);
-
-  // zanzibar
-  const finalZanzibarTrips = allFetchedDayTrips?.filter((trip) =>
-    trip.tags.includes(findItTitle({ data: tourTags, title: "zanzibar" }))
+      {/* Arrow */}
+      <div className="flex-shrink-0 ml-4">
+        <ChevronDown className="h-4 w-4 text-primary rotate-[-90deg] group-hover:translate-x-1 transition-transform duration-300" />
+      </div>
+    </a>
   );
-
-  // catch if loading
-  const ifLoading = isLoading || isFetchingTourTypes || isFetchingTags;
-
-  const menuItems = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
-    {
-      name: "Packages",
-      href: "/packages",
-      dropdown: {
-        title: "Safari Packages",
-        subtitle: "Choose your perfect Tanzania adventure",
-        items: [
-          {
-            name: "Zanzibar Beach Tours",
-            href: "/tours/zanzibar-trips",
-            description:
-              "Pristine beaches, spice tours, and cultural experiences",
-            image: "/images/gallery/zanzi3.png",
-            price: ifLoading ? "---" : `(${finalZanzibarTrips?.length}) Trips`,
-          },
-          {
-            name: "Kilimanjaro Packages",
-            href: "/tours/climbing-trips",
-            description: "Conquer Africa's highest peak with expert guides",
-            image: "/images/bg/21.png",
-            price: ifLoading ? "---" : `(${trekkings?.length}) Trips`,
-          },
-          {
-            name: "Day Trips",
-            href: "/tours/day-trips",
-            description: "Perfect for short visits and quick adventures",
-            image: "/images/bg/18.png",
-            price: ifLoading ? "---" : `(${allFetchedDayTrips?.length}) Trips`,
-          },
-          {
-            name: "All Safari Packages",
-            href: "/tours",
-            description: "Browse our complete collection of adventures",
-            image: "/images/bg/3.png",
-
-            price: ifLoading ? "---" : `(${allFetchedTours?.length}) Trips`,
-          },
-        ],
-      },
-    },
-    { name: "Destinations", href: "/destinations" },
-    { name: "Accommodations", href: "/accommodations" },
-    {
-      name: "Others",
-      href: "#",
-      dropdown: {
-        title: "Resources & More",
-        subtitle: "Everything you need to plan your trip",
-        items: [
-          {
-            name: "Contact Us",
-            href: "/contact",
-            description: "Get in touch with us for more information",
-            image: "/images/gallery/team4.png",
-            badge: "Contact Us Now",
-          },
-          {
-            name: "Safari Blog",
-            href: "/blog",
-            description: "Expert tips, guides, and safari stories",
-            image: "/images/gallery/kili6.png",
-            badge: "Latest Tips",
-          },
-          {
-            name: "Photo Gallery",
-            href: "/gallery",
-            description: "Stunning wildlife and landscape photography",
-            image: "/images/gallery/zanzi2.png",
-            badge: "500+ Photos",
-          },
-          {
-            name: "FAQs",
-            href: "/faqs",
-            description: "Common questions about Tanzania safaris",
-            image: "/images/gallery/team3.png",
-            badge: "Quick Answers",
-          },
-          {
-            name: "Privacy Policy",
-            href: "/privacy",
-            description: "How we protect your personal information",
-            image: "/images/bg/10.png",
-            badge: "Updated 2024",
-          },
-        ],
-      },
-    },
-  ];
-  return menuItems;
 }
 
-export default MenuLink;
+function ExperiencesDropDown({ item, index, IconComponent }) {
+  return (
+    <a
+      key={item.name}
+      href={`/experiences/${item?.slug}`}
+      className="group flex bg-accent/10 rounded-xl p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border border-secondary/10 hover:border-secondary/30"
+      style={{ animationDelay: `${index * 300}ms` }}
+    >
+      {/* Icon */}
+      <div className="flex-shrink-0 w-10 h-10 bg-primary rounded-full flex items-center justify-center group-hover:bg-secodary transition-colors duration-300 mr-5">
+        {IconComponent && <IconComponent className="h-5 w-5 text-accent" />}
+      </div>
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <h4 className="font-semibold text-primary mb-1">{item.name}</h4>
+        <p className="text-sm text-primary leading-relaxed line-clamp-1">
+          {item.description}
+        </p>
+        <div className="w-full">
+          <span className="text-xs mt-2 font-medium rounded-full px-3 py-1 bg-accent text-primary">
+            {item.total}
+          </span>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+function CampsDropDown({ item, index }) {
+  return (
+    <a
+      key={item.name}
+      href={`/camps/${item?.slug}`}
+      className="group flex flex-col space-y-2 bg-accent/40 rounded-xl p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border border-secondary/10 hover:border-secondary/30"
+      style={{ animationDelay: `${index * 300}ms` }}
+    >
+      {/* Image */}
+      <div className="overflow-hidden rounded-lg">
+        <Image
+          // src={item.image || "/placeholder.svg"}
+          src={`/images/gallery/zanzi${index + 1}.png`}
+          alt={item.name}
+          width={80}
+          height={60}
+          className="w-full h-32 bg-highlight object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+      </div>
+
+      {/* Content */}
+
+      <h4 className="font-semibold text-primary">{item.name}</h4>
+      <p className="text-sm text-secondary leading-relaxed line-clamp-2">
+        {item.description}
+      </p>
+      <div className="grid grid-cols-2">
+        <PrimaryButton className="text-xs py-2">Expole Camp</PrimaryButton>
+      </div>
+    </a>
+  );
+}
+
+export { CampsDropDown, DestinationsDropDown, ExperiencesDropDown };

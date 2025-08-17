@@ -69,7 +69,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative h-[650px] pt-20 overflow-hidden">
+    <section className="relative h-[550px] overflow-hidden">
       {/* Background Images */}
       {slides.map((slide, index) => (
         <div

@@ -1,8 +1,6 @@
 // pages/tours.js
 "use client";
-import AdventureBanner from "@/components/banners/AdventureBanner";
 import PromoBanner from "@/components/banners/PromoBanner";
-import TrekkingBanner from "@/components/banners/TrekkingBanner";
 import { TourCardPro } from "@/components/cards";
 import FilterTour from "@/components/Filters/FilterTour";
 import {
@@ -202,7 +200,7 @@ function Tours() {
           <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
             {/* filters */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="lg:block hidden">
+              <div className="lg:block hidden" data-aos="fade-right">
                 <FilterTour
                   passingDatas={{
                     availableTours,

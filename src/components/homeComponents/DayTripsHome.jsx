@@ -25,7 +25,7 @@ function DayTripsHome() {
   }));
 
   return (
-    <div className="respons lg:pb-20 pb-10">
+    <div className="respons lg:py-20 py-10">
       {/* banner */}
 
       <div className="relative rounded-2xl py-16 bg-primary overflow-hidden">

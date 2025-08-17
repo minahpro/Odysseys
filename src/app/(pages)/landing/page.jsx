@@ -26,16 +26,17 @@ function Home() {
   return (
     <main>
       <Hero />
-      <BookingBanner />
-      <FeaturesTours />
-      <WildlifeBanner />
       <FeaturesDestinations />
       <AboutHome />
-      <DayTripsHome />
+      <WildlifeBanner />
+      <BookingBanner />
+      {/* <DayTripsHome /> */}
       <ListBanner />
-      <ZanzibarTripsHome />
       <AdventureBanner />
-      <TrekkingTours />
+      {/* <FeaturesTours />
+
+      <ZanzibarTripsHome />
+      <TrekkingTours /> */}
       <AccommodationsHome />
       <TestimonialsSection />
       <BlogsHome />

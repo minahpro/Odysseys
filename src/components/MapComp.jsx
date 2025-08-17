@@ -80,7 +80,7 @@ export default function MapComp({ idsData, single }) {
 
   return loadings ? (
     <div className="w-full h-full bg-highlight flex-all">
-      <p className="text-center text-white">Map loading...</p>
+      <p className="text-center text-primary">Map loading...</p>
     </div>
   ) : destinations?.length > 0 ? (
     <MapContainer
@@ -124,7 +124,7 @@ export default function MapComp({ idsData, single }) {
             {single ? null : (
               <div className="bg-primary flex-all px-3 py-1 rounded text-sm hover:bg-secondary transitions w-full">
                 <Link target="_blank" href={`/destination/${dest?.slug}`}>
-                  <span className="text-black font-medium">View Details</span>
+                  <span className="text-accent font-medium">View Details</span>
                 </Link>
               </div>
             )}
@@ -134,7 +134,7 @@ export default function MapComp({ idsData, single }) {
     </MapContainer>
   ) : (
     <div className="w-full h-full bg-highlight flex-all">
-      <p className="text-center text-white">Map not found</p>
+      <p className="text-center text-primary">Map not found</p>
     </div>
   );
 }

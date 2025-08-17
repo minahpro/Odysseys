@@ -33,13 +33,12 @@ import { FaStar } from "react-icons/fa6";
 
 // CARDS I USE ON SITE
 export const DestinationCardProHome = ({ item: destination }) => {
-  const imgSrc = destination?.photos?.[0] ?? "/placeholder.svg";
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-highlight hover:shadow-xl transition-all duration-300 max-w-sm group">
       <div className="p-6">
-        <div className="relative h-40 rounded-xl overflow-hidden mb-4">
+        <div className="relative h-44 rounded-xl overflow-hidden mb-4">
           <Image
-            src={imgSrc || "/placeholder.svg"}
+            src={destination?.image || "/placeholder.svg"}
             alt={destination?.name}
             fill
             className="object-cover"
@@ -47,7 +46,7 @@ export const DestinationCardProHome = ({ item: destination }) => {
           <div className="absolute -bottom-20 group-hover:bottom-0 transition-[bottom] duration-500 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent flex-all pb-2">
             <Link href={`/destinations/${destination?.slug}`}>
               <SecondaryButton className="text-sm py-4">
-                Explore Destination
+                Explore {destination?.name}
               </SecondaryButton>
             </Link>
           </div>
@@ -61,7 +60,7 @@ export const DestinationCardProHome = ({ item: destination }) => {
             <div className="flex items-center gap-1">
               <IoPawSharp className="w-4 h-4" />
               <span className="font-quicksand">
-                ({destination?.tourAmount || 0}) Tours Packages
+                ({destination?.destinations || 0}) destinations
               </span>
             </div>
           </div>

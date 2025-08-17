@@ -15,10 +15,13 @@ import {
   AlertTriangle,
   Mail,
   BookCheck,
+  MessageSquareText,
+  LayoutList,
+  ListFilter,
 } from "lucide-react";
 import useFetchAll from "@/lib/hooks/useFetchAll";
 import { useAppContext } from "@/context/AppContext";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ImagesSingle from "@/components/ImagesSingle";
 import { TourCardPro } from "@/components/cards";
 import { useState } from "react";
@@ -39,6 +42,7 @@ import MapComp from "@/components/MapComp";
 function Page() {
   // Capitalized for consistency
   const params = useParams();
+  const route = useRouter();
   const slug = params.slug;
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
@@ -58,7 +62,45 @@ function Page() {
   };
 
   // ********** GET DESTINATION DETAILS **********
-  const destination = fetchedDestinations?.find((dest) => dest?.slug === slug);
+  const destinationDatas = fetchedDestinations?.find(
+    (dest) => dest?.slug === slug
+  );
+
+  const destination = {
+    ...destinationDatas,
+    datas: [
+      {
+        icon: ListFilter,
+        title: "Type",
+        value:
+          findIt({
+            data: destinationTypes || [],
+            id: destinationDatas?.type,
+          }) || "---",
+      },
+      {
+        icon: MapPin,
+        title: "Location",
+        value: destinationDatas?.country,
+      },
+      {
+        icon: LayoutList,
+        title: "Category",
+        value:
+          findIt({
+            data: tourGroupCategories || [],
+            id: destinationDatas?.category,
+          }) || "---",
+      },
+
+      {
+        icon: CheckCircle,
+        title: "Activities",
+        value: destinationDatas?.activities?.length,
+      },
+    ],
+  };
+
   const relatedTours = allFetchedTours
     ?.filter((tour) => {
       return tour?.itinerary.find(
@@ -99,20 +141,86 @@ function Page() {
         />
       )}
       {isLoading || isFetchingOptions || isFetchingTourCategories ? (
-        <main className="respons">
-          <SingleDetailsLoading />
-        </main>
+        <SingleDetailsLoading />
       ) : destination?.id ? (
         <>
           <SingleHeader
-            image={destination?.photos?.[0]}
-            title={destination?.name}
-            desc={`Location: ${destination?.country}`}
-            OnClick={() => {
-              setOpen(true);
+            data={{
+              photos: destination?.photos,
+              title: destination?.name,
+              button: {
+                text: "Book This Destination",
+
+                onClick: () => setOpen(true),
+              },
             }}
-            buttonText={"Book Now"}
           />
+          <section className="sm:py-28 space-y-20 py-10 bg-accent/40">
+            <div className="respons flex-all flex-col">
+              <span
+                data-aos="fade-up"
+                className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
+              >
+                <MessageSquareText />
+              </span>
+              <h2
+                data-aos="fade-up"
+                data-aos-delay="100"
+                className="md:text-4xl text-3xl text-secondary font-jua"
+              >
+                About {destination?.name}
+              </h2>
+              <div className="max-w-4xl text-center space-y-6 my-8">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: destination?.overview,
+                  }}
+                  className="text-lg text-gray-800 leading-relaxed"
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+                />
+              </div>
+              <div className="grid w-full grid-cols-4 gap-4">
+                {destination?.datas?.map((item, index) => (
+                  <div
+                    data-aos="fade-up"
+                    data-aos-delay={index * 100}
+                    key={index}
+                    className="text-center p-6 bg-accent/60 border border-secondary/20 rounded-xl"
+                  >
+                    <item.icon className="w-8 h-8 text-secondary mx-auto mb-4" />
+                    <h3 className="font-bold text-primary mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-primary">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* map & quick facts */}
+            <div className="sm:py-28 py-10 bg-white">
+              <div className="respons flex-all flex-col">
+                <span
+                  data-aos="fade-up"
+                  className={`bg-primary text-accent h-14 w-14 flex-all rounded-full text-xs font-bold border border-secondary/20 inline-block mb-6`}
+                >
+                  <MapPin />
+                </span>
+                <h2
+                  data-aos="fade-up"
+                  data-aos-delay="100"
+                  className="md:text-4xl text-3xl text-secondary font-jua"
+                >
+                  Gallery & Map
+                </h2>
+                <div className="mt-8 w-full">
+                  <ImagesSingle images={destination?.photos} />
+                </div>
+              </div>
+            </div>
+          </section>
+
           <main className="respons lg:py-20 py-10">
             <div className="grid lg:grid-cols-3 grid-cols-1 gap-8 items-start">
               <div className="lg:col-span-2  space-y-8">
@@ -126,7 +234,7 @@ function Page() {
                     dangerouslySetInnerHTML={{
                       __html: destination?.overview,
                     }}
-                  ></div>
+                  />
                 </div>
                 <div className="space-y-4">
                   <h3 className="text-xl font-jua text-white font-bold">

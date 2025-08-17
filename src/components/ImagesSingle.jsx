@@ -13,8 +13,8 @@ function ImagesSingle({ images }) {
   };
 
   return (
-    <div className="relative" data-aos="fade-right">
-      <div className="relative md:h-96 sm:h-56 h-48 rounded-xl overflow-hidden">
+    <div className="relative grid-cols-6 grid gap-6">
+      <div className="relative md:h-96 col-span-4 sm:h-56 h-48 rounded-xl overflow-hidden">
         <img
           src={images[currentImage] || "/placeholder.svg"}
           alt={`Hotel image ${currentImage + 1}`}
@@ -45,12 +45,12 @@ function ImagesSingle({ images }) {
       </div>
 
       {/* Thumbnail Strip */}
-      <div className="flex gap-2 mt-4 overflow-x-auto">
+      <div className="grid grid-cols-2 gap-2 mt-4 col-span-2">
         {images.map((image, index) => (
           <button
             key={index}
             onClick={() => setCurrentImage(index)}
-            className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+            className={` w-full h-32 rounded-xl overflow-hidden border-2 transition-all ${
               currentImage === index ? "border-primary" : "border-transparent"
             }`}
           >

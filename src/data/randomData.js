@@ -504,3 +504,36 @@ export const faqsData = [
     ],
   },
 ];
+
+export const whyUsData = [
+  {
+    title: "Destinations",
+    subTitle: "Iconic wild destinations",
+    image: "/images/bg/21.png",
+    desc: "By being one of the first in each place we operate, we have access to Earth’s most significant wild places. Each Wilderness destination offers a whole new world of environments, habitats, cultures, sights and sounds for you to discover. Join us as you explore our Collection of diverse and varied safari experiences.",
+  },
+  {
+    title: "Wildlife",
+    subTitle: "Best wildlife experiences",
+    image: "/images/bg/11.png",
+    desc: "Ready yourself for a true wilderness immersion - untamed, unfenced and unpredictable. Go beyond game drives and discover nature on walks, boats, hot air balloons and more. While thrilling wildlife encounters are guaranteed, education is central to the Wilderness experience. Here in the habitats of wild animals, we stay respectful of their space, keeping your safety our top priority.",
+  },
+  {
+    title: "Guides",
+    subTitle: "Industry-leading guides",
+    image: "/images/gallery/team5.png",
+    desc: "Meet guides with an uncommon ability for understanding, finding and explaining wildlife. Our guides are encouraged to hone their interests to answer any need, quirk or obsession. So whether you’re a family, photographer, big-cat enthusiast or avid birder, you’ll find a guide to relate. We also hire locally, benefiting the communities we operate in and providing the best knowledge of the wild.",
+  },
+  {
+    title: "Architecture",
+    subTitle: "Immersive architecture",
+    image: "/images/bg/18.png",
+    desc: "Camps shouldn’t just be beautiful. They should gently immerse us in nature, unlocking all senses. Our placement of camps is an exact science, offering wildlife experiences that are as exceptional from your deck as on a game drive. With no more than 12 suites per camp, spread over hundreds of acres, and built using the lightest possible footprint, we enjoy our areas peacefully and respectfully.",
+  },
+  {
+    title: "Culture",
+    subTitle: "Cultural exploration",
+    image: "/images/bg/11.png",
+    desc: "Each camp honours its area's cultures and traditions. Over 90% of staff come from local villages, sharing their history and cultures with guests of all ages. Elevated traditional dishes make mealtimes exciting, while textiles and art are also sourced from communities. Some of our destinations also offer the opportunity to further immerse yourself in nearby villages and ongoing research projects.",
+  },
+];
