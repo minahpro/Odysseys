@@ -7,6 +7,7 @@ import {
   SecondaryButton,
   TourButton,
   OutlineButton,
+  ActionButton,
 } from "./buttons";
 import {
   Building,
@@ -35,35 +36,31 @@ import { FaStar } from "react-icons/fa6";
 export const DestinationCardProHome = ({ item: destination }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-highlight hover:shadow-xl transition-all duration-300 max-w-sm group">
-      <div className="p-6">
-        <div className="relative h-44 rounded-xl overflow-hidden mb-4">
+      <div className="p-5">
+        <div className="relative h-72 rounded-xl overflow-hidden">
           <Image
             src={destination?.image || "/placeholder.svg"}
             alt={destination?.name}
             fill
             className="object-cover"
           />
-          <div className="absolute -bottom-20 group-hover:bottom-0 transition-[bottom] duration-500 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent flex-all pb-2">
-            <Link href={`/destinations/${destination?.slug}`}>
-              <SecondaryButton className="text-sm py-4">
-                Explore {destination?.name}
-              </SecondaryButton>
-            </Link>
-          </div>
-        </div>
-        <div className="space-y-3">
-          <h3 className="text-lg font-bold text-primary">
-            {destination?.name}
-          </h3>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-          <div className="flex items-center gap-4 text-secondary text-sm">
-            <div className="flex items-center gap-1">
-              <IoPawSharp className="w-4 h-4" />
-              <span className="font-quicksand">
-                ({destination?.destinations || 0}) destinations
-              </span>
-            </div>
-          </div>
+          {/* Content Overlay */}
+          <Link
+            href={`/destinations/${destination?.slug}`}
+            className="absolute bottom-0 left-0 right-0 p-6 text-white"
+          >
+            <h3 className="text-2xl font-medium font-jua">
+              {destination?.name}
+            </h3>
+            <p className="opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 group-hover:mt-1 group-hover:mb-3 text-sm font-semibold text-gray-300">
+              {destination?.slogan}
+            </p>
+            <ActionButton className="bg-white/20 text-white group-hover:bg-accent group-hover:text-primary font-bold backdrop-blur-sm border-0">
+              Explore
+            </ActionButton>
+          </Link>
         </div>
       </div>
     </div>
@@ -212,9 +209,9 @@ export const ZanzibarCardPro = ({ tour }) => {
 
 export const DayTripCardPro = ({ tour }) => {
   return (
-    <div className="bg-white rounded-xl border border-secondary/20 overflow-hidden hover:shadow-xl transition-all duration-300 max-w-4xl">
-      <div className="flex flex-col md:flex-row">
-        <div className="relative w-full md:w-48 md:h-auto flex-shrink-0">
+    <div className="bg-white group rounded-xl hover:shadow-2xl shadow-xl overflow-hidden transitions max-w-4xl">
+      <div className="relative">
+        <div className="relative w-full md:h-96">
           <Image
             src={tour?.photos[0] || "/placeholder.svg"}
             alt={tour?.title}
@@ -222,40 +219,31 @@ export const DayTripCardPro = ({ tour }) => {
             className="object-cover"
           />
         </div>
-        <div className="p-6 flex-1">
+        <div className="pl-14 pr-4 py-8 absolute right-0 rounded-bl-full group-hover:bg-accent transitions bg-white top-0">
           <div className=" mb-3">
             <div>
-              <h3 className="font-bold text-primary mb-2">{tour?.title}</h3>
+              <h3 className="font-bold text-primary text-lg mb-2">
+                {tour?.title}
+              </h3>
               <div className="flex items-center gap-1 text-secondary">
                 <MapPin className="w-4 h-4" />
                 <span className="font-quicksand text-sm">
                   {tour?.destinations
-                    ?.slice(0, 1)
-                    ?.map((dest) => dest)
+                    ?.slice(0, 3)
+                    .map((dest) => dest)
                     .join(", ")}
                 </span>
               </div>
             </div>
           </div>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: tour?.overview,
-            }}
-            className="font-quicksand text-primary text-sm line-clamp-2 mb-4 leading-relaxed"
-          />
-          <div className="flex items-center justify-between">
-            <Link href={`/tours/day-trips/${tour?.slug}`}>
-              <PrimaryButton className={`py-4 text-sm`}>Book Now</PrimaryButton>
-            </Link>
-            <div className="text-right">
-              <div className="font-bold text-primary text-xl">
-                ${tour?.price || 0}
-              </div>
-              <div className="font-quicksand text-secondary text-xs">
-                per person
-              </div>
-            </div>
-          </div>
+        </div>
+
+        <div className="absolute bottom-4 -right-56 group-hover:right-4 transition-all duration-700">
+          <Link href={`/tours/day-trips/${tour?.slug}`}>
+            <PrimaryButton className={`py-4 text-sm`}>
+              Find Out More
+            </PrimaryButton>
+          </Link>
         </div>
       </div>
     </div>

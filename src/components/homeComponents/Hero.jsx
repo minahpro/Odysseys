@@ -13,8 +13,7 @@ const Hero = () => {
     {
       image: "/images/44.jpeg",
       title: "Relax in Paradise",
-      subtitle:
-        "Unwind on the pristine beaches of Zanzibar after your safari adventure",
+      subtitle: "Unwind on the pristine beaches after your safari adventure",
       cta1: "Beach Packages",
       cta2: "View Gallery",
     },

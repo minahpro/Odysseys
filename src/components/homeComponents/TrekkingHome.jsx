@@ -1,43 +1,15 @@
 "use client";
-import { findItTitle } from "../Functions";
-import { useCallback, useEffect, useRef, useState } from "react";
-import useFetchAll from "@/lib/hooks/useFetchAll";
-import { useAppContext } from "@/context/AppContext";
-import { NoDataFound } from "../Loadings/ErrorComp";
-import { TourLoading } from "../Loadings/LoadingComp";
-import { Title } from "../texties";
-import { Mountain } from "lucide-react";
-import { A11y, Autoplay, Navigation } from "swiper/modules";
+
 import { Swiper, SwiperSlide } from "swiper/react";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { TourCardPro } from "../cards";
+import { Parallax } from "swiper/modules";
+import { ChevronLeft, ChevronRight, Heart, MapPin } from "lucide-react";
+import { PrimaryButton } from "../buttons";
+import Link from "next/link";
+import { demoDataBase } from "@/data/Demo-database";
+import { useCallback, useRef } from "react";
 
 export default function TrekkingTours() {
   const sliderRef = useRef(null);
-  const { allFetchedTours, isLoading } = useAppContext();
-  const { data: tourTypes, isLoading: isFetchingTourTypes } =
-    useFetchAll("tour-types");
-  const [tours, setTours] = useState([]);
-  const { data: tourGroupCategories, isLoading: isFetchingTourCategories } =
-    useFetchAll("tour-categories");
-
-  // get all tours with hiking id on focus
-  useEffect(() => {
-    const hkId = findItTitle({ data: tourTypes, title: "hiking" });
-    if (allFetchedTours?.length > 0 && tourTypes?.length > 0) {
-      if (hkId) {
-        const trekkingTours = allFetchedTours?.filter((tour) =>
-          tour.focus.includes(hkId)
-        );
-
-        if (trekkingTours?.length) {
-          setTours(trekkingTours);
-        }
-      } else {
-        console.log("hiking id was not found");
-      }
-    }
-  }, [allFetchedTours, tourTypes]);
 
   // prev slider
   const handlePrev = useCallback(() => {
@@ -50,87 +22,76 @@ export default function TrekkingTours() {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slideNext();
   }, []);
-  return (
-    <section className="sm:py-28 py-10 bg-accent/40">
-      <div className="respons">
-        <Title
-          badge={<Mountain />}
-          title={"Conquer Africa's Highest Peaks"}
-          subHeading={
-            "Challenge yourself with epic mountain adventures from Kilimanjaro's snow-capped summit to volcanic craters"
-          }
-        />
-        <div className="mt-12 relative">
-          {
-            // loading
-            isLoading || isFetchingTourTypes || isFetchingTourCategories ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[...Array(3)].map((_, i) => (
-                  <TourLoading key={i} />
-                ))}
-              </div>
-            ) : tours?.length > 0 ? (
-              <>
-                <Swiper
-                  ref={sliderRef}
-                  modules={[A11y, Navigation, Autoplay]}
-                  spaceBetween={24}
-                  slidesPerView={1}
-                  speed={2000}
-                  autoplay={{
-                    delay: 5000,
-                    disableOnInteraction: false,
-                  }}
-                  breakpoints={{
-                    640: {
-                      slidesPerView: 1,
-                    },
-                    768: {
-                      slidesPerView: 2,
-                    },
-                    1024: {
-                      slidesPerView: 3,
-                    },
-                  }}
-                  className="kilimanjaro-swiper"
-                >
-                  {tours?.map((tour, index) => (
-                    <SwiperSlide key={index}>
-                      <TourCardPro
-                        tour={{
-                          ...tour,
-                          prices: tour?.price?.foreigner?.adult?.highSeason,
-                          category: tourGroupCategories?.find(
-                            (cat) => cat?.id === tour?.category
-                          )?.title, // get category title
-                        }}
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
 
-                {/* Navigation Buttons */}
-                <div className="z-30 absolute px-2 top-1/2 -translate-y-1/2 left-0 w-full h-12 flex justify-between items-center">
-                  <button
-                    onClick={handlePrev}
-                    className="w-10 h-10 flex-all transitions hover:bg-primary hover:text-accent text-white rounded-full bg-secondary border border-accent text-xl shadow-md"
+  return (
+    <div className="bg-accent/40">
+      <div className="respons ">
+        <Swiper
+          style={{
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          }}
+          speed={600}
+          parallax={true}
+          ref={sliderRef}
+          modules={[Parallax]}
+          className="w-full h-full relative rounded-tr-[100px] rounded-bl-[100px]"
+        >
+          <div
+            slot="container-start"
+            className="parallax-bg"
+            style={{
+              "background-image": "url(/images/bg/5.png)",
+            }}
+            data-swiper-parallax="-23%"
+          ></div>
+          {demoDataBase?.tourTypes?.map((type, index) => (
+            <SwiperSlide className="bg-black/30" key={index}>
+              <div className="py-28 px-10 flex justify-end items-center">
+                <div className="bg-white space-y-4 rounded-xl p-10 ">
+                  <div data-swiper-parallax="-300">
+                    <div className="w-14 h-14 bg-accent text-secondary rounded-full flex-all">
+                      <Heart className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h1
+                    data-swiper-parallax="-200"
+                    className={`text-2xl font-jua font-medium text-primary `}
                   >
-                    <MdKeyboardArrowLeft />
-                  </button>
-                  <button
-                    onClick={handleNext}
-                    className="w-10 h-10 flex-all transitions hover:bg-primary hover:text-accent text-white rounded-full bg-secondary border border-accent text-xl shadow-md"
+                    {type?.title}
+                  </h1>
+
+                  <p
+                    data-swiper-parallax="-100"
+                    className="font-medium text-primary line-clamp-3 max-w-md leading-relaxed"
                   >
-                    <MdKeyboardArrowRight />
-                  </button>
+                    {type?.overview}
+                  </p>
+
+                  <PrimaryButton className="text-sm text-white bg-secondary">
+                    <Link href={`/tours?type=${type?.title}`}>
+                      Explore More
+                    </Link>
+                  </PrimaryButton>
                 </div>
-              </>
-            ) : (
-              <NoDataFound text={"No Zanzibar Trips Found"} />
-            )
-          }
-        </div>
+              </div>
+            </SwiperSlide>
+          ))}
+          {/* Navigation Arrows */}
+          <button
+            onClick={handlePrev}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-primary/70 text-white p-3 rounded-full transitions backdrop-blur-sm"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <button
+            onClick={handleNext}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 hover:bg-primary/70 text-white p-3 rounded-full transitions backdrop-blur-sm"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </Swiper>
       </div>
-    </section>
+    </div>
   );
 }

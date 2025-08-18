@@ -1080,10 +1080,14 @@ export const demoDataBase = {
       icon: "Car",
       overview:
         "Game Drive offers a unique way to explore Africa's wilderness.",
-      photos: ["/placeholder.svg"],
+      photos: ["/images/gallery/team6.png"],
       location: [
         {
           destination: "dest1",
+          subDestination: "sub1",
+        },
+        {
+          destination: "dest10",
           subDestination: "sub1",
         },
       ],
@@ -1110,10 +1114,14 @@ export const demoDataBase = {
       icon: "MapPin",
       overview:
         "Walking Safari offers a unique way to explore Africa's wilderness.",
-      photos: ["/placeholder.svg"],
+      photos: ["/images/bg/21.png"],
       location: [
         {
-          destination: "dest1",
+          destination: "dest2",
+          subDestination: "sub1",
+        },
+        {
+          destination: "dest7",
           subDestination: "sub1",
         },
       ],
@@ -1141,10 +1149,18 @@ export const demoDataBase = {
       icon: "Users",
       overview:
         "Cultural Tour offers a unique way to explore Africa's wilderness.",
-      photos: ["/placeholder.svg"],
+      photos: ["/images/tourImages/epso.jpg"],
       location: [
         {
+          destination: "dest3",
+          subDestination: "sub1",
+        },
+        {
           destination: "dest1",
+          subDestination: "sub1",
+        },
+        {
+          destination: "dest2",
           subDestination: "sub1",
         },
       ],
@@ -1172,10 +1188,10 @@ export const demoDataBase = {
       icon: "Bird",
       overview:
         "Bird Watching offers a unique way to explore Africa's wilderness.",
-      photos: ["/placeholder.svg"],
+      photos: ["/images/tourImages/epso55.jpg"],
       location: [
         {
-          destination: "dest1",
+          destination: "dest4",
           subDestination: "sub1",
         },
       ],
@@ -1202,10 +1218,10 @@ export const demoDataBase = {
       icon: "Footprints",
       overview:
         "Gorilla Trekking offers a unique way to explore Africa's wilderness.",
-      photos: ["/placeholder.svg"],
+      photos: ["/images/tourImages/epso22.jpg"],
       location: [
         {
-          destination: "dest1",
+          destination: "dest5",
           subDestination: "sub1",
         },
       ],
@@ -1232,8 +1248,12 @@ export const demoDataBase = {
       icon: "Shield",
       overview:
         "Rhino Tracking offers a unique way to explore Africa's wilderness.",
-      photos: ["/placeholder.svg"],
+      photos: ["/images/tourImages/epso33.jpg"],
       location: [
+        {
+          destination: "dest6",
+          subDestination: "sub1",
+        },
         {
           destination: "dest1",
           subDestination: "sub1",
@@ -1266,6 +1286,10 @@ export const demoDataBase = {
       location: [
         {
           destination: "dest1",
+          subDestination: "sub1",
+        },
+        {
+          destination: "dest7",
           subDestination: "sub1",
         },
       ],
@@ -1323,7 +1347,7 @@ export const demoDataBase = {
       photos: ["/placeholder.svg"],
       location: [
         {
-          destination: "dest1",
+          destination: "dest8",
           subDestination: "sub1",
         },
       ],
@@ -1352,7 +1376,7 @@ export const demoDataBase = {
       photos: ["/placeholder.svg"],
       location: [
         {
-          destination: "dest1",
+          destination: "dest9",
           subDestination: "sub1",
         },
       ],
@@ -1375,36 +1399,6 @@ export const demoDataBase = {
     },
   ],
   tourTypes: [
-    {
-      id: "tt1",
-      title: "Luxury Safari",
-      overview:
-        "Luxury Safari is tailored for travelers seeking a luxury safari experience.",
-      photos: ["/placeholder.svg"],
-      inclusion: ["Guided tours", "Accommodation"],
-      exclusion: ["International flights", "Insurance"],
-      packages: ["pkg1"],
-    },
-    {
-      id: "tt2",
-      title: "Mid-Range Safari",
-      overview:
-        "Mid-Range Safari is tailored for travelers seeking a mid-range safari experience.",
-      photos: ["/placeholder.svg"],
-      inclusion: ["Guided tours", "Accommodation"],
-      exclusion: ["International flights", "Insurance"],
-      packages: ["pkg1"],
-    },
-    {
-      id: "tt3",
-      title: "Budget Safari",
-      overview:
-        "Budget Safari is tailored for travelers seeking a budget safari experience.",
-      photos: ["/placeholder.svg"],
-      inclusion: ["Guided tours", "Accommodation"],
-      exclusion: ["International flights", "Insurance"],
-      packages: ["pkg1"],
-    },
     {
       id: "tt4",
       title: "Honeymoon Safari",
@@ -1470,6 +1464,36 @@ export const demoDataBase = {
       title: "Fly-in Safari",
       overview:
         "Fly-in Safari is tailored for travelers seeking a fly-in safari experience.",
+      photos: ["/placeholder.svg"],
+      inclusion: ["Guided tours", "Accommodation"],
+      exclusion: ["International flights", "Insurance"],
+      packages: ["pkg1"],
+    },
+    {
+      id: "tt1",
+      title: "Luxury Safari",
+      overview:
+        "Luxury Safari is tailored for travelers seeking a luxury safari experience.",
+      photos: ["/placeholder.svg"],
+      inclusion: ["Guided tours", "Accommodation"],
+      exclusion: ["International flights", "Insurance"],
+      packages: ["pkg1"],
+    },
+    {
+      id: "tt2",
+      title: "Mid-Range Safari",
+      overview:
+        "Mid-Range Safari is tailored for travelers seeking a mid-range safari experience.",
+      photos: ["/placeholder.svg"],
+      inclusion: ["Guided tours", "Accommodation"],
+      exclusion: ["International flights", "Insurance"],
+      packages: ["pkg1"],
+    },
+    {
+      id: "tt3",
+      title: "Budget Safari",
+      overview:
+        "Budget Safari is tailored for travelers seeking a budget safari experience.",
       photos: ["/placeholder.svg"],
       inclusion: ["Guided tours", "Accommodation"],
       exclusion: ["International flights", "Insurance"],

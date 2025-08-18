@@ -46,17 +46,16 @@ const bigFiveAnimals = [
 
 export default function WildlifeBanner() {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden bg-textcolor">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/images/bg/6.png"
-          alt="Wildlife in Serengeti"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/50 to-black/50" />
-      </div>
-
+    <section
+      className="relative py-24 md:py-32 overflow-hidden bg-textcolor"
+      style={{
+        backgroundImage: 'url(/images/bg/6.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/50 to-black/50 z-0" />
       {/* Content */}
       <div className="relative z-10">
         <div className="container mx-auto max-w-7xl px-4">

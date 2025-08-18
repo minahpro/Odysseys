@@ -8,21 +8,20 @@ import { TourLoading } from "../Loadings/LoadingComp";
 import { Search } from "lucide-react";
 import { SecondaryButton } from "../buttons";
 import Link from "next/link";
+import { demoDataBase } from "@/data/Demo-database";
 
 function DayTripsHome() {
-  const { allFetchedDayTrips, isLoading, fetchedDestinations } =
-    useAppContext();
-
-  // ************* fetch non-Zanzibar trips *************
-  const dayTripsData = allFetchedDayTrips?.slice(0, 3)?.map((dayTrip) => ({
-    ...dayTrip,
-    destinations: findItArray({
-      ids: dayTrip?.destinations,
-      datas: fetchedDestinations,
-      dest: true, // destination has name not title
-    }),
-    price: dayTrip?.price?.foreigner || 0,
-  }));
+  const destinations = demoDataBase?.mainDestinations;
+  const dayTripsData = demoDataBase?.experiances
+    ?.slice(0, 6)
+    .map((exp, index) => ({
+      ...exp,
+      destinations: exp?.location?.map((loc) => {
+        const dest = destinations?.find((d) => d?.id === loc?.destination);
+        return dest?.title;
+      }),
+      slug: exp?.id,
+    }));
 
   return (
     <div className="respons lg:py-20 py-10">
@@ -36,15 +35,16 @@ function DayTripsHome() {
             </div>
           </div>
           <h2 className="font-jua text-3xl md:text-4xl text-accent mb-4">
-            Perfect Day Adventures
+            Experiance Real, Raw Nature
           </h2>
           <p className="font-quicksand text-lg text-accent/80 mb-8 max-w-3xl mx-auto">
-            Explore Tanzania's highlights in single-day adventures from major
-            towns - perfect for busy schedules
+            Travelling is about more than the places you visit and the things
+            you’ll see. It’s about people, culture, wildlife, history, and
+            experiencing something you’ve never done before.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/tours/day-trips">
-              <SecondaryButton>View All Day Trips</SecondaryButton>
+              <SecondaryButton>Explore All Experiences</SecondaryButton>
             </Link>
           </div>
         </div>
@@ -55,34 +55,21 @@ function DayTripsHome() {
       </div>
 
       <div className="mt-12 relative">
-        {
-          // loading
-          isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(3)].map((_, i) => (
-                <TourLoading key={i} />
-              ))}
+        <div className="grid-cols-2 grid gap-12">
+          {dayTripsData?.map((dayTrip, index) => (
+            <div
+              className="w-full"
+              data-aos={
+                // 2 should fade right and 2 should fade left
+                index % 2 === 0 ? "fade-right" : "fade-left"
+              }
+              data-aos-delay={index * 200}
+              key={dayTrip?.id}
+            >
+              <DayTripCardPro tour={dayTrip} />
             </div>
-          ) : dayTripsData?.length > 0 ? (
-            <div className="grid-cols-2 grid gap-12">
-              {dayTripsData?.map((dayTrip, index) => (
-                <div
-                  className="w-full"
-                  data-aos={
-                    // 2 should fade right and 2 should fade left
-                    index % 2 === 0 ? "fade-right" : "fade-left"
-                  }
-                  data-aos-delay={index * 200}
-                  key={dayTrip?.id}
-                >
-                  <DayTripCardPro tour={dayTrip} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <NoDataFound text={"No Day Trips Found"} />
-          )
-        }
+          ))}
+        </div>
       </div>
     </div>
   );

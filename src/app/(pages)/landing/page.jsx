@@ -16,6 +16,7 @@ import BlogsHome from "@/components/homeComponents/BlogsHome";
 import { PageLoading } from "@/components/Loadings/LoadingComp";
 import ListBanner from "@/components/banners/ListBanner";
 import BookingBanner from "@/components/banners/BookingBanner";
+import GallerySection from "@/components/homeComponents/gallerryHome";
 export const metadata = {
   title: "Wild Odysseys",
   description:
@@ -30,17 +31,16 @@ function Home() {
       <AboutHome />
       <WildlifeBanner />
       <BookingBanner />
-      {/* <DayTripsHome /> */}
+      <DayTripsHome />
       <ListBanner />
-      <AdventureBanner />
-      {/* <FeaturesTours />
-
+      <TrekkingTours />
       <ZanzibarTripsHome />
-      <TrekkingTours /> */}
+      <AdventureBanner />
       <AccommodationsHome />
       <TestimonialsSection />
       <BlogsHome />
       <SubscribeSection />
+      <GallerySection />
     </main>
   );
 }

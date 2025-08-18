@@ -52,6 +52,7 @@ function FeaturesDestinations() {
                   destinations: item?.subDestinations?.length + 2 * index,
                   image: `/images/bg/${index + 1}.png`,
                   slug: item?.id,
+                  slogan: item?.slogan,
                 }}
               />
             </div>

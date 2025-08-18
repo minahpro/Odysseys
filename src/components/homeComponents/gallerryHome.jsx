@@ -1,24 +1,24 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode, Navigation, Thumbs, Pagination } from "swiper/modules";
-import { useCallback, useRef, useState } from "react";
+import { EffectCoverflow } from "swiper/modules";
+import { useCallback, useRef } from "react";
 import { Title } from "../texties";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { Camera } from "lucide-react";
+import Image from "next/image";
 
 const galleryImages = [
   { id: 6, src: "/images/bg/6.png", alt: "Serengeti wildlife" },
   { id: 2, src: "/images/gallery/zanzi3.png", alt: "Serengeti wildlife" },
-  { id: 3, src: "/images/bg/6.png", alt: "Serengeti wildlife" },
   { id: 4, src: "/images/gallery/team5.png", alt: "Serengeti wildlife" },
   { id: 5, src: "/images/bg/11.png", alt: "Serengeti wildlife" },
   { id: 1, src: "/images/gallery/team6.png", alt: "Serengeti wildlife" },
   { id: 2, src: "/images/bg/3.png", alt: "Serengeti wildlife" },
   { id: 7, src: "/images/gallery/team3.png", alt: "Serengeti wildlife" },
+  { id: 3, src: "/images/bg/6.png", alt: "Serengeti wildlife" },
 ];
 
 export default function GallerySection() {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const sliderRef = useRef(null);
 
   const handlePrev = useCallback(() => {
@@ -32,7 +32,7 @@ export default function GallerySection() {
   }, []);
 
   return (
-    <section className="sm:py-28 py-10">
+    <section className="sm:py-28 bg-accent/40 py-10">
       <div className="respons">
         <Title
           badge={<Camera />}
@@ -44,25 +44,36 @@ export default function GallerySection() {
 
         <div className="relative mt-12">
           <Swiper
+            effect={"coverflow"}
+            grabCursor={true}
             ref={sliderRef}
-            spaceBetween={10}
-            thumbs={{ swiper: thumbsSwiper }}
-            modules={[FreeMode, Navigation, Thumbs, Pagination]}
-            className="mySwiper2 rounded-xl shadow-xl mb-4"
-            pagination={{ clickable: true }}
-            // Removed data-aos and data-aos-delay
+            centeredSlides={true} // Remove this line if you want left alignment
+            slidesPerView={3}
+            initialSlide={1}
+            coverflowEffect={{
+              rotate: 60,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
+            modules={[EffectCoverflow]}
+            className="mySwiper"
           >
-            {galleryImages.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image.src || "/placeholder.svg"}
-                  alt={image.alt}
-                  className="w-full sm:h-[400px] h-[250px] object-cover rounded-xl"
+            {galleryImages?.map((item) => (
+              <SwiperSlide
+                key={item.id}
+                className="w-full h-80 bg-cover bg-center"
+              >
+                <Image
+                  className="w-full h-80 object-cover"
+                  width={500}
+                  height={500}
+                  src={item.src}
+                  alt={item.alt}
                 />
               </SwiperSlide>
             ))}
-
-            {/* Navigation Buttons */}
             <div className=" z-30 absolute px-2 top-1/2 -translate-y-1/2 left-0 w-full h-12 flex justify-between items-center">
               <button
                 onClick={handlePrev}
@@ -77,40 +88,6 @@ export default function GallerySection() {
                 <MdKeyboardArrowRight />
               </button>
             </div>
-          </Swiper>
-
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            spaceBetween={10}
-            slidesPerView={5}
-            freeMode={true}
-            watchSlidesProgress={true}
-            modules={[FreeMode, Navigation, Thumbs]}
-            className="mySwiper mt-4"
-            breakpoints={{
-              0: {
-                slidesPerView: 2,
-              },
-              640: {
-                slidesPerView: 3,
-              },
-              768: {
-                slidesPerView: 4,
-              },
-              1024: {
-                slidesPerView: 5,
-              },
-            }}
-          >
-            {galleryImages.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image.src || "/placeholder.svg"}
-                  alt={image.alt}
-                  className="w-full h-24 object-cover rounded-xl cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
-                />
-              </SwiperSlide>
-            ))}
           </Swiper>
         </div>
       </div>

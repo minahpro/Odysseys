@@ -19,16 +19,13 @@ function DestinationsDropDown({ item, index }) {
           alt={item.name}
           width={80}
           height={60}
-          className="w-32 h-28 bg-highlight object-cover group-hover:scale-110 transition-transform duration-300"
+          className="w-40 h-28 bg-highlight object-cover group-hover:scale-110 transition-transform duration-300"
         />
       </div>
 
       {/* Content */}
       <div className="flex-1 min-w-0">
         <h4 className="font-semibold text-primary mb-1">{item.name}</h4>
-        <p className="text-sm text-secondary leading-relaxed line-clamp-2">
-          {item.description}
-        </p>
       </div>
 
       {/* Arrow */}

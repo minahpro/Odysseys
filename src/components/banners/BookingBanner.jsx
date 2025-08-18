@@ -1,8 +1,19 @@
 "use client";
 
 import { whyUsData } from "@/data/randomData";
-import { Home, MapPin, Search, ShieldCheck, Sun, Users } from "lucide-react";
+import {
+  FileQuestion,
+  Home,
+  MapPin,
+  Search,
+  ShieldCheck,
+  Sun,
+  Users,
+} from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
+import { PrimaryButton } from "../buttons";
+import { FaQuestion } from "react-icons/fa6";
 
 const datas = [
   {
@@ -39,18 +50,25 @@ function BookingBanner() {
       <section className="py-16 bg-accent">
         <div className="container mx-auto px-4">
           <div className="relative rounded-2xl overflow-hidden" data-animate>
-            <div data-aos="fade-up" className="py-16 px-8 text-center">
-              <div className="flex justify-center mb-6">
+            <div className="py-16 px-8 text-center">
+              <div data-aos="fade-down" className="flex justify-center mb-6">
                 <div className="bg-primary p-4 rounded-full">
-                  <Search className="w-12 h-12 text-accent" />
+                  <FaQuestion className="w-12 h-12 text-accent" />
                 </div>
               </div>
-              <h2 className="font-jua text-3xl md:text-4xl text-primary mb-4">
-                Epic Safari Adventures Await
+              <h2
+                data-aos="fade-down"
+                className="font-jua text-3xl md:text-4xl text-primary mb-4"
+              >
+                Why travel with Odysseys?
               </h2>
-              <p className="font-quicksand text-lg text-secondary max-w-3xl mx-auto">
-                Embark on extraordinary wildlife journeys most iconic national
-                parks and witness nature's greatest spectacles
+              <p
+                data-aos="fade-down"
+                className="font-quicksand text-lg text-secondary max-w-3xl mx-auto"
+              >
+                Our accommodation is both luxurious and authentic. We promise
+                unrivalled comfort and exclusivity while staying true to the
+                vibrant soul and spirit of each, unique destination.
               </p>
               <div className="respons mt-12">
                 {/* tabs */}
@@ -66,9 +84,41 @@ function BookingBanner() {
                       </button>
                     ))}
                   </div>
+                  {/* tab container */}
+                  <div className="grid grid-cols-10 items-center gap-8">
+                    <div className="col-span-6">
+                      <Image
+                        data-aos="fade-right"
+                        className="w-full h-[500px]  object-cover rounded-xl shadow-2xl hover:scale-95 transitions"
+                        src={whyUsData[active].image}
+                        alt={whyUsData[active].title}
+                        width={500}
+                        height={500}
+                      />
+                    </div>
+                    <div
+                      data-aos="fade-left"
+                      className="space-y-4 pl-10 col-span-4 text-start"
+                    >
+                      <h2 className="font-jua text-xl md:text-2xl text-primary">
+                        {whyUsData[active].title}
+                      </h2>
+                      <hr className="w-14 h-1 bg-secondary" />
+
+                      <p className="text-primary leading-7">
+                        {whyUsData[active].desc}
+                      </p>
+                      <PrimaryButton className="text-sm ">
+                        Book a tour
+                      </PrimaryButton>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-4">
+                <div
+                  data-aos="fade-up"
+                  className="grid grid-cols-4 mt-12 gap-4"
+                >
                   {datas.map((data, index) => (
                     <div
                       key={index}

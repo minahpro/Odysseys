@@ -49,7 +49,7 @@ export default function AdventureBanner() {
               <div className="flex flex-wrap gap-4 mb-8">
                 <Link href="/tours">
                   <PrimaryButton className="border border-accent">
-                    Book Baloon Safaris
+                    Explore Our Journeys
                   </PrimaryButton>
                 </Link>
                 <SecondaryButton
