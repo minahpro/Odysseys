@@ -9,6 +9,7 @@ import { NoDataFound } from "@/components/Loadings/ErrorComp";
 import { PageLoading } from "@/components/Loadings/LoadingComp";
 import PaginationSet from "@/components/paginationSet";
 import TitleHeader from "@/components/titleHeader";
+import { demoDataBase } from "@/data/Demo-database";
 import useFetchAll from "@/lib/hooks/useFetchAll";
 import useFetchMultipleDocsByFieldNames from "@/lib/hooks/useFetchMultipleDocsByFieldNames";
 import { PenBox } from "lucide-react";
@@ -174,6 +175,23 @@ function Blogs() {
                       </button>
                     ))
                   )}
+                </div>
+              </div>
+
+              {/* countries */}
+              <div className="bg-white rounded-xl p-6 border border-secondary/20">
+                <h3 className="font-bold text-primary mb-4">Destinations</h3>
+                <div className="space-y-2">
+                  {demoDataBase?.mainDestinations?.map((dest, index) => (
+                    <button
+                      key={index}
+                      className={`bg-accent/15 text-primary hover:bg-accent/25  border text-start border-accent/30 text-sm font-bold w-full py-3 px-4 rounded transitions capitalize`}
+                    >
+                      {dest?.title}
+
+                      <span className="ml-2 text-xs opacity-70">(3)</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

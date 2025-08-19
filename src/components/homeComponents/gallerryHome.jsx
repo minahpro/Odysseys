@@ -38,7 +38,7 @@ export default function GallerySection() {
           badge={<Camera />}
           title={"Photo Gallery"}
           subHeading={
-            "Relive the magic of Tanzania through our stunning collection of photographs from unforgettable safaris and treks."
+            "Relive the magic of Africa through our stunning collection of photographs from unforgettable safaris and treks."
           }
         />
 

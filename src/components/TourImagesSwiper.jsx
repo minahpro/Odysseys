@@ -29,11 +29,7 @@ function TourImagesSwiper({ images, h }) {
       className="relative w-full z-10 group hoverPegShow"
     >
       {images?.map((src, index) => (
-        <SwiperSlide
-          key={index}
-          id={src}
-          className="rounded-md w-full overflow-hidden"
-        >
+        <SwiperSlide key={index} id={src} className="w-full overflow-hidden">
           <Image
             src={src}
             alt={"Loading..."}

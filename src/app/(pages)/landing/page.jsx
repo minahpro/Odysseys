@@ -1,7 +1,6 @@
 import Hero from "@/components/homeComponents/Hero";
 import React, { Suspense } from "react";
 import NavBar from "@/components/navbar";
-import FeaturesTours from "@/components/homeComponents/FeaturesTours";
 import WildlifeBanner from "@/components/banners/WildlifeBanner";
 import FeaturesDestinations from "@/components/homeComponents/DestinationsHome";
 import AboutHome from "@/components/homeComponents/AboutHome";

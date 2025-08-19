@@ -1,4 +1,6 @@
 import { Globe } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function WhyChooseUs() {
   return (
@@ -15,7 +17,7 @@ export default function WhyChooseUs() {
           data-aos-delay="100"
           className="md:text-4xl text-3xl text-secondary font-jua mb-4"
         >
-          Our Story
+          It all started in 1983
         </h2>
         <div className="max-w-4xl text-center">
           <p
@@ -40,6 +42,18 @@ export default function WhyChooseUs() {
             our guests and nature, between travelers and local communities, and
             between dreams and reality.
           </p>
+          <Link
+            href={"https://www.safaribookings.com/tanzania"}
+            className="flex-all w-full mt-4"
+          >
+            <Image
+              src="/partners/safaribookings.png"
+              alt="Safari Bookings"
+              className="w-full h-20 object-contain"
+              width={500}
+              height={500}
+            />
+          </Link>
         </div>
       </div>
     </section>

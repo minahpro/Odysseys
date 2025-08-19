@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { PrimaryButton, SecondaryButton } from "../buttons";
+import Link from "next/link";
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -11,27 +12,44 @@ const Hero = () => {
 
   const slides = [
     {
-      image: "/images/44.jpeg",
-      title: "Relax in Paradise",
-      subtitle: "Unwind on the pristine beaches after your safari adventure",
-      cta1: "Beach Packages",
-      cta2: "View Gallery",
+      image: "/images/bg/24.png", // animals
+      title: "Where the Wild Roams Free",
+      subtitle:
+        "From the Big Five in Kenya to gorillas in Rwanda, experience iconic wildlife across Africa’s diverse landscapes.",
+      cta1: { label: "View Experiences", link: "/experiences" },
+      cta2: { label: "Read Our Blogs", link: "/blog" },
     },
     {
-      image: "/images/bg/21.png",
-      title: "Conquer Africa's Highest Peak",
+      image: "/images/bg/26.png", // forest
+      title: "Into the Heart of the Forest",
       subtitle:
-        "Join us on an epic journey to the roof of Africa - Mount Kilimanjaro awaits your adventure",
-      cta1: "Plan Your Trek",
-      cta2: "Learn More",
+        "Explore the Congo Basin, Uganda’s Bwindi, and other lush rainforests home to gorillas, chimps, and rare species.",
+      cta1: { label: "Explore Journeys", link: "/journeys" },
+      cta2: { label: "About Us", link: "/about-us" },
     },
     {
-      image: "/images/bg/8.png",
-      title: "Discover the Wild Heart of Tanzania",
+      image: "/images/bg/21.png", // treks
+      title: "Adventure Above the Clouds",
       subtitle:
-        "Experience unforgettable safaris, majestic mountains, and pristine beaches with Wild Odysseys",
-      cta1: "Explore Packages",
-      cta2: "Watch Video",
+        "Climb Kilimanjaro, hike Ethiopia’s Simien Mountains, or trek through South Africa’s Drakensberg ranges.",
+      cta1: { label: "Plan Your Journey", link: "/journeys" },
+      cta2: { label: "View Experiences", link: "/experiences" },
+    },
+    {
+      image: "/images/bg/25.png", // waterfalls
+      title: "Chasing Waterfalls",
+      subtitle:
+        "From Victoria Falls in Zambia to hidden cascades in Madagascar, discover nature’s most powerful displays.",
+      cta1: { label: "View Gallery", link: "/gallery" },
+      cta2: { label: "Contact Us", link: "/contact-us" },
+    },
+    {
+      image: "/images/bg/29.png", // desert / beaches
+      title: "Escape to Paradise",
+      subtitle:
+        "Unwind on Zanzibar’s beaches, explore the Seychelles, or journey through Namibia’s vast desert dunes.",
+      cta1: { label: "Beach Journeys", link: "/journeys" },
+      cta2: { label: "View Gallery", link: "/gallery" },
     },
   ];
 
@@ -106,8 +124,17 @@ const Hero = () => {
               {slides[currentSlide].subtitle}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <PrimaryButton>{slides[currentSlide].cta1}</PrimaryButton>
-              <SecondaryButton>{slides[currentSlide].cta2}</SecondaryButton>
+              <Link href={slides[currentSlide].cta1?.link}>
+                <PrimaryButton>
+                  {slides[currentSlide].cta1?.label}
+                </PrimaryButton>
+              </Link>
+
+              <Link href={slides[currentSlide].cta2?.link}>
+                <SecondaryButton>
+                  {slides[currentSlide].cta2?.label}
+                </SecondaryButton>
+              </Link>
             </div>
           </div>
         </div>

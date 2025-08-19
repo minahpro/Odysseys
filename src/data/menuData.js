@@ -86,7 +86,7 @@ export const menuData = {
     },
     {
       name: "Blogs",
-      href: "/blogs",
+      href: "/blog",
       icon: "FileText",
       description: "Stories and insights from the wild",
       badge: "Updated",

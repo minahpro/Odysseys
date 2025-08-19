@@ -96,7 +96,7 @@ export function DropDownMenu({ activeDropdown, fullWidthMenus, menuItems }) {
                   : activeDropdown === "Experiences"
                     ? "/experiences"
                     : activeDropdown === "Camps"
-                      ? "/camps"
+                      ? "/accommodations"
                       : "/contact"
               }
             >
@@ -139,9 +139,16 @@ export function DropDownMenu({ activeDropdown, fullWidthMenus, menuItems }) {
         </div>
       ) : (
         <div className="px-6 py-6">
-          <h3 className="font-jua text-lg text-primary mb-4 pb-2 border-b border-secondary/20">
-            {activeDropdown}
-          </h3>
+          <div className="flex justify-between items-center mb-4 pb-2 border-b border-secondary/20">
+            <h3 className="font-jua text-lg text-primary ">{activeDropdown}</h3>
+            {activeDropdown === "Journeys" && (
+              <Link href="/journeys">
+                <button className="text-xs rounded font-semibold px-2 py-1 bg-accent text-primary">
+                  View All
+                </button>
+              </Link>
+            )}
+          </div>
           <div className="space-y-2">
             {menuItems
               .find((m) => m.name === activeDropdown)

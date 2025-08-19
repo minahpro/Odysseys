@@ -216,49 +216,6 @@ export const demoDataBase = {
       subDestinations: ["sub9", "sub10"],
     },
     {
-      id: "dest6",
-      title: "Namibia",
-      slogan: "Land of Endless Horizons",
-      overview:
-        "Namibia is renowned for its natural beauty, wildlife, and cultural heritage. Land of Endless Horizons.",
-      photos: ["/placeholder.svg"],
-      facts: {
-        populationSize: "2.5 million",
-        bestTimeToGo: "May to October",
-        language: "English",
-        currency: "Namibian Dollar",
-        capital: "Windhoek",
-        timeZone: "EAT (UTC+3)",
-      },
-      weather: {
-        description: "Tropical climate with varying regions.",
-        list: [
-          {
-            title: "Dry Season",
-            description: "Best for wildlife viewing.",
-          },
-          {
-            title: "Wet Season",
-            description: "Ideal for birdwatching.",
-          },
-        ],
-      },
-      wildlifes: ["wl1", "wl2", "wl3", "wl4", "wl5"],
-      faqs: [
-        {
-          question: "Is it safe?",
-          answer: "Yes, with licensed guides.",
-        },
-        {
-          question: "Do I need a visa?",
-          answer: "Depends on nationality.",
-        },
-      ],
-      experiances: ["exp1", "exp2", "exp3"],
-      camps: ["camp1", "camp2"],
-      subDestinations: ["sub11", "sub12"],
-    },
-    {
       id: "dest7",
       title: "South Africa",
       slogan: "A World in One Country",
@@ -301,6 +258,50 @@ export const demoDataBase = {
       camps: ["camp1", "camp2"],
       subDestinations: ["sub13", "sub14"],
     },
+    {
+      id: "dest6",
+      title: "Namibia",
+      slogan: "Land of Endless Horizons",
+      overview:
+        "Namibia is renowned for its natural beauty, wildlife, and cultural heritage. Land of Endless Horizons.",
+      photos: ["/placeholder.svg"],
+      facts: {
+        populationSize: "2.5 million",
+        bestTimeToGo: "May to October",
+        language: "English",
+        currency: "Namibian Dollar",
+        capital: "Windhoek",
+        timeZone: "EAT (UTC+3)",
+      },
+      weather: {
+        description: "Tropical climate with varying regions.",
+        list: [
+          {
+            title: "Dry Season",
+            description: "Best for wildlife viewing.",
+          },
+          {
+            title: "Wet Season",
+            description: "Ideal for birdwatching.",
+          },
+        ],
+      },
+      wildlifes: ["wl1", "wl2", "wl3", "wl4", "wl5"],
+      faqs: [
+        {
+          question: "Is it safe?",
+          answer: "Yes, with licensed guides.",
+        },
+        {
+          question: "Do I need a visa?",
+          answer: "Depends on nationality.",
+        },
+      ],
+      experiances: ["exp1", "exp2", "exp3"],
+      camps: ["camp1", "camp2"],
+      subDestinations: ["sub11", "sub12"],
+    },
+
     {
       id: "dest8",
       title: "Ethiopia",

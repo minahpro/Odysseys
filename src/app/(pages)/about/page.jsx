@@ -1,7 +1,5 @@
-import AdventureBanner from "@/components/banners/AdventureBanner";
+import WhyBanner from "@/components/banners/WhyBanner";
 import AboutHome from "@/components/homeComponents/AboutHome";
-import ActivitiesSection from "@/components/homeComponents/Activities";
-import DayTripsHome from "@/components/homeComponents/DayTripsHome";
 import GallerySection from "@/components/homeComponents/gallerryHome";
 import PatinersSection from "@/components/homeComponents/PatinersSection";
 import TestimonialsSection from "@/components/homeComponents/ReviewsHome";
@@ -16,17 +14,16 @@ function page() {
         first={"About "}
         last={"Us"}
         sub={
-          "About Wild Odysseys, Your trusted partner for unforgettable safari and travel experiences in Tanzania. We are dedicated to providing you with the best possible safari and travel experiences. "
+          "Expanding the World’s odyssey We are a group of individuals, helping to conserve 6 million acres (2.3 million-plus hectares) of land across our planet. "
         }
-        image={"/images/gallery/team3.png"}
+        image={"/images/bg/28.png"}
       />
 
       <WhyChooseUs />
       <AboutHome about={true} />
-      <DayTripsHome />
-      <AdventureBanner />
-      <GallerySection />
+      <WhyBanner />
       <TestimonialsSection home={false} />
+      <GallerySection />
       <PatinersSection />
     </>
   );

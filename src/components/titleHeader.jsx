@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function TitleHeader({ first, last, link, sub, image }) {
   return (
-    <section className={`w-full pt-20 relative grid grid-cols-2 gap-12`}>
+    <section className={`w-full relative grid grid-cols-2 gap-12`}>
       <div className="bg-white flex-all h-full">
         <div className=" space-y-6 pl-32 w-full">
           <h1

@@ -1,5 +1,6 @@
 "use client";
 
+import PromoBanner from "@/components/banners/PromoBanner";
 import { DestinationCardProHome } from "@/components/cards";
 import DestinationsFilter from "@/components/Filters/destinationFilter";
 import { findItTitle } from "@/components/Functions";
@@ -14,6 +15,7 @@ import PaginationSet from "@/components/paginationSet";
 
 import TitleHeader from "@/components/titleHeader";
 import { useAppContext } from "@/context/AppContext";
+import { demoDataBase } from "@/data/Demo-database";
 import useFetchAll from "@/lib/hooks/useFetchAll";
 import { Map } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -104,10 +106,13 @@ function Destinations() {
         first={"Destina"}
         last={"tions."}
         image={"/images/bg/8.png"}
-        sub="From the vast plains of the Serengeti to the pristine beaches of Zanzibar, discover Tanzania's wonders.Each region offers a unique tapestry of wildlife, landscapes, and cultural experiences."
+        sub="At
+              Wild Odysseys, we guide you beyond the ordinary, curating journeys
+              that connect you to Africa’s most iconic landscapes, wildlife, and
+              cultures. "
         link={{
-          text: "View Kilimanjaro Tours",
-          href: "/tours/climbing-trips",
+          text: "Explore Experiances",
+          href: "/experiences",
         }}
       />
       <section className="sm:py-28 py-10 bg-accent/40">
@@ -123,7 +128,7 @@ function Destinations() {
             data-aos-delay="100"
             className="md:text-4xl text-3xl text-secondary font-jua mb-4"
           >
-            Unveiling Tanzania's Treasures
+            Destinations That Inspire
           </h2>
           <div className="max-w-4xl text-center space-y-6">
             <p
@@ -131,93 +136,72 @@ function Destinations() {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              Tanzania is a land of incredible diversity, boasting some of
-              Africa's most iconic natural wonders. Our destinations are
-              carefully selected to provide you with the best of what this
-              magnificent country has to offer, from thrilling wildlife
-              encounters to serene beach escapes and challenging mountain treks.
+              From the sweeping plains of the Serengeti to the misty peaks of
+              Rwanda, and from the sun-drenched beaches of Zanzibar to the vast
+              deserts of Namibia — every destination tells its own story.
+              Whether you dream of thrilling safaris, tranquil escapes, or
+              cultural encounters, our destinations promise experiences you’ll
+              treasure forever.
             </p>
           </div>
           <div className="w-full mt-12">
-            <div className="grid gap-5 lg:grid-cols-3 grid-cols-1">
-              {/* filters */}
-              <div className="lg:col-span-1 space-y-6">
-                <div className="lg:block hidden" data-aos="fade-right">
-                  <DestinationsFilter
-                    clearFilter={clearFilter}
-                    setCurrentPage={setCurrentPage}
-                  />
-                </div>
-                <div className="lg:hidden block">
-                  <SimpleAccordionFieldComp
-                    allDivClass="rounded-xl px-6 py-0 border space-y-2 text-sm"
-                    Icon={IoFilterSharp}
-                    title="Destinations Filters"
-                  >
-                    <div className="py-2">
-                      <DestinationsFilter
-                        clearFilter={clearFilter}
-                        setCurrentPage={setCurrentPage}
-                      />
-                    </div>
-                  </SimpleAccordionFieldComp>
-                </div>
-              </div>
-              <div className="lg:col-span-2 lg:pl-12 space-y-10">
-                {/* Results Header */}
-                <div className="bg-secondary rounded p-6 mb-6 border border-secondary/20">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-white mb-2">
-                      Showing {currentPosts?.length} Destinations
-                    </h3>
-
-                    <button
-                      onClick={clearFilter}
-                      className="text-sm bg-accent py-2 px-4 font-bold text-primary hover:text-secondary transition-colors"
-                    >
-                      Clear search
-                    </button>
-                  </div>
-                </div>
-
-                {isLoading || isFetchingOptions ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {[...Array(6)].map((_, i) => (
-                      <DestinationLoading key={i} />
-                    ))}
-                  </div>
-                ) : currentPosts?.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {currentPosts.map((item, index) => (
-                      <DestinationCardProHome
-                        key={index}
-                        item={{
-                          ...item,
-                          tourAmount: getTourAmount(item.id),
-                        }}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <NoDataFound text="No Destination Found" />
-                )}
-
-                {/* Pagination */}
-                {newDestinations?.length > postsPerPage && (
-                  <PaginationSet
-                    totalPosts={newDestinations?.length}
-                    postsPerPage={postsPerPage}
-                    setCurrentPage={setCurrentPage}
-                    currentPage={currentPage}
-                  />
-                )}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {demoDataBase?.mainDestinations?.map((item, index) => (
+                <DestinationCardProHome
+                  key={index}
+                  item={{
+                    name: item?.title,
+                    destinations: item?.subDestinations?.length + 2 * index,
+                    image: `/images/bg/${index + 1}.png`,
+                    slug: item?.id,
+                    slogan: item?.slogan,
+                  }}
+                />
+              ))}
             </div>
+
+            {/* Pagination */}
+            <PaginationSet
+              totalPosts={6}
+              postsPerPage={3}
+              setCurrentPage={() => {}}
+              currentPage={1}
+            />
           </div>
         </div>
       </section>
-      <div className="w-full bg-white lg:pt-20 pt-10">
-        <DayTripsHome />
+      <div className="border-b border-primary/90">
+        <PromoBanner
+          title="The original Wilderness"
+          subtitle="From Wilderness’ birthplace in diverse Botswana, home of the phenomenal Okavango Delta, to the dense forests and great apes of Rwanda, or the ancient, intriguing desert landscapes of Namibia, let’s explore Africa’s wild spaces, together."
+          imageSrc="/images/bg/27.png"
+          contentList={[
+            {
+              icon: "Heart",
+              text: "Cardiovascular and strength training program",
+            },
+            {
+              icon: "Bag",
+              text: "Complete packing list and rental options",
+            },
+            {
+              icon: "Time",
+              text: "12-week preparation schedule",
+            },
+            { icon: "FirstAidKit", text: "Expert guidance and support" },
+          ]}
+          buttonText="Book With Us Now"
+          buttonLink="/contact"
+          bgColor="bg-primary"
+          textColor={{
+            title: "text-accent",
+            sub: "text-accent",
+            list: "text-accent",
+            icon: "text-accent",
+            button:
+              "bg-accent text-primary hover:bg-secondary hover:text-white",
+          }}
+        />
       </div>
     </>
   );
