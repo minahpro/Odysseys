@@ -137,15 +137,13 @@ function Tours() {
   return (
     <>
       <TitleHeader
-        first={"Accommo"}
-        last={"dations."}
+        first={"Cam"}
+        last={"mps."}
         image={"/images/bg/16.png"}
-        sub="Our accommodations are designed to provide you with the best possible
-          experience. We have a wide range of accommodations to choose from,
-          including hotels, resorts, and guesthouses."
+        sub="Discover Africa from some of the world’s premier safari camps, where natural wonders abound and wildlife is plentiful. This is Wilderness."
         link={{
-          text: "Book Packages",
-          href: "/tours",
+          text: "Journeys Types",
+          href: "/journeys",
         }}
       />
       <section className="sm:py-28 py-10 bg-accent/40">
@@ -161,7 +159,7 @@ function Tours() {
             data-aos-delay="100"
             className="md:text-4xl text-3xl text-secondary font-jua mb-4"
           >
-            Our Handpicked Accommodations
+            Explore pristine, untamed Africa
           </h2>
           <div className="max-w-4xl text-center space-y-6">
             <p
@@ -169,11 +167,12 @@ function Tours() {
               data-aos="fade-up"
               data-aos-delay="200"
             >
-              After thrilling days of exploration, a comfortable and welcoming
-              retreat is essential. Our selection of lodges, tented camps, and
-              resorts are chosen for their quality, service, and ability to
-              enhance your Tanzanian experience, whether you seek luxury,
-              adventure, or a blend of both.
+              From the waterways of Botswana’s Okavango Delta, to the plains of
+              the Serengeti in Tanzania, the wild rivers and savannah of Zambia
+              and Zimbabwe, the vast desert beauty of Namibia, and the lush
+              rainforests of Rwanda, Wilderness brings you here. Explore our
+              collective of camps across Southern and East Africa, and discover
+              the continent’s wildest, most thrilling safari experiences.
             </p>
           </div>
           <div className="w-full mt-12">

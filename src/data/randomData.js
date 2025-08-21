@@ -537,3 +537,30 @@ export const whyUsData = [
     desc: "Each camp honours its area's cultures and traditions. Over 90% of staff come from local villages, sharing their history and cultures with guests of all ages. Elevated traditional dishes make mealtimes exciting, while textiles and art are also sourced from communities. Some of our destinations also offer the opportunity to further immerse yourself in nearby villages and ongoing research projects.",
   },
 ];
+
+export const ExperiancesData = [
+  {
+    title: "Safari",
+    subTitle: "Luxury African Safaris",
+    image: "/images/bg/24.png",
+    desc: "Come face to face with gorillas, trekking in Rwanda. Explore the wetland wonder of the Okavango Delta in a traditional mokoro. Fly high in a hot-air balloon over the dunes of Namibia. Go in search of game on a drive; or be guided by infra-red spotlights under cover of darkness. You have a front-row seat to thrilling interactions in the wild with our luxury safari experiences.",
+  },
+  {
+    title: "Wellness",
+    subTitle: "Luxury Wellness Travel",
+    image: "/images/bg/33.png",
+    desc: "Follow ancient wildlife paths with a knowledgeable guide by your side. Stretch your legs and appreciate the smaller intricacies of the safari experience. Take in incredible landscapes on an exciting e-bike adventure. Look up at a sky filled with billions of stars. Rediscover the wilderness and your place in it with our restorative travel experiences.",
+  },
+  {
+    title: "Culture & Impact",
+    subTitle: "Cultural Travel Experiences",
+    image: "/images/bg/29.png",
+    desc: "Walk alongside semi-nomadic Himba in the vast Namibian desert. Lean in to a San story in Botswana. Visit local villages and meet traditional farmers in Rwanda. Gain ancient wisdom passed down through the generations. Each country, each camp, each person has a unique tale to share. Hear theirs and discover the impact they’ll make on your own story.",
+  },
+  {
+    title: "Photography",
+    subTitle: "Luxury African Photo Safaris",
+    image: "/images/bg/34.png",
+    desc: "Photogenic doesn’t begin to describe the locations you’ll visit with Wilderness. Hide out near a waterhole, as elephants splash at eye level and birds chatter, oblivious to your presence. Grab your camera, clean your lenses, and have the binoculars ready for these unique photographic experiences.",
+  },
+];

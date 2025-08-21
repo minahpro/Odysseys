@@ -1,80 +1,58 @@
 "use client";
-
-import { whyUsData } from "@/data/randomData";
-import {
-  FileQuestion,
-  Home,
-  MapPin,
-  Search,
-  ShieldCheck,
-  Sun,
-  Users,
-} from "lucide-react";
+import TitleHeader from "@/components/titleHeader";
+import { ExperiancesData } from "@/data/randomData";
+import { Search, Users } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
-import { PrimaryButton } from "../buttons";
-import { FaQuestion } from "react-icons/fa6";
+import React, { useState } from "react";
 
-const datas = [
-  {
-    icon: Home,
-    title: "Camps",
-    description:
-      "Wilderness owns over 60 luxury and immersive camps thoughout Africa",
-  },
-  {
-    title: "Countries",
-    description:
-      "Offering impactful travel in a range of the finest destinations in Africa",
-    icon: MapPin,
-  },
-  {
-    title: "Private",
-    description:
-      "Exclusive access to some 2.3 million hectares of Africa’s best wildlife areas",
-    icon: ShieldCheck,
-  },
-
-  {
-    title: "Community",
-    description:
-      "Activities allow guests to immerse themselves in various cultures and customs",
-    icon: Users,
-  },
-];
-
-function BookingBanner() {
+function page() {
   const [active, setActive] = useState(0);
+
   return (
     <>
-      <section className="py-16 bg-accent">
+      <TitleHeader
+        first={"Exper"}
+        last={"iences"}
+        sub={
+          "Walk. Boat. Barge. Float. Fly. Drive. Ride. Trek. Track. Discover. A world of experiences awaits with Wilderness."
+        }
+        image={"/images/bg/36.png"}
+        link={{
+          href: "/blog",
+          text: "Read Our stories",
+        }}
+      />
+      <section className="py-16 bg-accent/40">
         <div className="container mx-auto px-4">
           <div className="relative rounded-2xl overflow-hidden" data-animate>
             <div className="py-16 px-8 text-center">
               <div data-aos="fade-down" className="flex justify-center mb-6">
                 <div className="bg-primary p-4 rounded-full">
-                  <FaQuestion className="w-12 h-12 text-accent" />
+                  <Users className="w-12 h-12 text-accent" />
                 </div>
               </div>
               <h2
                 data-aos="fade-down"
                 className="font-jua text-3xl md:text-4xl text-primary mb-4"
               >
-                Why travel with Odysseys?
+                Do something different.
               </h2>
               <p
                 data-aos="fade-down"
                 className="font-quicksand text-lg text-secondary max-w-3xl mx-auto"
               >
-                Our accommodation is both luxurious and authentic. We promise
-                unrivalled comfort and exclusivity while staying true to the
-                vibrant soul and spirit of each, unique destination.
+                Safari vehicles are being refuelled. Delicious bush brunches are
+                being baked. Star-Beds are being prepared. The people of
+                Wilderness are ready to welcome you. Travelling is not only
+                about the places you visit or the things you’ll see, it’s about
+                making memories and experiencing something you’ve never done
+                before. Whatever that is, we’re ready for you.
               </p>
               <div className="respons mt-12">
                 {/* tabs */}
                 <div className="w-full flex-all flex-col space-y-12">
                   <div className="flex-all rounded-xl p-2 overflow-hidden bg-white/20">
-                    {whyUsData?.map((item, index) => (
+                    {ExperiancesData?.map((item, index) => (
                       <button
                         key={index}
                         onClick={() => setActive(index)}
@@ -89,9 +67,9 @@ function BookingBanner() {
                     <div className="col-span-6">
                       <Image
                         data-aos="fade-right"
-                        className="w-full h-[500px]  object-cover rounded-xl shadow-2xl hover:scale-95 transitions"
-                        src={whyUsData[active].image}
-                        alt={whyUsData[active].title}
+                        className="w-full h-[350px] object-cover rounded-xl shadow-2xl hover:scale-95 transitions"
+                        src={ExperiancesData[active].image}
+                        alt={ExperiancesData[active].title}
                         width={500}
                         height={500}
                       />
@@ -101,36 +79,15 @@ function BookingBanner() {
                       className="space-y-4 pl-10 col-span-4 text-start"
                     >
                       <h2 className="font-jua text-xl md:text-2xl text-primary">
-                        {whyUsData[active].subTitle}
+                        {ExperiancesData[active].subTitle}
                       </h2>
                       <hr className="w-14 h-1 bg-secondary" />
 
                       <p className="text-primary leading-7">
-                        {whyUsData[active].desc}
+                        {ExperiancesData[active].desc}
                       </p>
-                      <PrimaryButton className="text-sm ">
-                        Book a tour
-                      </PrimaryButton>
                     </div>
                   </div>
-                </div>
-
-                <div
-                  data-aos="fade-up"
-                  className="grid grid-cols-4 mt-12 gap-4"
-                >
-                  {datas.map((data, index) => (
-                    <div
-                      key={index}
-                      className="bg-white/20 p-8 text-center rounded-xl flex-all flex-col gap-2"
-                    >
-                      <div className="w-12 h-12 bg-secondary text-white flex-all rounded-full">
-                        <data.icon className="w-6 h-6" />
-                      </div>
-                      <h3 className="text-primary font-bold">{data.title}</h3>
-                      <p className="text-primary text-sm">{data.description}</p>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
@@ -141,8 +98,16 @@ function BookingBanner() {
           </div>
         </div>
       </section>
+
+      <div className="respons lg:py-20 py-10">
+        <div className="flex justify-between items-center">
+          <h2 className="font-jua text-3xl md:text-4xl text-primary mb-4">
+            under construction
+          </h2>
+        </div>
+      </div>
     </>
   );
 }
 
-export default BookingBanner;
+export default page;
