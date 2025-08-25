@@ -3,29 +3,25 @@ import { useAppContext } from "@/context/AppContext";
 import { useState, useEffect } from "react";
 
 function useGetAuthUser() {
-
-  const {authUser} = useAppContext
-  const [data, setData] = useState([]);
+  const { authUser } = useAppContext();
+  const [data, setData] = useState(null);
   const [didSucceed, setDidSucceed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { didSucceed, items } = await fetchDocuments(cln);
-
-      if (didSucceed) {
-        setData(items);
+    const fetchAuthUser = () => {
+      if (authUser) {
+        setData(authUser);
         setDidSucceed(true);
+      } else {
+        setData(null);
+        setDidSucceed(false);
       }
-
       setIsLoading(false);
     };
-    fetchData();
-    return () => {
-      const controller = new AbortController();
-      controller.abort();
-    };
-  }, [cln]);
+
+    fetchAuthUser();
+  }, [authUser]);
 
   return { isLoading, didSucceed, data };
 }

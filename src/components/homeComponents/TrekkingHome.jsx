@@ -41,7 +41,7 @@ export default function TrekkingTours() {
             slot="container-start"
             className="parallax-bg"
             style={{
-              "background-image": "url(/images/bg/5.png)",
+              backgroundImage: "url(/images/bg/5.png)",
             }}
             data-swiper-parallax="-23%"
           ></div>

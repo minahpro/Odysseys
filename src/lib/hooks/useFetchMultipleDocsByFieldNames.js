@@ -18,7 +18,7 @@ function useFetchMultipleDocsByFieldNames(cln, userFilters, orderByData) {
       setIsLoading(false);
     };
     fetchData();
-  }, []);
+  }, [cln, userFilters, orderByData]);
 
   return { isLoading, didSucceed, data };
 }

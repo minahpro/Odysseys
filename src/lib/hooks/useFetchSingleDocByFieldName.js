@@ -19,7 +19,7 @@ function useFetchSingleDocByFieldName(cln, userFilters) {
       setIsLoading(false);
     };
     fetchData();
-  }, []);
+  }, [cln, userFilters]);
 
   return { isLoading, didSucceed, data };
 }
