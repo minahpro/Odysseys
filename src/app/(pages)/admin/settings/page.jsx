@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Save,
   Globe,
@@ -9,10 +9,15 @@ import {
   CreditCard,
   Shield,
   Bell,
+  Loader2,
 } from "lucide-react";
+import { saveSettings, getSettings } from "../../../../firebase/databaseOperations";
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("general");
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
   const [settings, setSettings] = useState({
     // General Settings
     siteName: "Wild Odysseys",
@@ -35,22 +40,20 @@ const SettingsPage = () => {
     smtpUsername: "",
     smtpPassword: "",
     smtpEncryption: "tls",
-    fromEmail: "noreply@wildodysseys.com",
+    fromEmail: "noreply@wild-odysseys.com",
     fromName: "Wild Odysseys",
 
     // SEO Settings
-    metaTitle: "Wild Odysseys - Tanzania Safari & Adventure Tours",
-    metaDescription:
-      "Experience the best of Tanzania with our safari tours, Kilimanjaro treks, and Zanzibar adventures. Book your dream African adventure today!",
-    metaKeywords:
-      "Tanzania safari, Kilimanjaro trekking, Zanzibar tours, African adventure",
+    metaTitle: "",
+    metaDescription: "",
+    metaKeywords: "",
     googleAnalytics: "",
     facebookPixel: "",
 
     // Booking Settings
     bookingEnabled: true,
     requireDeposit: true,
-    depositPercentage: "30",
+    depositPercentage: "",
     cancellationPolicy: "Free cancellation up to 48 hours before the tour",
     paymentMethods: ["credit_card", "paypal", "bank_transfer"],
 
@@ -67,9 +70,9 @@ const SettingsPage = () => {
     marketingEmails: true,
 
     // Social Media
-    facebookUrl: "https://facebook.com/wildodysseys",
-    twitterUrl: "https://twitter.com/wildodysseys",
-    instagramUrl: "https://instagram.com/wildodysseys",
+    facebookUrl: "",
+    twitterUrl: "",
+    instagramUrl: "",
     youtubeUrl: "",
   });
 
@@ -83,13 +86,50 @@ const SettingsPage = () => {
     { id: "notifications", label: "Notifications", icon: Bell },
   ];
 
+  // Load existing settings on component mount
+  useEffect(() => {
+    const loadSettings = async () => {
+      setLoading(true);
+      try {
+        const result = await getSettings();
+        if (result.didSucceed && result.settings) {
+          setSettings(prevSettings => ({ ...prevSettings, ...result.settings }));
+        }
+      } catch (error) {
+        console.error("Error loading settings:", error);
+        setMessage("Failed to load settings");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSettings();
+  }, []);
+
   const handleInputChange = (field, value) => {
     setSettings({ ...settings, [field]: value });
+    // Clear any existing messages when user starts typing
+    if (message) setMessage("");
   };
 
-  const handleSave = () => {
-    // Save settings logic here
-    alert("Settings saved successfully!");
+  const handleSave = async () => {
+    setSaving(true);
+    setMessage("");
+    
+    try {
+      const result = await saveSettings(settings);
+      if (result.didSucceed) {
+        setMessage(result.message || "Settings saved successfully!");
+        setTimeout(() => setMessage(""), 3000); // Clear message after 3 seconds
+      } else {
+        setMessage(result.message || "Failed to save settings");
+      }
+    } catch (error) {
+      console.error("Error saving settings:", error);
+      setMessage("An error occurred while saving settings");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const renderTabContent = () => {
@@ -675,8 +715,30 @@ const SettingsPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          <span className="font-quicksand text-gray-600">Loading settings...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Message Display */}
+      {message && (
+        <div className={`p-4 rounded-xl border font-quicksand ${
+          message.includes('successfully') || message.includes('created') || message.includes('updated')
+            ? 'bg-green-50 border-green-200 text-green-800'
+            : 'bg-red-50 border-red-200 text-red-800'
+        }`}>
+          {message}
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
         <div className="flex items-center justify-between">
@@ -688,10 +750,20 @@ const SettingsPage = () => {
           </div>
           <button
             onClick={handleSave}
-            className="flex items-center px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-quicksand"
+            disabled={saving}
+            className="flex items-center px-6 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-quicksand disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save className="w-4 h-4 mr-2" />
-            Save All Settings
+            {saving ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save All Settings
+              </>
+            )}
           </button>
         </div>
       </div>

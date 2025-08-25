@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
 import {
@@ -15,13 +15,23 @@ import {
   Home,
   Calendar,
   BookOpen,
+  Loader2,
 } from "lucide-react";
+import {
+  getAttributes,
+  createAttribute,
+  updateAttribute,
+  deleteAttribute,
+} from "../../../../firebase/databaseOperations";
 
 const AttributesPage = () => {
   const [activeTab, setActiveTab] = useState("tour-types");
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
   const [selectedItem, setSelectedItem] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     slug: "",
@@ -30,216 +40,15 @@ const AttributesPage = () => {
     status: "active",
   });
 
-  // Sample data for different attribute types
-  const [tourTypes, setTourTypes] = useState([
-    {
-      id: 1,
-      name: "Safari",
-      slug: "safari",
-      description: "Wildlife viewing tours",
-      color: "#10B981",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Trekking",
-      slug: "trekking",
-      description: "Mountain climbing adventures",
-      color: "#F59E0B",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Beach",
-      slug: "beach",
-      description: "Coastal relaxation tours",
-      color: "#3B82F6",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Cultural",
-      slug: "cultural",
-      description: "Cultural immersion experiences",
-      color: "#8B5CF6",
-      status: "active",
-    },
-  ]);
+  // Data for different attribute types
+  const [tourTypes, setTourTypes] = useState([]);
 
-  const [destinationTypes, setDestinationTypes] = useState([
-    {
-      id: 1,
-      name: "National Park",
-      slug: "national-park",
-      description: "Protected wildlife areas",
-      color: "#059669",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Mountain",
-      slug: "mountain",
-      description: "High altitude destinations",
-      color: "#7C3AED",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Island",
-      slug: "island",
-      description: "Island destinations",
-      color: "#0EA5E9",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "City",
-      slug: "city",
-      description: "Urban destinations",
-      color: "#DC2626",
-      status: "active",
-    },
-  ]);
+  const [destinationTypes, setDestinationTypes] = useState([]);
 
-  const [accommodationTypes, setAccommodationTypes] = useState([
-    {
-      id: 1,
-      name: "Lodge",
-      slug: "lodge",
-      description: "Safari lodges and camps",
-      color: "#16A34A",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Hotel",
-      slug: "hotel",
-      description: "Standard hotels",
-      color: "#2563EB",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Resort",
-      slug: "resort",
-      description: "Beach and luxury resorts",
-      color: "#7C2D12",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Guesthouse",
-      slug: "guesthouse",
-      description: "Budget accommodations",
-      color: "#B45309",
-      status: "active",
-    },
-  ]);
-
-  const [blogCategories, setBlogCategories] = useState([
-    {
-      id: 1,
-      name: "Travel Tips",
-      slug: "travel-tips",
-      description: "Helpful travel advice",
-      color: "#0891B2",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Wildlife",
-      slug: "wildlife",
-      description: "Wildlife and nature content",
-      color: "#15803D",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Culture",
-      slug: "culture",
-      description: "Cultural insights",
-      color: "#C2410C",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Adventure",
-      slug: "adventure",
-      description: "Adventure stories",
-      color: "#9333EA",
-      status: "active",
-    },
-  ]);
-
-  const [tourCategories, setTourCategories] = useState([
-    {
-      id: 1,
-      name: "Family",
-      slug: "family",
-      description: "Family-friendly tours",
-      color: "#DC2626",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Luxury",
-      slug: "luxury",
-      description: "High-end experiences",
-      color: "#7C2D12",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Budget",
-      slug: "budget",
-      description: "Affordable options",
-      color: "#059669",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Adventure",
-      slug: "adventure",
-      description: "Thrilling experiences",
-      color: "#7C3AED",
-      status: "active",
-    },
-  ]);
-
-  const [tourTags, setTourTags] = useState([
-    {
-      id: 1,
-      name: "Big Five",
-      slug: "big-five",
-      description: "Tours featuring the Big Five animals",
-      color: "#B45309",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Photography",
-      slug: "photography",
-      description: "Photography-focused tours",
-      color: "#0891B2",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Honeymoon",
-      slug: "honeymoon",
-      description: "Romantic getaways",
-      color: "#BE185D",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Group Tour",
-      slug: "group-tour",
-      description: "Group travel experiences",
-      color: "#059669",
-      status: "active",
-    },
-  ]);
+  const [accommodationTypes, setAccommodationTypes] = useState([]);
+  const [blogCategories, setBlogCategories] = useState([]);
+  const [tourCategories, setTourCategories] = useState([]);
+  const [tourTags, setTourTags] = useState([]);
 
   const tabs = [
     {
@@ -248,6 +57,7 @@ const AttributesPage = () => {
       icon: Type,
       data: tourTypes,
       setter: setTourTypes,
+      attributeType: "tour-types",
     },
     {
       id: "destination-types",
@@ -255,6 +65,7 @@ const AttributesPage = () => {
       icon: MapPin,
       data: destinationTypes,
       setter: setDestinationTypes,
+      attributeType: "destination-types",
     },
     {
       id: "accommodation-types",
@@ -262,6 +73,7 @@ const AttributesPage = () => {
       icon: Home,
       data: accommodationTypes,
       setter: setAccommodationTypes,
+      attributeType: "accommodation-types",
     },
     {
       id: "blog-categories",
@@ -269,6 +81,7 @@ const AttributesPage = () => {
       icon: BookOpen,
       data: blogCategories,
       setter: setBlogCategories,
+      attributeType: "blog-categories",
     },
     {
       id: "tour-categories",
@@ -276,6 +89,7 @@ const AttributesPage = () => {
       icon: Calendar,
       data: tourCategories,
       setter: setTourCategories,
+      attributeType: "tour-categories",
     },
     {
       id: "tour-tags",
@@ -283,8 +97,40 @@ const AttributesPage = () => {
       icon: Tag,
       data: tourTags,
       setter: setTourTags,
+      attributeType: "tour-tags",
     },
   ];
+
+  // Load data from Firebase
+  useEffect(() => {
+    const loadAttributes = async () => {
+      setLoading(true);
+      try {
+        const promises = tabs.map(async (tab) => {
+          const result = await getAttributes(tab.attributeType);
+          if (result.didSucceed) {
+            tab.setter(result.items);
+          }
+        });
+        await Promise.all(promises);
+      } catch (error) {
+        console.error("Error loading attributes:", error);
+        setMessage("Failed to load attributes");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAttributes();
+  }, []);
+
+  // Clear message after 3 seconds
+   useEffect(() => {
+     if (message) {
+       const timer = setTimeout(() => setMessage(""), 3000);
+       return () => clearTimeout(timer);
+     }
+   }, [message]);
 
   const getCurrentData = () => {
     const currentTab = tabs.find((tab) => tab.id === activeTab);
@@ -373,40 +219,87 @@ const AttributesPage = () => {
     setShowModal(true);
   };
 
-  const handleDelete = (item) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete "${item?.name || "this item"}"?`
-      )
-    ) {
-      const currentData = getCurrentData();
-      const setter = getCurrentSetter();
-      setter(currentData.filter((i) => i.id !== item.id));
+  const handleDelete = async (item) => {
+     if (
+       window.confirm(
+         `Are you sure you want to delete "${item?.name || "this item"}"`
+       )
+     ) {
+      setSaving(true);
+      setMessage("");
+      
+      const currentTab = tabs.find((tab) => tab.id === activeTab);
+      if (currentTab) {
+        try {
+          const result = await deleteAttribute(currentTab.attributeType, item.id);
+          
+          if (result.didSucceed) {
+            const currentData = getCurrentData();
+            const setter = getCurrentSetter();
+            setter(currentData.filter((i) => i.id !== item.id));
+            setMessage("Attribute deleted successfully!");
+          } else {
+            setMessage(result.message || "Failed to delete attribute");
+          }
+        } catch (error) {
+          console.error("Error deleting attribute:", error);
+          setMessage("Failed to delete attribute");
+        } finally {
+          setSaving(false);
+        }
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const currentData = getCurrentData();
-    const setter = getCurrentSetter();
-
-    if (modalMode === "add") {
-      const newItem = {
-        ...formData,
-        id: Math.max(...currentData.map((item) => item?.id || 0), 0) + 1,
-      };
-      setter([...currentData, newItem]);
-    } else if (modalMode === "edit") {
-      setter(
-        currentData.map((item) =>
-          item.id === selectedItem.id
-            ? { ...formData, id: selectedItem.id }
-            : item
-        )
-      );
+    setSaving(true);
+    setMessage("");
+    
+    const currentTab = tabs.find((tab) => tab.id === activeTab);
+    if (!currentTab) {
+      setSaving(false);
+      return;
     }
 
-    setShowModal(false);
+    try {
+      if (modalMode === "add") {
+        const result = await createAttribute(currentTab.attributeType, formData);
+        
+        if (result.didSucceed) {
+          const currentData = getCurrentData();
+          const setter = getCurrentSetter();
+          setter([...currentData, result.item]);
+          setMessage("Attribute added successfully!");
+          setShowModal(false);
+        } else {
+          setMessage(result.message || "Failed to add attribute");
+        }
+      } else if (modalMode === "edit") {
+        const result = await updateAttribute(currentTab.attributeType, selectedItem.id, formData);
+        
+        if (result.didSucceed) {
+          const currentData = getCurrentData();
+          const setter = getCurrentSetter();
+          setter(
+            currentData.map((item) =>
+              item.id === selectedItem.id
+                ? { ...formData, id: selectedItem.id }
+                : item
+            )
+          );
+          setMessage("Attribute updated successfully!");
+          setShowModal(false);
+        } else {
+          setMessage(result.message || "Failed to update attribute");
+        }
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setMessage("An error occurred while saving");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const generateSlug = (name) => {
@@ -454,12 +347,24 @@ const AttributesPage = () => {
           </div>
           <button
             onClick={handleAdd}
-            className="flex items-center px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl"
+            disabled={loading || saving}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Plus className="w-4 h-4 mr-2" />
+            {saving ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Plus className="w-4 h-4 mr-2" />
+            )}
             Add {currentTabData?.label.slice(0, -1) || "Attribute"}
           </button>
         </div>
+
+        {/* Message Display */}
+        {message && (
+          <div className={`p-4 rounded-lg ${message.includes('success') ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
+            {message}
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -487,13 +392,20 @@ const AttributesPage = () => {
 
           {/* Tab Content */}
           <div className="p-6">
-            <DataTable
-              data={getCurrentData()}
-              columns={columns}
-              actions={actions}
-              searchable={true}
-              exportable={true}
-            />
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                <span className="ml-2 text-gray-600">Loading attributes...</span>
+              </div>
+            ) : (
+              <DataTable
+                data={getCurrentData()}
+                columns={columns}
+                actions={actions}
+                searchable={true}
+                exportable={true}
+              />
+            )}
           </div>
         </div>
 
@@ -686,11 +598,16 @@ const AttributesPage = () => {
                   </button>
                   <button
                     type="submit"
-                    className="flex items-center px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl"
+                    disabled={saving}
+                    className="flex items-center px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Save className="w-4 h-4 mr-2" />
-                    {modalMode === "add" ? "Create" : "Update"}{" "}
-                    {currentTabData?.label.slice(0, -1) || "Attribute"}
+                    {saving ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Save className="w-4 h-4 mr-2" />
+                    )}
+                    {saving ? "Saving..." : modalMode === "add" ? "Create" : "Update"}{" "}
+                    {!saving && (currentTabData?.label.slice(0, -1) || "Attribute")}
                   </button>
                 </div>
               </form>

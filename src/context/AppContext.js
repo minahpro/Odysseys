@@ -7,6 +7,7 @@ import {
 } from "@/firebase/databaseOperations";
 import firebase from "@/firebase/firebaseInit";
 import { onAuthStateChanged } from "firebase/auth";
+import { signOutUser } from "@/firebase/authOperations";
 import React, { createContext, useState, useContext, useEffect } from "react";
 // Create a context with a default value of null for the user
 
@@ -56,6 +57,20 @@ export const AppContextProvider = ({ children }) => {
 
   const updateAuthUser = (newInfo) => {
     setAuthUser(newInfo);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const result = await signOutUser();
+      if (result.didSucceed) {
+        setAuthUser(null);
+        return { didSucceed: true, message: result.message };
+      } else {
+        return { didSucceed: false, message: result.message };
+      }
+    } catch (error) {
+      return { didSucceed: false, message: "Error signing out" };
+    }
   };
 
   const handleOpenLoading = () => setIsLoading((prev) => true);
@@ -530,6 +545,7 @@ export const AppContextProvider = ({ children }) => {
     handleOrderTours,
     updateAuthUser,
     authUser,
+    handleSignOut,
     handleSetDestinations,
     handleSetAccommodations,
     fetchedAccommodations: accommodations,

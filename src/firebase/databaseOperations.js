@@ -261,6 +261,166 @@ const getFilteredTours = async (cln, searchOptions) => {
 };
 //end of filter tours................................
 
+// Settings specific operations
+const saveSettings = async (settingsData) => {
+  try {
+    // Check if settings document already exists
+    const settingsQuery = query(collection(db, "settings"));
+    const querySnapshot = await getDocs(settingsQuery);
+    
+    if (querySnapshot.empty) {
+      // Create new settings document
+      const docRef = await addDoc(collection(db, "settings"), {
+        ...settingsData,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      return { didSucceed: true, docId: docRef.id, message: "Settings created successfully" };
+    } else {
+      // Update existing settings document
+      const existingDoc = querySnapshot.docs[0];
+      await updateDoc(doc(db, "settings", existingDoc.id), {
+        ...settingsData,
+        updatedAt: new Date()
+      });
+      return { didSucceed: true, docId: existingDoc.id, message: "Settings updated successfully" };
+    }
+  } catch (error) {
+    console.error("Error saving settings: ", error);
+    return {
+      didSucceed: false,
+      message: "Failed to save settings"
+    };
+  }
+};
+
+const getSettings = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "settings"));
+    
+    if (!querySnapshot.empty) {
+      // Get the first (and should be only) settings document
+      const settingsDoc = querySnapshot.docs[0];
+      return {
+        didSucceed: true,
+        settings: { ...settingsDoc.data(), id: settingsDoc.id }
+      };
+    } else {
+      return {
+        didSucceed: true,
+        settings: null,
+        message: "No settings found"
+      };
+    }
+  } catch (error) {
+    console.error("Error getting settings: ", error);
+    return {
+      didSucceed: false,
+      message: "Failed to retrieve settings"
+    };
+  }
+};
+
+// Attributes CRUD Operations
+const getAttributes = async (attributeType) => {
+  try {
+    const docsQuery = query(
+      collection(db, `attributes-${attributeType}`),
+      orderBy("createdAt", "desc")
+    );
+    const querySnapshot = await getDocs(docsQuery);
+    
+    const items = [];
+    querySnapshot.forEach((doc) => {
+      items.push({ ...doc.data(), id: doc.id });
+    });
+    
+    return { didSucceed: true, items };
+  } catch (error) {
+    console.error(`Error getting ${attributeType} attributes: `, error);
+    return {
+      didSucceed: false,
+      items: [],
+      message: `Failed to retrieve ${attributeType} attributes`
+    };
+  }
+};
+
+const createAttribute = async (attributeType, attributeData) => {
+  try {
+    const dataWithTimestamp = {
+      ...attributeData,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    const docRef = await addDoc(
+      collection(db, `attributes-${attributeType}`),
+      dataWithTimestamp
+    );
+    
+    const createdItem = {
+      ...dataWithTimestamp,
+      id: docRef.id
+    };
+    
+    return {
+      didSucceed: true,
+      item: createdItem,
+      docId: docRef.id,
+      message: `${attributeType} attribute created successfully`
+    };
+  } catch (error) {
+    console.error(`Error creating ${attributeType} attribute: `, error);
+    return {
+      didSucceed: false,
+      message: `Failed to create ${attributeType} attribute`
+    };
+  }
+};
+
+const updateAttribute = async (attributeType, docId, attributeData) => {
+  try {
+    const dataWithTimestamp = {
+      ...attributeData,
+      updatedAt: new Date()
+    };
+    
+    await updateDoc(
+      doc(db, `attributes-${attributeType}`, docId),
+      dataWithTimestamp
+    );
+    
+    return {
+      didSucceed: true,
+      message: `${attributeType} attribute updated successfully`
+    };
+  } catch (error) {
+    console.error(`Error updating ${attributeType} attribute: `, error);
+    return {
+      didSucceed: false,
+      message: `Failed to update ${attributeType} attribute`
+    };
+  }
+};
+
+const deleteAttribute = async (attributeType, docId) => {
+  try {
+    await deleteDoc(doc(db, `attributes-${attributeType}`, docId));
+    
+    return {
+      didSucceed: true,
+      message: `${attributeType} attribute deleted successfully`
+    };
+  } catch (error) {
+    console.error(`Error deleting ${attributeType} attribute: `, error);
+    return {
+      didSucceed: false,
+      message: `Failed to delete ${attributeType} attribute`
+    };
+  }
+};
+
 export {
   createDocument,
   updateDocument,
@@ -271,4 +431,10 @@ export {
   fetchFeaturedTours,
   getSingleDocByFieldName,
   getMultipleDocsByFieldNames,
+  saveSettings,
+  getSettings,
+  getAttributes,
+  createAttribute,
+  updateAttribute,
+  deleteAttribute,
 };

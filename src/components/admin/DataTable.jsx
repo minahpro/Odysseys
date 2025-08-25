@@ -60,7 +60,7 @@ const DataTable = ({
       : actions;
 
   const filteredData = data.filter((item) =>
-    Object.values(item).some(
+    item && Object.values(item).some(
       (value) =>
         value &&
         typeof value === "string" &&

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AdminProtectedRoute from "@/components/admin/AdminProtectedRoute";
 import {
   LayoutDashboard,
   Package,
@@ -119,7 +120,8 @@ const AdminLayout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <AdminProtectedRoute>
+      <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
       <div
         className={`${sidebarOpen ? "w-64" : "w-20"} bg-primary text-accent transition-all duration-300 flex flex-col fixed h-full z-30`}
@@ -248,6 +250,7 @@ const AdminLayout = ({ children }) => {
         <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
+    </AdminProtectedRoute>
   );
 };
 
