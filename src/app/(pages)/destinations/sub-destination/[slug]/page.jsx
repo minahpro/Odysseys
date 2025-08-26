@@ -1,44 +1,50 @@
 "use client";
 
 import { SingleHeader } from "@/components/texties";
-import Link from "next/link";
-import {
-  MapPin,
-  Sun,
-  ListTodo,
-  PawPrint,
-  Check,
-  AlertTriangleIcon,
-  Backpack,
-  Thermometer,
-} from "lucide-react";
+import { MapPin, Sun, ListTodo, PawPrint, Thermometer } from "lucide-react";
 import { useState } from "react";
-import { PrimaryButton, SecondaryButton } from "@/components/buttons";
+import { SecondaryButton } from "@/components/buttons";
 import Image from "next/image";
+import ExperiancesSingle from "@/components/singleComponents/ExperiancesSingle";
 import { demoDataBase } from "@/data/Demo-database";
 import SingleMap from "@/components/singleComponents/SingleMap";
 import SingleSmallAcc from "@/components/singleComponents/SingleSmallAcc";
 import FaqsSingle from "@/components/singleComponents/faqsSingle";
-import ExperiancesSingle from "@/components/singleComponents/ExperiancesSingle";
+import ImagePreviewPopUp from "@/components/Popups/ImagePreviewPopUp";
+import TourPackagesSingle from "@/components/singleComponents/TourPackagesSingle";
 
 const destination = {
-  name: "Tanzania",
+  name: "Serengeti National Park",
+
   photos: [
-    "https://images.pexels.com/photos/13869972/pexels-photo-13869972.jpeg",
-    "https://images.pexels.com/photos/3307279/pexels-photo-3307279.jpeg",
-    "https://images.pexels.com/photos/13338819/pexels-photo-13338819.jpeg",
-    "https://images.pexels.com/photos/3566237/pexels-photo-3566237.jpeg",
-    "https://images.pexels.com/photos/31105917/pexels-photo-31105917.jpeg",
+    "https://images.pexels.com/photos/17663712/pexels-photo-17663712.jpeg",
+    "https://images.pexels.com/photos/15341662/pexels-photo-15341662.jpeg",
+    "https://images.pexels.com/photos/3529692/pexels-photo-3529692.jpeg",
+    "https://images.pexels.com/photos/19986882/pexels-photo-19986882.jpeg",
+    "https://images.pexels.com/photos/17820242/pexels-photo-17820242.jpeg",
   ],
   slogan: "Land of Kilimanjaro & Serengeti",
   overview:
-    "Beyond the exotic spice island of Zanzibar and the dramatic snow-capped peaks of Mount Kilimanjaro, the famed plains of the Serengeti in Tanzania offer some of the best game-viewing on Earth. Tanzania is home to some of the most iconic African national parks, private game reserves and conservation areas, including the Ngorongoro Crater and renowned Serengeti National Park, where over a million wildebeest and zebras cross the plains in the Great Migration.",
+    "Home to Africa’s most fascinating wildlife phenomenon, the Great Migration - immerse yourself in the vast, iconic Serengeti National Park.One of the world’s most famous game-viewing parks, the Serengeti is host to the Great Migration, where 2 million wildebeest, zebra and Thomson’s gazelles move together across the plains, predators following closely in their wake. The vast open landscape makes the Serengeti one of the best places to view wildlife on Earth.",
 
   datas: {
+    weather: {
+      title: "Weather",
+      overview:
+        "Tanzania enjoys a tropical climate year-round, but due to its diverse geography, rainfall and humidity vary. The hottest and most humid part of the country is the coast. Other low-lying areas, such as the western and southern parks, are also hot but less humid. The rest of the interior is much milder and cools down significantly at night. Tanzania has two rainy seasons.",
+      items: [
+        { title: "Transition Season", overview: "March to May" },
+        { title: "Rainy Season", overview: "June to August" },
+        {
+          title: "Snowy Season",
+          overview: "September to November",
+        },
+      ],
+    },
     facts: {
       title: "Facts",
       overview:
-        "Tanzania is the largest country in East Africa and includes the islands of Zanzibar, Pemba, and Mafia. The country is about twice the size of California and is bordered by the Indian Ocean. Mount Kilimanjaro is the highest point in Africa and is flanked by three of the largest lakes on the continent. Lake Victoria, in the north, Lake Tanganyika in the west, and Lake Nyasa in the south-west. <br/>Clouds of dust across the plains. Horns, hooves, stripes; behold Africa’s most impressive wildlife spectacle, the Great Migration. Watch hundreds of thousands of wildebeest, zebra and other plains game travel an endless journey, covering the entire Serengeti; crossing its rivers, braving its predators. Grazing, drinking, breeding, moving as one.",
+        "Located in northern Tanzania, the Serengeti forms part of the country’s renowned northern safari circuit. Spanning almost 15,000 square kilometres, (it’s slightly bigger than Connecticut) of vast grassy plains, flat-topped acacia trees, rocky kopjes and undulating savannah landscape, this region is a contender for one of the best wildlife experiences in Africa. <br/> <br/>A vast grassland dotted with spreading acacias and rocky outcrops. Thousands of wildebeest, zebra and other plains game as far as the eye can see. Predators stalk prey on the endless plains, singling out the young, the weak and the slow; the Serengeti delivers a quintessentially African safari experience.",
       items: [
         { title: "Population", overview: "60 million" },
         { title: "Area", overview: "65,200 square kilometers" },
@@ -115,37 +121,6 @@ const destination = {
         },
       ],
     },
-    whatToBring: {
-      title: "What to Bring",
-      items: [
-        "Water",
-        "Snacks",
-        "Camera",
-        "Phone",
-        "ID",
-        "Passport",
-        "Money",
-        "Clothes",
-        "Shoes",
-        "Socks",
-        "Hat",
-        "Glasses",
-        "Mask",
-      ],
-    },
-    weather: {
-      title: "Weather",
-      overview:
-        "Tanzania enjoys a tropical climate year-round, but due to its diverse geography, rainfall and humidity vary. The hottest and most humid part of the country is the coast. Other low-lying areas, such as the western and southern parks, are also hot but less humid. The rest of the interior is much milder and cools down significantly at night. Tanzania has two rainy seasons.",
-      items: [
-        { title: "Transition Season", overview: "March to May" },
-        { title: "Rainy Season", overview: "June to August" },
-        {
-          title: "Snowy Season",
-          overview: "September to November",
-        },
-      ],
-    },
   },
   faqs: [
     {
@@ -173,9 +148,18 @@ const destination = {
 
 function Page() {
   const [activeTab, setActiveTab] = useState(Object.keys(destination.datas)[0]);
+  const [openGallery, setOpenGallery] = useState(false);
 
   return (
     <>
+      {openGallery && (
+        <ImagePreviewPopUp
+          images={destination?.photos}
+          title={destination?.name}
+          handleClose={() => setOpenGallery(false)}
+          handleOpen={() => setOpenGallery(true)}
+        />
+      )}
       <div className="bg-accent/40 pt-8 pb-20">
         <div className="respons">
           <SingleHeader
@@ -203,7 +187,7 @@ function Page() {
                 </h2>
                 <SecondaryButton
                   onClick={() => setOpenGallery(true)}
-                  className="text-sm bg-white border border-secondary text-secondary hover:text-primary"
+                  className="text-sm bg-secondary text-white hover:bg-primary"
                 >
                   View All Images
                 </SecondaryButton>
@@ -216,13 +200,13 @@ function Page() {
                 className="text-lg text-gray-800 leading-relaxed"
               />
 
-              <div className="flex flex-col space-y-12">
-                <div className="flex w-auto items-center rounded-xl p-2 overflow-hidden bg-accent">
+              <div className="grid grid-cols-12 items-start gap-6 pt-12">
+                <div className="col-span-2 w-full space-y-3 rounded-xl p-2 overflow-hidden bg-accent">
                   {Object.entries(destination.datas).map(([key, section]) => (
                     <button
                       key={key}
                       onClick={() => setActiveTab(key)}
-                      className={`flex-all rounded-xl px-6 py-3 text-sm font-medium ${activeTab === key ? "bg-primary text-accent" : "text-primary"}`}
+                      className={`flex-all w-full rounded-xl px-6 py-3 text-sm font-medium ${activeTab === key ? "bg-primary text-accent" : "text-primary"}`}
                     >
                       {section.title}
                     </button>
@@ -230,7 +214,7 @@ function Page() {
                 </div>
                 {/* tab container */}
 
-                <div className="min-h-[400px]">
+                <div className="min-h-[400px] col-span-10">
                   {(() => {
                     const section = destination.datas[activeTab];
                     if (!section) return null;
@@ -241,8 +225,8 @@ function Page() {
                         <div className="grid grid-cols-10 gap-8">
                           <div className="col-span-6">
                             <h2 className="font-bold text-xl text-primary flex items-center gap-4">
-                              <MapPin className="text-secondary" />{" "}
-                              {destination?.slogan}
+                              <MapPin className="text-secondary" /> What you
+                              need to know
                             </h2>
                             <div
                               dangerouslySetInnerHTML={{
@@ -315,7 +299,7 @@ function Page() {
                             will see
                           </h2>
 
-                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             {section?.items?.map((item, index) => (
                               <div
                                 key={item.title}
@@ -343,40 +327,6 @@ function Page() {
                       );
                     }
 
-                    // what to bring
-                    if (section.title === "What to Bring") {
-                      return (
-                        <div className="space-y-10">
-                          <h2 className="font-bold text-xl text-primary flex items-center gap-4">
-                            <Backpack className="text-secondary" /> Essential
-                            Items
-                          </h2>
-
-                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                            {section?.items?.map((item, index) => (
-                              <div
-                                key={item}
-                                className="flex items-center gap-3 bg-accent/20 rounded-lg p-3 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
-                              >
-                                <Check className="w-4 h-4 text-secondary" />
-                                <span className="text-gray-700 font-medium capitalize">
-                                  {item}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mt-6 p-4 bg-secondary rounded-lg border-l-4 border-white">
-                            <p className="text-white text-sm flex items-center gap-2">
-                              <AlertTriangleIcon className="w-4 h-4" />
-                              <strong>Pro Tip:</strong> Pack light but don't
-                              forget the essentials. Weather can change quickly
-                              in {destination?.name}.
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    }
-
                     // Weather Tab
                     if (section.title === "Weather") {
                       return (
@@ -386,36 +336,39 @@ function Page() {
                             Weather
                           </h2>
 
-                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <div className="lg:col-span-2">
-                              <div className="bg-accent/40 rounded-xl p-6 mb-6">
-                                <h3 className="font-semibold text-lg text-primary mb-3">
-                                  Climate Overview
-                                </h3>
-                                <p className="text-gray-700 leading-relaxed">
-                                  {section?.overview}
-                                </p>
-                              </div>
+                          <div className="space-y-8">
+                            <div className="bg-accent/40 rounded-xl p-6">
+                              <h3 className="font-semibold text-lg text-primary mb-3">
+                                Climate Overview
+                              </h3>
+                              <p className="text-gray-700 leading-relaxed">
+                                {section?.overview}
+                              </p>
                             </div>
+
                             <div className="space-y-4">
                               <h3 className="font-semibold text-lg text-primary mb-4">
                                 Seasonal Guide
                               </h3>
-                              {section?.items?.map((item, index) => (
-                                <div
-                                  key={item.title}
-                                  className="bg-white rounded-lg p-4 shadow-md border-l-4 border-secondary hover:shadow-lg transition-all duration-300 transform hover:translate-x-2"
-                                  style={{ animationDelay: `${index * 200}ms` }}
-                                >
-                                  <h4 className="font-semibold text-primary mb-2 flex items-center gap-2">
-                                    <Sun className="w-5 h-5 text-yellow-600" />
-                                    {item.title}
-                                  </h4>
-                                  <p className="text-gray-600 text-sm">
-                                    {item.overview}
-                                  </p>
-                                </div>
-                              ))}
+                              <div className="grid grid-cols-2 gap-6">
+                                {section?.items?.map((item, index) => (
+                                  <div
+                                    key={item.title}
+                                    className="bg-white rounded-lg p-4 shadow-md border-l-4 border-secondary hover:shadow-lg transition-all duration-300 transform hover:translate-x-2"
+                                    style={{
+                                      animationDelay: `${index * 200}ms`,
+                                    }}
+                                  >
+                                    <h4 className="font-semibold text-primary mb-2 flex items-center gap-2">
+                                      <Sun className="w-5 h-5 text-yellow-600" />
+                                      {item.title}
+                                    </h4>
+                                    <p className="text-gray-600 text-sm">
+                                      {item.overview}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -427,18 +380,7 @@ function Page() {
                 </div>
               </div>
             </div>
-            {/* experiances */}
-            <div
-              data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
-            >
-              <div className="space-y-6">
-                <h2 className="md:text-2xl text-xl text-primary font-jua">
-                  {destination?.name} Safari Experiances
-                </h2>
-                <ExperiancesSingle datas={demoDataBase?.experiances} />
-              </div>
-            </div>
+
             {/* map */}
             <div
               data-aos="fade-up"
@@ -458,59 +400,14 @@ function Page() {
             <div className="bg-white rounded-2xl space-y-6 p-12">
               <div className="space-y-6">
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
-                  Destinations Found In {destination?.name}
+                  Journey with Wilderness
                 </h2>
 
-                <div className="space-y-10">
-                  {demoDataBase?.subDestinations
-                    ?.slice(0, 3)
-                    ?.map((item, index) => (
-                      <div className="w-full" key={index}>
-                        <div className="w-full grid grid-cols-2 gap-6">
-                          <div className="space-y-8 p-8 bg-accent/20 rounded">
-                            <h1 className="text-2xl font-bold text-primary">
-                              {item.title}
-                            </h1>
-                            <p className="text-primary leading-6 line-clamp-4">
-                              {item.overview} Lorem ipsum dolor sit amet
-                              consectetur adipisicing elit. Corrupti magnam
-                              nesciunt voluptatibus. Voluptatum quae at tempora
-                              accusantium. Recusandae maxime Lorem ipsum dolor
-                              sit amet consectetur adipisicing elit. Corrupti
-                              magnam nesciunt voluptatibus. Voluptatum quae at
-                              tempora accusantium. Recusandae maxime
-                            </p>
-
-                            <hr className="my-4 border-secondary/30" />
-                            <div>
-                              <Link
-                                href={`/destinations/sub-destination/${item.id}`}
-                              >
-                                <PrimaryButton className="bg-secondary text-white transitions">
-                                  See More Details
-                                </PrimaryButton>
-                              </Link>
-                            </div>
-                          </div>
-                          <Image
-                            data-aos="fade-left"
-                            className="w-full h-96 object-cover"
-                            src={
-                              `/images/bg/${index + 1}.png` ||
-                              "/placeholder.svg"
-                            }
-                            alt={item.title}
-                            width={250}
-                            height={250}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                </div>
+                <TourPackagesSingle />
 
                 <div className="flex-all">
-                  <button className="px-6 py-2 bg-accent text-primary font-semibold text-sm">
-                    Load More
+                  <button className="px-6 py-2 rounded bg-secondary text-white font-semibold text-sm">
+                    See All Journeys
                   </button>
                 </div>
               </div>
@@ -526,6 +423,17 @@ function Page() {
           <SingleSmallAcc datas={demoDataBase?.camps} />
         </div>
       </div>
+
+      {/* experiances */}
+      <div className="w-full bg-accent/40 py-20">
+        <div className="respons space-y-10">
+          <h2 className="md:text-2xl text-xl text-primary font-jua">
+            {destination?.name} Safari Experiances
+          </h2>
+          <ExperiancesSingle datas={demoDataBase?.experiances} />
+        </div>
+      </div>
+
       <div className="w-full bg-white py-20">
         <div className="respons space-y-10">
           <h2 className="md:text-3xl text-xl text-primary font-jua">FAQs</h2>

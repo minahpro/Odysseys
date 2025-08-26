@@ -43,7 +43,7 @@ function DayTripsHome() {
             experiencing something you’ve never done before.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/tours/day-trips">
+            <Link href="/experiences">
               <SecondaryButton>Explore All Experiences</SecondaryButton>
             </Link>
           </div>

@@ -69,7 +69,7 @@ function PromoBanner({
       <div className="respons grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div
           className={`relative h-80 md:h-[500px] rounded-xl overflow-hidden shadow-xl ${imageOrder}`}
-          data-aos={reverse ? "fade-right" : "fade-left"}
+          data-aos={reverse ? "fade-left" : "fade-right"}
         >
           <Image
             src={imageSrc || "/placeholder.svg?height=600&width=800"}
@@ -80,7 +80,7 @@ function PromoBanner({
         </div>
         <div
           className={`${contentOrder}`}
-          data-aos={reverse ? "fade-left" : "fade-right"}
+          data-aos={reverse ? "fade-right" : "fade-left"}
         >
           <h1
             className={`!text-left md:text-4xl text-3xl font-jua !mb-4 ${textColor?.title}`}

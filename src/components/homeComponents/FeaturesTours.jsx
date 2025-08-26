@@ -7,8 +7,9 @@ import { TourCardPro } from "../cards";
 import { TourLoading } from "../Loadings/LoadingComp";
 import { NoDataFound } from "../Loadings/ErrorComp";
 import { Dog, MapPin } from "lucide-react";
+import { SecondaryButton } from "../buttons";
 
-function FeaturesTours() {
+function FeaturesTours({ datas }) {
   // ************* FETCH DATA ************* //
   const { data: tourGroupCategories, isFetchingTourCategories } =
     useFetchAll("tour-categories");
@@ -17,15 +18,9 @@ function FeaturesTours() {
   // ****************** GET FEATURED TOURS ******************* //
   const tours = allFetchedTours?.filter((item) => item?.isFeatured);
   return (
-    <section className="sm:py-28 py-10">
+    <section className="sm:py-28 bg-white py-10">
       <div className="respons">
-        <Title
-          badge={<Dog />}
-          title={"Featured Tours"}
-          subHeading={
-            "Handpicked adventures that showcase the very best of Tanzania's natural wonders and cultural heritage"
-          }
-        />
+        <Title badge={<Dog />} title={datas?.title} subHeading={datas?.sub} />
         {
           // loading
           isLoading || isFetchingTourCategories ? (
@@ -60,6 +55,11 @@ function FeaturesTours() {
             <NoDataFound text="No Tours Found" />
           )
         }
+        <div className="flex-all mt-12">
+          <SecondaryButton className="text-sm">
+            See all journeys
+          </SecondaryButton>
+        </div>
       </div>
     </section>
   );

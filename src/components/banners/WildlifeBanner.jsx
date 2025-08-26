@@ -49,10 +49,10 @@ export default function WildlifeBanner() {
     <section
       className="relative py-24 md:py-32 overflow-hidden bg-textcolor"
       style={{
-        backgroundImage: 'url(/images/bg/6.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        backgroundImage: "url(/images/bg/6.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
       }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/50 to-black/50 z-0" />
@@ -104,7 +104,7 @@ export default function WildlifeBanner() {
             </div>
 
             <div data-aos="fade-up" className="pt-8">
-              <Link href="/tours">
+              <Link href="/contact">
                 <SecondaryButton className="px-12 py-6">
                   Begin Your Journey
                 </SecondaryButton>

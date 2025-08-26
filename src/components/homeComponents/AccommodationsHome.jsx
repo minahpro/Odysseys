@@ -152,7 +152,7 @@ function AccommodationsHome() {
                                 ))}
                               </div>
                               <div className="flex items-center justify-between">
-                                <Link href={`/accommodation/${item?.slug}`}>
+                                <Link href={`/accommodations/${item?.slug}`}>
                                   <PrimaryButton>View Details</PrimaryButton>
                                 </Link>
                                 {/* stars */}

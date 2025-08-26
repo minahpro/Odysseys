@@ -2,34 +2,9 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import {
-  PrimaryButton,
-  SecondaryButton,
-  TourButton,
-  OutlineButton,
-  ActionButton,
-} from "./buttons";
-import {
-  Building,
-  Calendar,
-  Clock,
-  DollarSign,
-  MapPin,
-  Mountain,
-  Sailboat,
-  Share2,
-  TreePine,
-  Users,
-  Star,
-  ArrowRight,
-  PawPrint,
-  Dog,
-} from "lucide-react";
+import { PrimaryButton, SecondaryButton, ActionButton } from "./buttons";
+import { Clock, MapPin, Share2, Users } from "lucide-react";
 import useFetchAll from "@/lib/hooks/useFetchAll";
-import { LuHouse } from "react-icons/lu";
-import { HiOutlineUserGroup } from "react-icons/hi2";
-import { MdAccessTime } from "react-icons/md";
-import { IoPawSharp } from "react-icons/io5";
 import { FaStar } from "react-icons/fa6";
 
 // CARDS I USE ON SITE
@@ -112,7 +87,7 @@ export const TourCardPro = ({ tour, index = 0 }) => {
       key={tour.id}
       className=" bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-secondary/20"
     >
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-80 overflow-hidden">
         <img
           src={tour.photos?.[0] || "/placeholder.svg"}
           alt={tour.title}
@@ -157,56 +132,6 @@ export const TourCardPro = ({ tour, index = 0 }) => {
   );
 };
 
-export const ZanzibarCardPro = ({ tour }) => {
-  return (
-    <div className="bg-accent/20 rounded-xl group border border-secondary/20 overflow-hidden hover:shadow-xl transition-all duration-300 max-w-4xl">
-      <div className="relative h-48">
-        <Image
-          src={tour?.photos[0] || "/placeholder.svg"}
-          alt={tour?.title}
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-primary/20" />
-      </div>
-      <div className="p-6 relative">
-        <div className="bg-white -mt-16 group-hover:scale-90 transitions rounded p-4 mb-5">
-          <div className="space-y-2 mb-2">
-            <h3 className="font-bold text-primary">{tour?.title}</h3>
-            <div className="flex items-center gap-1 text-secondary">
-              <MapPin className="w-3 h-3" />
-              <span className="font-quicksand text-sm">
-                {" "}
-                {tour?.destinations
-                  ?.slice(0, 1)
-                  ?.map((dest) => dest)
-                  .join(", ")}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div
-          dangerouslySetInnerHTML={{
-            __html: tour?.overview,
-          }}
-          className="font-quicksand text-primary text-sm line-clamp-2 mb-4 leading-relaxed"
-        />
-        <div className="grid sm:grid-cols-2 grid-cols-1 gap-2">
-          <button className="flex-1 rounded bg-accent font-bold text-primary py-2 px-4 hover:bg-accent/80 transitions">
-            ${tour?.price || 0}
-          </button>
-          <Link href={`/tours/day-trips/${tour?.slug}`}>
-            <PrimaryButton className="flex-1 py-2 text-sm">
-              Book Now
-            </PrimaryButton>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export const DayTripCardPro = ({ tour }) => {
   return (
     <div className="bg-white group rounded-xl hover:shadow-2xl shadow-xl overflow-hidden transitions max-w-4xl">
@@ -239,7 +164,7 @@ export const DayTripCardPro = ({ tour }) => {
         </div>
 
         <div className="absolute bottom-4 -right-56 group-hover:right-4 transition-all duration-700">
-          <Link href={`/tours/day-trips/${tour?.slug}`}>
+          <Link href={`/experiences/game-drive`}>
             <PrimaryButton className={`py-4 text-sm`}>
               Find Out More
             </PrimaryButton>
@@ -290,7 +215,7 @@ export const AccommodationCardPro = ({ item }) => {
               ))}
             </div>
             <div className="flex items-center justify-between">
-              <Link href={`/accommodation/${item?.slug}`}>
+              <Link href={`/accommodations/${item?.slug}`}>
                 <PrimaryButton>View Details</PrimaryButton>
               </Link>
               {/* stars */}
@@ -407,165 +332,6 @@ export function GalleryItem({ item, onClick, index }) {
       <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <h3 className="font-semibold mb-1">{item.title}</h3>
         <p className="text-sm text-white/80">{item.location}</p>
-      </div>
-    </div>
-  );
-}
-
-// trekking
-export const TrekkingCardPro = ({ tour }) => {
-  return (
-    <div className="group bg-red-50/20 flex flex-col md:flex-row hover:shadow-2xl transitions hover:-translate-y-2 rounded overflow-hidden">
-      <div className="relative w-full md:w-2/5 flex-shrink-0">
-        <img
-          src={tour?.photos[0] || "/placeholder.svg"}
-          alt={tour?.title}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-
-        {/* Mountain Badge */}
-        <div className="absolute top-4 left-4">
-          <span className="bg-primary font-bold text-white px-3 py-1 rounded-full text-sm flex items-center gap-1">
-            <Mountain className="h-4 w-4" />
-            {tour?.mountain}
-          </span>
-        </div>
-      </div>
-
-      <div className="p-6 flex-grow flex flex-col justify-between md:w-3/5">
-        <div>
-          <h3 className="font-semibold text-textcolor mb-3 line-clamp-2">
-            {tour?.title}
-          </h3>
-
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="flex items-center gap-2 text-textcolor/70">
-              <Clock className="h-4 w-4 text-primary" />
-              <span className="text-sm">{`${tour?.duration} Days, ${
-                tour?.duration - 1
-              } Nights`}</span>
-            </div>
-            <div className="flex items-center gap-2 text-textcolor/70">
-              <Users className="h-4 w-4 text-primary" />
-              <span className="text-sm capitalize">
-                {" "}
-                {tour?.category || "---"} Tour
-              </span>
-            </div>
-          </div>
-
-          {/* Highlights */}
-          <div className="mb-4">
-            <div className="flex flex-wrap gap-2">
-              {tour?.focus?.slice(0, 4).map((highlight, index) => (
-                <span
-                  key={index}
-                  className="bg-accent text-primary px-2 py-1 rounded text-xs font-medium"
-                >
-                  {highlight}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between mt-3">
-          <div className="text-left">
-            <span className="text-xl font-bold text-secondary">
-              ${tour?.prices}
-            </span>
-            <span className="text-sm text-textcolor/70 block">per person</span>
-          </div>
-          <Link href={`/tours/${tour?.slug}`}>
-            <SecondaryButton className="group-hover:bg-secondary group-hover:text-white">
-              {" "}
-              Book Trek
-            </SecondaryButton>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export const ListCustomBookingCardTour = ({ tour, onSelect }) => {
-  const extractData = [
-    {
-      title: `${tour?.category} Tour`,
-      icon: HiOutlineUserGroup,
-    },
-    {
-      title: `${tour?.duration} Days`,
-      icon: MdAccessTime,
-    },
-  ];
-  return (
-    <div className="bg-highlight/50 text-white transitions shadow-md hover:shadow-lg  rounded-xl  p-3 border border-gray-800">
-      {/* image */}
-      <Image
-        src={tour?.photos[0]}
-        alt={tour?.title}
-        width={1000}
-        height={230}
-        className="w-full h-32 rounded object-cover"
-      />
-
-      {/* content */}
-      <div className="pt-4 px-4 space-y-3">
-        <Link href={`/tours/${tour?.slug}`} target={"_blank"}>
-          <h2 className="font-bold text-sm capitalize leading-6 ">
-            {tour?.title}
-          </h2>
-        </Link>
-
-        {/* icons */}
-        <div className="flex items-center gap-2 flex-wrap capitalize ">
-          {extractData.map((data, index) => (
-            <p
-              key={index}
-              className="text-sm text-textcolor flex items-center flex-row gap-2"
-            >
-              <data.icon className="text-primary text-base" size={14} />
-              {data?.title}
-            </p>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="font-semibold text-sm capitalize">
-            ${tour?.prices} <span className="text-sm font-light">(pp)</span>
-          </h2>
-          <button
-            onClick={() => onSelect(tour)}
-            className={
-              "bg-primary px-4 rounded text-black py-1 text-sm hover:bg-secondary transitions font-medium"
-            }
-          >
-            Select
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export function PromoCard({ image, title, subtitle, buttonText, buttonLink }) {
-  return (
-    <div className="relative rounded-xl overflow-hidden p-8 text-white min-h-[250px] md:min-h-[400px] flex flex-col justify-end group">
-      <Image
-        src={image || "/placeholder.svg"}
-        alt={title}
-        fill
-        objectFit="cover"
-        className="group-hover:brightness-75 brightness-50 transition-all duration-300"
-      />
-      <div className="relative z-10">
-        <p className="text-secondary font-semibold">{subtitle}</p>
-        <h3 className="text-3xl font-bold font-jua mt-1 mb-4">{title}</h3>
-        <Link href={buttonLink}>
-          <PrimaryButton className="rounded ">{buttonText}</PrimaryButton>
-        </Link>
       </div>
     </div>
   );

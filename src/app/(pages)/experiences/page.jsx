@@ -1,12 +1,29 @@
 "use client";
+import WildlifeBanner from "@/components/banners/WildlifeBanner";
+import { DayTripCardPro } from "@/components/cards";
+import DaysTripFilter from "@/components/Filters/DayTripsFilter";
+import SubscribeSection from "@/components/homeComponents/SubscribeHome";
+import PaginationSet from "@/components/paginationSet";
 import TitleHeader from "@/components/titleHeader";
+import { demoDataBase } from "@/data/Demo-database";
 import { ExperiancesData } from "@/data/randomData";
-import { Search, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
 function page() {
   const [active, setActive] = useState(0);
+  const destinations = demoDataBase?.mainDestinations;
+  const dayTripsData = demoDataBase?.experiances
+    ?.slice(0, 12)
+    .map((exp, index) => ({
+      ...exp,
+      destinations: exp?.location?.map((loc) => {
+        const dest = destinations?.find((d) => d?.id === loc?.destination);
+        return dest?.title;
+      }),
+      slug: exp?.id,
+    }));
 
   return (
     <>
@@ -100,12 +117,42 @@ function page() {
       </section>
 
       <div className="respons lg:py-20 py-10">
-        <div className="flex justify-between items-center">
-          <h2 className="font-jua text-3xl md:text-4xl text-primary mb-4">
-            under construction
+        <div className="grid grid-cols-4 bg-highlight p-10 rounded-xl gap-4 items-center">
+          <h2 className="font-jua text-3xl md:text-4xl text-primary">
+            Filter By
           </h2>
+
+          <DaysTripFilter />
+        </div>
+        {/* experiances */}
+        <div className="grid-cols-2 mt-12 grid gap-6">
+          {dayTripsData?.map((dayTrip, index) => (
+            <div
+              className="w-full"
+              data-aos={
+                // 2 should fade right and 2 should fade left
+                index % 2 === 0 ? "fade-right" : "fade-left"
+              }
+              data-aos-delay={index * 200}
+              key={dayTrip?.id}
+            >
+              <DayTripCardPro tour={dayTrip} />
+            </div>
+          ))}
+        </div>
+        {/* Paginations */}
+
+        <div className="mt-12">
+          <PaginationSet
+            totalPosts={dayTripsData?.length}
+            postsPerPage={4}
+            setCurrentPage={() => {}}
+            currentPage={4}
+          />
         </div>
       </div>
+      <WildlifeBanner />
+      <SubscribeSection />
     </>
   );
 }

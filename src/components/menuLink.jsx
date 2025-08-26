@@ -68,7 +68,7 @@ function CampsDropDown({ item, index }) {
   return (
     <a
       key={item.name}
-      href={`/camps/${item?.slug}`}
+      href={`/accommodations/${item?.slug}`}
       className="group flex flex-col space-y-2 bg-accent/40 rounded-xl p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border border-secondary/10 hover:border-secondary/30"
       style={{ animationDelay: `${index * 300}ms` }}
     >

@@ -117,38 +117,38 @@ function Footer() {
 
             {/* Tours */}
             <div>
-              <h4 className="text-lg font-semibold mb-4">Our Tours</h4>
+              <h4 className="text-lg font-semibold mb-4">Important</h4>
               <ul className="space-y-3">
                 <li>
                   <a
-                    href="#"
+                    href="/experiences"
                     className="text-white/80 hover:text-accent transitions"
                   >
-                    All Packages
+                    Experinaces
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/tours/climbing-trips"
+                    href="/journeys"
                     className="text-white/80 hover:text-accent transitions"
                   >
-                    Trekking Trips
+                    Journeys
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/tours/zanzibar-trips"
+                    href="/contact"
                     className="text-white/80 hover:text-accent transitions"
                   >
-                    Zanzibar Tours
+                    Contact Us
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/tours/day-trips"
+                    href="/blog"
                     className="text-white/80 hover:text-accent transitions"
                   >
-                    Day Trips
+                    News & Blogs
                   </a>
                 </li>
               </ul>

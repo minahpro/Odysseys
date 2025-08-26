@@ -69,9 +69,7 @@ export default function TrekkingTours() {
                   </p>
 
                   <PrimaryButton className="text-sm text-white bg-secondary">
-                    <Link href={`/tours?type=${type?.title}`}>
-                      Explore More
-                    </Link>
+                    <Link href={`/journeys/${type?.id}`}>Explore More</Link>
                   </PrimaryButton>
                 </div>
               </div>

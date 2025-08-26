@@ -45,7 +45,7 @@ function WhyBanner() {
               deep local expertise are what set us apart.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/tours/day-trips">
+              <Link href="/experiences">
                 <SecondaryButton>Inspirational Trips</SecondaryButton>
               </Link>
             </div>

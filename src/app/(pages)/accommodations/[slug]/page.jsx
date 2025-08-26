@@ -1,328 +1,264 @@
 "use client";
 
-import { NoDataFound } from "@/components/Loadings/ErrorComp";
-import { SingleDetailsLoading } from "@/components/Loadings/LoadingComp";
-import { SingleHeader, Title } from "@/components/texties";
-import Link from "next/link";
-import { MapPin, Phone, Globe, CheckCircle, Clock } from "lucide-react";
-import useFetchAll from "@/lib/hooks/useFetchAll";
-import { useAppContext } from "@/context/AppContext";
-import { useParams } from "next/navigation";
-import ImagesSingle from "@/components/ImagesSingle";
-import { TourCardPro } from "@/components/cards";
-import { useState } from "react";
-import { PrimaryButton, SecondaryButton } from "@/components/buttons";
-import { ActionButton } from "@/components/buttons";
-import {
-  SideBanner2,
-  SideBanner3,
-  SideBanner4,
-} from "@/components/banners/SidebarBanners";
-import { MdLocationOn } from "react-icons/md";
-import ImagePreviewPopUp from "@/components/Popups/ImagePreviewPopUp";
+import { SingleHeader } from "@/components/texties";
+import { Check, CircleCheck } from "lucide-react";
+import { SecondaryButton } from "@/components/buttons";
 import Image from "next/image";
+import SingleMap from "@/components/singleComponents/SingleMap";
+import FaqsSingle from "@/components/singleComponents/faqsSingle";
+import FeaturesTours from "@/components/homeComponents/FeaturesTours";
+
+const destination = {
+  name: "Savannah Plains Camp",
+  photos: [
+    "https://images.pexels.com/photos/1134176/pexels-photo-1134176.jpeg",
+    "https://images.pexels.com/photos/1001965/pexels-photo-1001965.jpeg",
+    "https://images.pexels.com/photos/261395/pexels-photo-261395.jpeg",
+    "https://images.pexels.com/photos/24913567/pexels-photo-24913567.jpeg",
+    "https://images.pexels.com/photos/14667295/pexels-photo-14667295.jpeg",
+  ],
+  overview:
+    "Beyond the exotic spice island of Zanzibar and the dramatic snow-capped peaks of Mount Kilimanjaro, the famed plains of the Serengeti in Tanzania offer some of the best game-viewing on Earth. Tanzania is home to some of the most iconic African national parks, private game reserves and conservation areas, including the Ngorongoro Crater and renowned Serengeti National Park, where over a million wildebeest and zebras cross the plains in the Great Migration.",
+
+  amineties: [
+    "Wifi",
+    "Air conditioning",
+    "TV",
+    "Kitchen",
+    "Breakfast",
+    "Pet friendly",
+    "Fridge",
+    "Packing area",
+  ],
+  activities: [
+    {
+      title: "Safari Adventure",
+      description: "Explore the wild with guided safaris.",
+    },
+    { title: "Beach Relaxation", description: "Unwind on pristine beaches." },
+    {
+      title: "Cultural Tours",
+      description: "Discover local traditions and history.",
+    },
+    {
+      title: "Water Sports",
+      description: "Enjoy kayaking, snorkeling, and more.",
+    },
+    {
+      title: "Hiking",
+      description: "Explore the beautiful hiking trails.",
+    },
+    {
+      title: "Camping",
+      description: "Relax and unwind in the great outdoors.",
+    },
+    {
+      title: "Snorkeling",
+      description: "Explore the underwater world.",
+    },
+    {
+      title: "Diving",
+      description: "Dive into the water.",
+    },
+  ],
+  banners: [
+    {
+      title: "Restaurant",
+      overview:
+        "We have always existed to protect, explore and expand the world’s wilderness. Today, we help protect 6 million acres (2.3 million hectares) of land. We channel our conservation and hospitality business as a force for lasting, positive impact. To achieve this, we focus our conservation and community empowerment programmes under three key impact pillars: Educate, Empower and Protect.",
+      image:
+        "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg",
+    },
+    {
+      title: "Bar",
+      overview:
+        "We have always existed to protect, explore and expand the world’s wilderness. Today, we help protect 6 million acres (2.3 million hectares) of land. We channel our conservation and hospitality business as a force for lasting, positive impact. To achieve this, we focus our conservation and community empowerment programmes under three key impact pillars: Educate, Empower and Protect.",
+      image: "https://images.pexels.com/photos/340996/pexels-photo-340996.jpeg",
+    },
+    {
+      title: "Swimming pool",
+      overview:
+        "We have always existed to protect, explore and expand the world’s wilderness. Today, we help protect 6 million acres (2.3 million hectares) of land. We channel our conservation and hospitality business as a force for lasting, positive impact. To achieve this, we focus our conservation and community empowerment programmes under three key impact pillars: Educate, Empower and Protect.",
+      image: "https://images.pexels.com/photos/261105/pexels-photo-261105.jpeg",
+    },
+  ],
+
+  faqs: [
+    {
+      question: "Why Tanzania is the best destination to visit?",
+      answer:
+        "because Tanzania is a beautiful country with a rich history and culture. It is a country of contrasts, with its mountains, deserts, and plains. Tanzania is also a country of contrasts, with its mountains, deserts, and plains.",
+    },
+    {
+      question: "What is the best time to visit Tanzania?",
+      answer:
+        "The best time to visit Tanzania is from June to August. This is the time of year when the weather is warm and the rains are light.",
+    },
+    {
+      question: "What should I bring to Tanzania?",
+      answer:
+        "You should bring your camera, phone, ID, passport, money, clothes, shoes, socks, hat, glasses, and mask.",
+    },
+    {
+      question: "What is the best way to get to Tanzania?",
+      answer:
+        "You can get to Tanzania by air, train, or car. The best way to get to Tanzania by air is to fly to Dar es Salaam, Tanzania. The best way to get to Tanzania by train is to train to Dar es Salaam, Tanzania. The best way to get to Tanzania by car is to drive to Dar es Salaam, Tanzania.",
+    },
+  ],
+};
 
 function Page() {
-  // Capitalized for consistency
-  const params = useParams();
-  const slug = params.slug;
-  const [activeTab, setActiveTab] = useState("overview");
-  const { fetchedDestinations, fetchedAccommodations, isLoading } =
-    useAppContext();
-  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
-
-  // ********** FETCH DATA **********
-  const { allFetchedTours } = useAppContext();
-  const { data: accommodationTypes, isLoading: isFetchingAccommodationTypes } =
-    useFetchAll("accommodation-categories");
-  const {
-    data: accommodationStandards,
-    isLoading: isFetchingAccommodationStandards,
-  } = useFetchAll("accommodation-standards");
-  const { data: tourGroupCategories } = useFetchAll("tour-categories");
-
-  // ********** FETCH ACCOMMODATION **********
-  const accommodation = fetchedAccommodations?.find(
-    (acc) => acc?.slug === slug
-  );
-
-  // ********** GET DEST,CATEGORY AND LEVEL TITLES **********
-  const findIt = ({ data, id }) => {
-    const zbrTag = data?.find((itm) => itm?.id === id);
-    return zbrTag?.title;
-  };
-  // dest
-  const getDestination = (id) => {
-    const destination = fetchedDestinations?.find((item) => item.id === id);
-    return destination?.name;
-  };
-
-  // ********** RENDER **********
-  // Add null check for accommodation before spreading
-  const accommodationData = accommodation
-    ? {
-        ...accommodation,
-        category: findIt({
-          data: accommodationTypes || [], // Add null check
-          id: accommodation?.category,
-        }),
-        level: findIt({
-          data: accommodationStandards || [], // Add null check
-          id: accommodation?.level,
-        }),
-        destination: getDestination(accommodation?.destinationId),
-      }
-    : null;
-
-  // ******** FIND ALL TOURS HAVING THIS ACCOMMODATION ********
-
-  const allFetchedAccTours = allFetchedTours
-    ?.filter((itm) =>
-      itm?.itinerary?.find(
-        (it) => it?.accommodationId === accommodationData?.id
-      )
-    )
-    .map((tour) => {
-      return {
-        ...tour,
-        category: findIt({
-          data: tourGroupCategories || [],
-          id: tour?.category,
-        }),
-        prices: tour?.price?.foreigner?.adult?.highSeason,
-      };
-    });
-
   return (
     <>
-      {" "}
-      {isGalleryModalOpen && (
-        <ImagePreviewPopUp
-          images={accommodationData?.photos}
-          title={accommodationData?.name}
-          handleClose={() => setIsGalleryModalOpen(false)}
-          handleOpen={() => setIsGalleryModalOpen(true)}
-        />
-      )}
-      {isLoading ||
-      isFetchingAccommodationTypes ||
-      isFetchingAccommodationStandards ? (
-        <main className="respons">
-          <SingleDetailsLoading />
-        </main>
-      ) : accommodationData?.id ? (
-        <>
+      <div className="bg-accent/40 pt-8 pb-20">
+        <div className="respons">
           <SingleHeader
-            image={accommodationData?.photos?.[0]}
-            title={accommodationData?.name}
-            desc={`Location: ${accommodationData?.destination}`}
-            OnClick={() => {
-              window.open(accommodationData?.website, "_blank");
+            data={{
+              photos: destination?.photos,
+              title: destination?.name,
+              button: {
+                text: "Book This Destination",
+
+                onClick: () => setOpen(true),
+              },
             }}
-            buttonText={"Visit Website"}
           />
-          <main className="respons lg:py-20 py-10">
-            <div className="grid lg:grid-cols-3 grid-cols-1 gap-8">
-              {/* Main Content */}
-              <div className="lg:col-span-2 space-y-8">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-jua text-white font-bold">
-                    Overview
-                  </h2>
-                  <div
-                    data-aos="fade-right"
-                    className="text-textcolor sm:p-6 p-3 rounded-xl bg-highlight/30 leading-relaxed"
-                    dangerouslySetInnerHTML={{
-                      __html: accommodationData?.overview,
-                    }}
-                  ></div>
-                </div>
-                <div className="space-y-4">
-                  <h3 className="text-xl font-jua text-white font-bold">
-                    Gallery
-                  </h3>
+        </div>
 
-                  <div
-                    data-aos="fade-right"
-                    className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4"
-                  >
-                    {accommodationData?.photos?.map((image, index) => (
-                      <div
-                        key={index}
-                        onClick={() => {
-                          setIsGalleryModalOpen(true);
-                        }}
-                        className="relative h-40 cursor-pointer rounded-xl overflow-hidden"
-                      >
-                        <Image
-                          src={image || "/placeholder.svg"}
-                          alt={"image.alt"}
-                          fill
-                          className="object-cover hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <h2 className="text-xl font-jua text-white font-bold">
-                    Amenities & Facilities
-                  </h2>
-                  <div
-                    data-aos="fade-right"
-                    className="flex items-center flex-wrap gap-4 p-6 rounded-xl bg-highlight/30 leading-relaxed"
-                  >
-                    {accommodationData?.facilities?.map((amenity, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-2 hover:bg-highlight/50 transitions group p-3 bg-highlight rounded-xl"
-                      >
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-white/60 text-sm">{amenity}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+        <section className="mt-12 ">
+          <div className="respons space-y-12">
+            <div
+              data-aos="fade-up"
+              className="bg-white rounded-2xl space-y-6 p-12"
+            >
+              <div className="flex justify-between items-center gap-4 flex-wrap">
+                <h2 className="md:text-4xl text-3xl text-primary font-jua">
+                  {destination?.name}
+                </h2>
+                <SecondaryButton
+                  onClick={() => setOpenGallery(true)}
+                  className="text-sm bg-white border border-secondary text-secondary hover:text-primary"
+                >
+                  View All Images
+                </SecondaryButton>
               </div>
 
-              {/* Sidebar */}
-              <div className="lg:col-span-1 space-y-8">
-                <div
-                  data-aos="fade-left"
-                  className="bg-highlight/50 rounded-xl border p-6 border-gray-900"
-                >
-                  <h3 className="text-lg mb-5 font-jua font-bold text-white">
-                    Quick Info
-                  </h3>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: destination?.overview,
+                }}
+                className="text-lg text-gray-800 leading-relaxed"
+              />
 
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-textcolor">Category:</span>
-                      <span className="text-white text-sm font-semibold">
-                        {accommodationData?.category}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-textcolor">Where</span>
-                      <span className="text-white text-sm font-semibold">
-                        {accommodationData?.inPark ? "In Park" : "Out of Park"}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-textcolor">Location:</span>
-                      <span className="text-white text-sm font-semibold">
-                        {accommodationData?.destination}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-textcolor">Standard:</span>
-                      <span className="text-white text-sm font-semibold">
-                        {accommodationData?.standard}
-                      </span>
-                    </div>
+              <div className="space-y-4">
+                <h2 className="font-bold text-xl text-primary">Amineties</h2>
 
-                    <SecondaryButton
-                      onClick={() => {
-                        window.location.href = `tel:${accommodationData?.contacts}`;
-                      }}
-                      className="w-full"
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {destination?.amineties?.map((item, index) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-3 bg-accent/20 rounded-lg p-3 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
                     >
-                      Call {accommodationData?.contacts}
-                    </SecondaryButton>
-                  </div>
+                      <Check className="w-4 h-4 text-secondary" />
+                      <span className="text-gray-700 font-medium capitalize">
+                        {item}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                <SideBanner2
-                  title={"Looking for a  safari Tour?"}
-                  sub={"Explore our safari tours and Best offer now"}
-                  linkText={"View Tours"}
-                  link={"/tours"}
-                />
-
-                <div
-                  data-aos="fade-left"
-                  className="bg-highlight/50 rounded-xl border p-6 border-gray-900"
-                >
-                  <h3 className="text-lg mb-5 font-jua font-bold text-white">
-                    Activities
-                  </h3>
-
-                  <ul className="space-y-1">
-                    {accommodationData?.activities?.map((effort, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center gap-2 text-sm text-gray-400"
-                      >
-                        <CheckCircle className="h-3 w-3 text-secondary flex-shrink-0" />
-                        {effort}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                {/* map */}
-                <div
-                  data-aos="fade-left"
-                  className="bg-highlight/50 rounded-xl border p-6 border-gray-900"
-                >
-                  <h3 className="text-lg mb-5 font-jua font-bold text-white">
-                    Direction
-                  </h3>
-                  <div className="h-40 bg-highlight rounded-xl flex-all">
-                    {accommodationData?.mapLink ? (
-                      <iframe
-                        src={accommodationData?.mapLink}
-                        className="w-full h-full rounded-xl"
-                        allowFullScreen=""
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                      ></iframe>
-                    ) : (
-                      <p className="text-textcolor/70">Map not available</p>
-                    )}
-                  </div>
-                </div>
-                <SideBanner4
-                  title="Visitor Tips"
-                  sub="Bring binoculars for bird watching, Early morning and late afternoon game drives are best, Pack layers as temperatures vary throughout the day"
-                  link="/plan-your-safari"
-                  image={"/images/header.jpeg"}
-                  Icon={Clock}
-                  smallSub="View"
-                />
               </div>
             </div>
-            <div className="sm:pt-28 pt-10">
-              {/* Available Tours */}
-              {allFetchedAccTours?.length > 0 && (
-                <div>
-                  <Title
-                    title={`${accommodationData?.name} Tours`}
-                    badge={"🚗 Tours"}
-                    subHeading={
-                      "We partner with the finest lodges, camps, and resorts across Tanzania to ensure your comfort and an unforgettable stay."
-                    }
-                  />
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {allFetchedAccTours?.map((tour, index) => (
-                      <TourCardPro key={index} tour={tour} />
-                    ))}
-                  </div>
-                  <div className="text-center mt-6">
-                    <Link href={"/tours"}>
-                      {" "}
-                      <SecondaryButton>
-                        View All Available Tours
-                      </SecondaryButton>
-                    </Link>
-                  </div>
+            {/* map */}
+            <div
+              data-aos="fade-up"
+              className="bg-white rounded-2xl space-y-6 p-12"
+            >
+              <div className="space-y-6">
+                <h2 className="md:text-2xl text-xl text-primary font-jua">
+                  {destination?.name} Location
+                </h2>
+                <div className="h-[400px]">
+                  <SingleMap />
                 </div>
-              )}
+              </div>
             </div>
-          </main>
-        </>
-      ) : (
-        <NoDataFound text={"Accommodation not found"} />
-      )}
+
+            {/* banners */}
+            <div className="bg-white rounded-2xl space-y-6 p-12">
+              <div className="space-y-10">
+                {destination?.banners?.map((item, index) => (
+                  <div className="w-full" key={index}>
+                    <div className="w-full grid grid-cols-2 gap-6">
+                      <Image
+                        data-aos={`${index % 2 === 0 ? "fade-right" : "fade-left"}`}
+                        className={`${index % 2 === 0 ? "order-1" : "order-2"} w-full h-96 object-cover`}
+                        src={item?.image || "/placeholder.svg"}
+                        alt={item.title}
+                        width={250}
+                        height={250}
+                      />
+                      <div
+                        data-aos={`${index % 2 === 0 ? "fade-left" : "fade-right"}`}
+                        className={`${index % 2 === 0 ? "order-2" : "order-1"} space-y-8 p-8 bg-accent/20 rounded`}
+                      >
+                        <h1 className="text-2xl font-bold text-primary">
+                          {item.title}
+                        </h1>
+                        <hr className="my-4 border-secondary/30" />
+
+                        <p className="text-primary leading-6 ">
+                          {item.overview}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div className="w-full bg-primary py-20">
+        <div className="respons space-y-10">
+          <h2 className="md:text-3xl text-xl text-accent font-jua">
+            {destination?.name} Activities
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {destination?.activities.map((activity, idx) => (
+              <div
+                key={idx}
+                data-aos="fade-up"
+                data-aos-delay={idx * 100}
+                className="bg-white/20 rounded-xl shadow-lg p-10 flex flex-col items-center hover:bg-primary transitions"
+              >
+                <div className="mb-4">
+                  <CircleCheck className="text-white w-8 h-8" />
+                </div>
+                <h3 className="font-bold text-accent mb-2 text-center">
+                  {activity.title}
+                </h3>
+                <p className="text-gray-200 text-sm text-center">
+                  {activity.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <FeaturesTours
+        datas={{
+          title: `${destination?.name} Journerys`,
+          sub: "Whether you’re a family on safari, a photographer, big cat enthusiast or avid birder.",
+          packages: [],
+        }}
+      />
+      <div className="w-full bg-highlight/40 py-20">
+        <div className="respons space-y-10">
+          <h2 className="md:text-3xl text-xl text-primary font-jua">FAQs</h2>
+          <FaqsSingle datas={destination?.faqs} />
+        </div>
+      </div>
     </>
   );
 }

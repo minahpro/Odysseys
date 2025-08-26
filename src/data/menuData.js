@@ -106,14 +106,7 @@ export const menuData = {
       description: "Stunning photos from our expeditions",
       image: "/placeholder.svg?height=80&width=120",
     },
-    {
-      name: "Impacts",
-      href: "/about/impacts",
-      icon: "Heart",
-      description: "Conservation efforts and community development",
-      badge: "New",
-      image: "/placeholder.svg?height=80&width=120",
-    },
+
     {
       name: "Privacy Policies",
       href: "/privacy",
@@ -139,7 +132,7 @@ export const allMenuDatas = [
   },
   {
     name: "Day Trips",
-    link: "/tours/day-trips",
+    link: "/experiences",
   },
   {
     name: "Zanzibar Trips",
