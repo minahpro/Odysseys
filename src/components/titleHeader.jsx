@@ -5,9 +5,9 @@ import Link from "next/link";
 
 export default function TitleHeader({ first, last, link, sub, image }) {
   return (
-    <section className={`w-full relative grid grid-cols-2 gap-12`}>
+    <section className={`w-full relative md:grid grid-cols-2 gap-12`}>
       <div className="bg-white flex-all h-full">
-        <div className=" space-y-6 pl-32 w-full">
+        <div className="space-y-4 sm:space-y-6 lg:pl-32 sm:pl-8 pl-3 sm:py-16 py-10 md:py-0 pr-2 md:pr-0 w-full">
           <h1
             data-aos="fade-right"
             className={`font-jua text-3xl md:text-4xl xl:text-5xl font-semibold text-primary `}
@@ -38,7 +38,7 @@ export default function TitleHeader({ first, last, link, sub, image }) {
         height={500}
         alt="Loading.."
         src={image ? image : "/images/header.jpeg"}
-        className="w-full bg-accent md:h-[450px] h-[300px] object-cover"
+        className="w-full md:block hidden bg-accent md:h-[450px] h-[300px] object-cover"
       />
     </section>
   );

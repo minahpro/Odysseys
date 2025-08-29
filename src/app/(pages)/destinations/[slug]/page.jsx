@@ -195,7 +195,7 @@ function Page() {
           <div className="respons space-y-12">
             <div
               data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
+              className="bg-white rounded-2xl space-y-6 sm:p-12 p-6"
             >
               <div className="flex justify-between items-center gap-4 flex-wrap">
                 <h2 className="md:text-4xl text-3xl text-primary font-jua">
@@ -217,7 +217,7 @@ function Page() {
               />
 
               <div className="flex flex-col space-y-12">
-                <div className="flex w-auto items-center rounded-xl p-2 overflow-hidden bg-accent">
+                <div className="flex flex-wrap w-auto items-center rounded-xl p-2 overflow-hidden bg-accent">
                   {Object.entries(destination.datas).map(([key, section]) => (
                     <button
                       key={key}
@@ -238,8 +238,8 @@ function Page() {
                     // Facts Tab
                     if (section.title === "Facts") {
                       return (
-                        <div className="grid grid-cols-10 gap-8">
-                          <div className="col-span-6">
+                        <div className="grid lg:grid-cols-10 grid-cols-1 gap-8">
+                          <div className="lg:col-span-6">
                             <h2 className="font-bold text-xl text-primary flex items-center gap-4">
                               <MapPin className="text-secondary" />{" "}
                               {destination?.slogan}
@@ -251,7 +251,7 @@ function Page() {
                               className="text-gray-800 mt-3 leading-relaxed"
                             />
                           </div>
-                          <div className="space-y-4 pl-10 border-l col-span-4">
+                          <div className="space-y-4 pl-10 border-l lg:col-span-4">
                             {section?.items?.map((item) => (
                               <div className="space-y-2" key={item.title}>
                                 <h3 className="font-semibold text-primary">
@@ -315,7 +315,7 @@ function Page() {
                             will see
                           </h2>
 
-                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             {section?.items?.map((item, index) => (
                               <div
                                 key={item.title}
@@ -352,7 +352,7 @@ function Page() {
                             Items
                           </h2>
 
-                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                             {section?.items?.map((item, index) => (
                               <div
                                 key={item}
@@ -366,7 +366,7 @@ function Page() {
                             ))}
                           </div>
                           <div className="mt-6 p-4 bg-secondary rounded-lg border-l-4 border-white">
-                            <p className="text-white text-sm flex items-center gap-2">
+                            <p className="text-white text-sm flex md:flex-nowrap flex-wrap items-center gap-2">
                               <AlertTriangleIcon className="w-4 h-4" />
                               <strong>Pro Tip:</strong> Pack light but don't
                               forget the essentials. Weather can change quickly
@@ -430,7 +430,7 @@ function Page() {
             {/* experiances */}
             <div
               data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
+              className="bg-white rounded-2xl space-y-6 md:p-12 p-6"
             >
               <div className="space-y-6">
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
@@ -442,20 +442,20 @@ function Page() {
             {/* map */}
             <div
               data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
+              className="bg-white rounded-2xl space-y-6 md:p-12 p-6"
             >
               <div className="space-y-6">
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
                   {destination?.name} Location
                 </h2>
-                <div className="h-[400px]">
+                <div className="sm:h-[400px] h-[250px]">
                   <SingleMap />
                 </div>
               </div>
             </div>
 
             {/* destinations */}
-            <div className="bg-white rounded-2xl space-y-6 p-12">
+            <div className="bg-white rounded-2xl space-y-6 md:p-12 p-6">
               <div className="space-y-6">
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
                   Destinations Found In {destination?.name}
@@ -466,8 +466,8 @@ function Page() {
                     ?.slice(0, 3)
                     ?.map((item, index) => (
                       <div className="w-full" key={index}>
-                        <div className="w-full grid grid-cols-2 gap-6">
-                          <div className="space-y-8 p-8 bg-accent/20 rounded">
+                        <div className="w-full grid lg:grid-cols-2 grid-cols-1 lg:gap-6">
+                          <div className="space-y-8 sm:p-8 p-4 bg-accent/20 rounded">
                             <h1 className="text-2xl font-bold text-primary">
                               {item.title}
                             </h1>
@@ -494,7 +494,7 @@ function Page() {
                           </div>
                           <Image
                             data-aos="fade-left"
-                            className="w-full h-96 object-cover"
+                            className="w-full md:h-96 h-48 object-cover"
                             src={
                               `/images/bg/${index + 1}.png` ||
                               "/placeholder.svg"

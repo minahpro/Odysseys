@@ -179,7 +179,7 @@ function Page() {
           <div className="respons space-y-12">
             <div
               data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
+              className="bg-white rounded-2xl space-y-6 sm:p-12 p-6"
             >
               <div className="flex justify-between items-center gap-4 flex-wrap">
                 <h2 className="md:text-4xl text-3xl text-primary font-jua">
@@ -200,13 +200,13 @@ function Page() {
                 className="text-lg text-gray-800 leading-relaxed"
               />
 
-              <div className="grid grid-cols-12 items-start gap-6 pt-12">
-                <div className="col-span-2 w-full space-y-3 rounded-xl p-2 overflow-hidden bg-accent">
+              <div className="grid lg:grid-cols-12 grid-cols-1 items-start gap-6 pt-12">
+                <div className="lg:col-span-2 lg:block flex flex-wrap items-center gap-2 w-full space-y-3 rounded-xl p-2 overflow-hidden bg-accent">
                   {Object.entries(destination.datas).map(([key, section]) => (
                     <button
                       key={key}
                       onClick={() => setActiveTab(key)}
-                      className={`flex-all w-full rounded-xl px-6 py-3 text-sm font-medium ${activeTab === key ? "bg-primary text-accent" : "text-primary"}`}
+                      className={`flex-all lg:w-full w-auto rounded-xl px-6 py-3 text-sm font-medium ${activeTab === key ? "bg-primary text-accent" : "text-primary"}`}
                     >
                       {section.title}
                     </button>
@@ -214,7 +214,7 @@ function Page() {
                 </div>
                 {/* tab container */}
 
-                <div className="min-h-[400px] col-span-10">
+                <div className="min-h-[400px] lg:col-span-10">
                   {(() => {
                     const section = destination.datas[activeTab];
                     if (!section) return null;
@@ -222,8 +222,8 @@ function Page() {
                     // Facts Tab
                     if (section.title === "Facts") {
                       return (
-                        <div className="grid grid-cols-10 gap-8">
-                          <div className="col-span-6">
+                        <div className="grid lg:grid-cols-10 gap-8">
+                          <div className="lg:col-span-6">
                             <h2 className="font-bold text-xl text-primary flex items-center gap-4">
                               <MapPin className="text-secondary" /> What you
                               need to know
@@ -235,7 +235,7 @@ function Page() {
                               className="text-gray-800 mt-3 leading-relaxed"
                             />
                           </div>
-                          <div className="space-y-4 pl-10 border-l col-span-4">
+                          <div className="space-y-4 pl-10 border-l lg:col-span-4">
                             {section?.items?.map((item) => (
                               <div className="space-y-2" key={item.title}>
                                 <h3 className="font-semibold text-primary">
@@ -299,7 +299,7 @@ function Page() {
                             will see
                           </h2>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             {section?.items?.map((item, index) => (
                               <div
                                 key={item.title}
@@ -384,20 +384,20 @@ function Page() {
             {/* map */}
             <div
               data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
+              className="bg-white rounded-2xl space-y-6 sm:p-12 p-6"
             >
               <div className="space-y-6">
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
                   {destination?.name} Location
                 </h2>
-                <div className="h-[400px]">
+                <div className="sm:h-[400px] h-[250px]">
                   <SingleMap />
                 </div>
               </div>
             </div>
 
             {/* destinations */}
-            <div className="bg-white rounded-2xl space-y-6 p-12">
+            <div className="bg-white rounded-2xl space-y-6 sm:p-12 p-6">
               <div className="space-y-6">
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
                   Journey with Wilderness

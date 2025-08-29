@@ -1,7 +1,9 @@
+"use client";
 import { PrimaryButton, SecondaryButton } from "@/components/buttons";
 import { PawPrint } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import SmallScreenSwipers from "../SmallScreenSwiper";
 
 const bigFiveAnimals = [
   {
@@ -82,7 +84,7 @@ export default function WildlifeBanner() {
               Africa's most legendary creatures
             </p>
 
-            <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-10">
+            <div className="sm:grid hidden md:w-auto w-full sm:grid-cols-3 grid-cols-1 lg:grid-cols-5 gap-2 md:gap-6 lg:gap-10">
               {bigFiveAnimals.map((animal, index) => (
                 <div
                   key={index}
@@ -101,6 +103,31 @@ export default function WildlifeBanner() {
                   </h3>
                 </div>
               ))}
+            </div>
+
+            {/* small screen */}
+            <div className="sm:hidden block w-full">
+              <SmallScreenSwipers
+                datas={bigFiveAnimals}
+                Children={({ item, index }) => (
+                  <div
+                    key={index}
+                    className="group bg-white/10 backdrop-blur-sm rounded-xl p-8 hover:bg-accent/20 hover:scale-105 transition-all duration-300 cursor-pointer"
+                  >
+                    <div className="relative h-24 w-24 mx-auto mb-4 rounded-full overflow-hidden">
+                      <Image
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <h3 className=" text-white font-semibold text-sm text-center mb-2 transition-colors">
+                      {item.name}
+                    </h3>
+                  </div>
+                )}
+              />
             </div>
 
             <div data-aos="fade-up" className="pt-8">

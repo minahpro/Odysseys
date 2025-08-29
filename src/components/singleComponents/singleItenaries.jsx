@@ -34,7 +34,10 @@ function SingleItenaries({ datas }) {
 
   useEffect(() => {
     if (openIndex !== null && itemRefs.current[openIndex]) {
-      itemRefs.current[openIndex].scrollIntoView({ behavior: "smooth", block: "start" });
+      itemRefs.current[openIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   }, [openIndex]);
 
@@ -43,7 +46,7 @@ function SingleItenaries({ datas }) {
       {datas.map((item, index) => (
         <div
           key={index}
-          ref={el => itemRefs.current[index] = el}
+          ref={(el) => (itemRefs.current[index] = el)}
           data-aos="fade-up"
           data-aos-delay={index * 200}
           className="bg-white border-b group border-secondary/30 overflow-hidden "
@@ -53,23 +56,25 @@ function SingleItenaries({ datas }) {
             className="w-full px-6 py-4 text-left flex items-center justify-between"
           >
             <div className="flex-1 pr-4">
-              <h3 className="font-semibold text-lg text-primary ">{item.title}</h3>
+              <h3 className="font-semibold text-lg text-primary ">
+                {item.title}
+              </h3>
             </div>
-            <div className="w-16 h-16 rounded-full transitions flex-all border bg-white group-hover:bg-secondary text-primary group-hover:text-white">
+            <div className="md:w-16 w-10 md:h-16 h-10 rounded-full transitions flex-all border bg-white group-hover:bg-secondary text-primary group-hover:text-white">
               {openIndex === index ? (
-                <Minus className="w-5 h-5" />
+                <Minus className="md:w-5 md:h-5 w-3 h-3" />
               ) : (
-                <Plus className="w-5 h-5" />
+                <Plus className="md:w-5 md:h-5 w-3 h-3" />
               )}
             </div>
           </button>
           <div
-            className={`transition-all duration-500 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}
+            className={`transition-all duration-500 ease-in-out overflow-hidden ${openIndex === index ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"}`}
           >
             {openIndex === index && (
               <div className="px-6 pb-4">
                 <div className="bg-accent/40 rounded">
-                  <div className="relative w-full h-[400px] overflow-hidden rounded">
+                  <div className="relative w-full md:h-[400px] h-[250px] overflow-hidden rounded">
                     <Image
                       src={item.image}
                       alt={item.title}
@@ -77,10 +82,10 @@ function SingleItenaries({ datas }) {
                       width={500}
                       height={300}
                     />
-                    <div className="absolute bottom-6 left-0 right-0 flex-all">
-                      <div className="bg-black/60 w-4/6 backdrop-blur-sm p-8 rounded">
+                    <div className="absolute md:bottom-6 bottom-0 left-0 right-0 flex-all">
+                      <div className="bg-black/60 md:w-4/6 w-full backdrop-blur-sm p-8 rounded">
                         <div className="space-y-4">
-                          <h2 className="text-xl text-white font-bold">
+                          <h2 className="md:text-xl text-base text-white font-bold">
                             {item?.title}
                           </h2>
                           <div className="flex items-center gap-2">
@@ -93,7 +98,7 @@ function SingleItenaries({ datas }) {
                       </div>
                     </div>
                   </div>
-                  <div className="p-12 space-y-6">
+                  <div className="md:p-12 p-6 space-y-6">
                     <p className="text-primary font-medium leading-relaxed">
                       {item.description}
                     </p>
@@ -126,7 +131,7 @@ function SingleItenaries({ datas }) {
                       </div>
                     </div>
                     {/* destination & accommodation */}
-                    <div className="flex items-center gap-6">
+                    <div className="flex flex-wrap items-center gap-6">
                       <div className="bg-accent rounded-lg hover:shadow-xl transitions p-4 flex gap-10 items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-primary rounded-xl text-accent flex-all font-bold">
@@ -149,7 +154,9 @@ function SingleItenaries({ datas }) {
                             {item.accomodation?.name}
                           </h3>
                         </div>
-                        <Link href={`/accommodations/${item.accomodation?.slug}`}>
+                        <Link
+                          href={`/accommodations/${item.accomodation?.slug}`}
+                        >
                           <SquareArrowOutUpRight className="w-5 h-5 text-secondary" />
                         </Link>
                       </div>

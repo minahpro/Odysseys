@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
           <WhatsAppButton />
 
           <Aos />
-          {children}
+          <div className="overflow-hidden">{children}</div>
         </AppContextProvider>
       </body>
     </html>

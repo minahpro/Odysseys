@@ -47,8 +47,8 @@ export default function TrekkingTours() {
           ></div>
           {demoDataBase?.tourTypes?.map((type, index) => (
             <SwiperSlide className="bg-black/30" key={index}>
-              <div className="py-28 px-10 flex justify-end items-center">
-                <div className="bg-white space-y-4 rounded-xl p-10 ">
+              <div className="sm:py-28 py-14 sm:px-10 px-4 flex justify-end items-center">
+                <div className="bg-white space-y-4 rounded-xl sm:p-10 p-6">
                   <div data-swiper-parallax="-300">
                     <div className="w-14 h-14 bg-accent text-secondary rounded-full flex-all">
                       <Heart className="h-6 w-6" />

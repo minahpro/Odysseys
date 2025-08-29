@@ -112,9 +112,9 @@ function Page() {
             height={1080}
             className="w-full h-[500px] object-cover"
           />
-          <div className="absolute bottom-6 left-0 right-0 flex-all">
-            <div className="bg-white/60 w-4/6 backdrop-blur-sm p-12 rounded">
-              <div className="space-y-4">
+          <div className="absolute md:bottom-6 bottom-0 top-0 md:top-auto left-0 right-0 flex-all">
+            <div className="bg-white/60 h-full md:h-auto w-full md:w-4/6 backdrop-blur-sm p-12 rounded">
+              <div className="space-y-4 md:block flex justify-center w-full h-full flex-col">
                 <h2 className="text-xl font-bold">{tour?.title}</h2>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-secondary" />
@@ -140,7 +140,7 @@ function Page() {
           </div>
         </div>
         {/* map */}
-        <div className="w-full h-[500px] bg-gray-100 flex-all">
+        <div className="w-full md:h-[500px] h-[300px] bg-gray-100 flex-all">
           <h1 className="text-primary">Map Display Here</h1>
         </div>
         {/* destinations */}
@@ -149,7 +149,7 @@ function Page() {
             <h2 className="md:text-3xl text-xl text-accent font-jua">
               Destinations you will visit
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-8">
               {tour?.destinations.map((activity, idx) => (
                 <div
                   key={idx}

@@ -26,11 +26,11 @@ function FaqsSingle({ datas }) {
                 {item.question}
               </h3>
             </div>
-            <div className="w-16 h-16 rounded-full transitions flex-all border bg-white group-hover:bg-secondary text-primary group-hover:text-white">
+            <div className="md:w-16 w-10 md:h-16 h-10 rounded-full transitions flex-all border bg-white group-hover:bg-secondary text-primary group-hover:text-white">
               {openIndex === index ? (
-                <Minus className="w-5 h-5" />
+                <Minus className="md:w-5 md:h-5 w-3 h-3" />
               ) : (
-                <Plus className="w-5 h-5" />
+                <Plus className="md:w-5 md:h-5 w-3 h-3" />
               )}
             </div>
           </button>

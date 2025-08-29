@@ -129,7 +129,7 @@ function Page() {
           <div className="respons space-y-12">
             <div
               data-aos="fade-up"
-              className="bg-white rounded-2xl space-y-6 p-12"
+              className="bg-white rounded-2xl space-y-6 sm:p-12 p-6"
             >
               <div className="flex justify-between items-center gap-4 flex-wrap">
                 <h2 className="md:text-4xl text-3xl text-primary font-jua">
@@ -153,7 +153,7 @@ function Page() {
               <div className="space-y-4">
                 <h2 className="font-bold text-xl text-primary">Amineties</h2>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   {destination?.amineties?.map((item, index) => (
                     <div
                       key={item}
@@ -178,18 +178,18 @@ function Page() {
                 <h2 className="md:text-2xl text-xl text-primary font-jua">
                   {destination?.name} Location
                 </h2>
-                <div className="h-[400px]">
+                <div className="md:h-[400px] h-[250px]">
                   <SingleMap />
                 </div>
               </div>
             </div>
 
             {/* banners */}
-            <div className="bg-white rounded-2xl space-y-6 p-12">
+            <div className="bg-white rounded-2xl space-y-6 sm:p-12">
               <div className="space-y-10">
                 {destination?.banners?.map((item, index) => (
                   <div className="w-full" key={index}>
-                    <div className="w-full grid grid-cols-2 gap-6">
+                    <div className="w-full grid grid-cols-1 lg:grid-cols-2 sm:gap-6">
                       <Image
                         data-aos={`${index % 2 === 0 ? "fade-right" : "fade-left"}`}
                         className={`${index % 2 === 0 ? "order-1" : "order-2"} w-full h-96 object-cover`}
@@ -200,7 +200,7 @@ function Page() {
                       />
                       <div
                         data-aos={`${index % 2 === 0 ? "fade-left" : "fade-right"}`}
-                        className={`${index % 2 === 0 ? "order-2" : "order-1"} space-y-8 p-8 bg-accent/20 rounded`}
+                        className={`${index % 2 === 0 ? "lg:order-2 order-1" : "lg:order-1 order-2"} space-y-8 p-8 bg-accent/20 rounded`}
                       >
                         <h1 className="text-2xl font-bold text-primary">
                           {item.title}
@@ -224,7 +224,7 @@ function Page() {
           <h2 className="md:text-3xl text-xl text-accent font-jua">
             {destination?.name} Activities
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {destination?.activities.map((activity, idx) => (
               <div
                 key={idx}

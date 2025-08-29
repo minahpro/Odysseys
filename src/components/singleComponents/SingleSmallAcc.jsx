@@ -30,10 +30,10 @@ function SingleSmallAcc({ datas }) {
     >
       {datas?.map((item, index) => (
         <SwiperSlide key={index}>
-          <div className="grid grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-8 items-center">
             <div
               data-aos="fade-right"
-              className="w-full grid grid-cols-2 gap-2"
+              className="w-full grid grid-cols-2 gap-2 md:order-2 order-1"
             >
               <Image
                 className="col-span-2 w-full h-60 object-cover rounded-xl"
@@ -54,7 +54,7 @@ function SingleSmallAcc({ datas }) {
                 height={500}
               />
             </div>
-            <div data-aos="fade-left" className="space-y-8 pl-12">
+            <div data-aos="fade-left" className="space-y-8 lg:pl-12">
               <h1 className="text-2xl font-bold text-accent">{item?.title}</h1>
               <div className="flex items-center gap-4">
                 <Star className="w-4 h-4 text-secondary" />

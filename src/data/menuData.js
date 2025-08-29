@@ -127,31 +127,23 @@ export const allMenuDatas = [
     link: "/about",
   },
   {
-    name: "All Packages",
-    link: "/tours",
-  },
-  {
-    name: "Day Trips",
-    link: "/experiences",
-  },
-  {
-    name: "Zanzibar Trips",
-    link: "/tours/zanzibar-trips",
-  },
-  {
-    name: "Climbing/Trekking",
-    link: "/tours/climbing-trips",
-  },
-  {
     name: "Destinations",
     link: "/destinations",
   },
   {
-    name: "Accommodations",
+    name: "Experiences",
+    link: "/experiences",
+  },
+  {
+    name: "Journeys",
+    link: "/journeys",
+  },
+  {
+    name: "Camps",
     link: "/accommodations",
   },
   {
-    name: "Contact",
+    name: "Contact Us",
     link: "/contact",
   },
   {
@@ -159,15 +151,15 @@ export const allMenuDatas = [
     link: "/blog",
   },
   {
+    name: "FAQs",
+    link: "/faqs",
+  },
+  {
     name: "Gallery",
     link: "/gallery",
   },
   {
-    name: "FAQ",
-    link: "/faqs",
-  },
-  {
-    name: "Privacy Policy",
+    name: "Privacy Policies",
     link: "/privacy",
   },
 ];

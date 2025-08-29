@@ -46,6 +46,17 @@ function TourPackagesSingle() {
             slidesPerView={2}
             speed={1000}
             loop={true}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 2,
+              },
+            }}
             className="relative w-full z-10"
           >
             {tours?.map((tour, index) => (

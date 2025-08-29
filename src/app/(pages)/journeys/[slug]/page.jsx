@@ -126,7 +126,7 @@ function Page() {
       </div>
       <div className="w-full py-20 bg-secondary">
         <div className="respons">
-          <div className="grid grid-cols-2 gap-8 items-center">
+          <div className="grid lg:grid-cols-2 grid-col-1 gap-8 items-center">
             <div
               data-aos="fade-right"
               className="w-full grid grid-cols-2 gap-2"
@@ -150,7 +150,7 @@ function Page() {
                 height={500}
               />
             </div>
-            <div data-aos="fade-left" className="space-y-8 pl-12">
+            <div data-aos="fade-left" className="space-y-8 lg:pl-12">
               <h1 className="md:text-4xl text-3xl font-jua text-accent">
                 {destination?.banner?.title}
               </h1>

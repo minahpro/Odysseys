@@ -63,10 +63,10 @@ export default function GallerySection() {
             {galleryImages?.map((item) => (
               <SwiperSlide
                 key={item.id}
-                className="w-full h-80 bg-cover bg-center"
+                className="w-full md:h-80 sm:h-60 h-40 bg-cover bg-center"
               >
                 <Image
-                  className="w-full h-80 object-cover"
+                  className="w-full md:h-80 sm:h-60 h-40 object-cover"
                   width={500}
                   height={500}
                   src={item.src}

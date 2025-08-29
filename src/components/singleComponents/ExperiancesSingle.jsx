@@ -24,6 +24,17 @@ function ExperiancesSingle({ datas }) {
       slidesPerView={3}
       speed={1000}
       loop={true}
+      breakpoints={{
+        320: {
+          slidesPerView: 1,
+        },
+        640: {
+          slidesPerView: 2,
+        },
+        768: {
+          slidesPerView: 3,
+        },
+      }}
       className="relative w-full z-10"
     >
       {datas?.map((tour, index) => (

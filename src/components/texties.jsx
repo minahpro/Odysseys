@@ -73,11 +73,11 @@ export const PlainTitle = ({ first, last }) => {
 
 export const SingleHeader = ({ data }) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 h-[600px] md:h-[500px]">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-[600px] lg:h-[500px]">
       {/* Large bedroom image - spans 2 rows on larger screens */}
       <div
         data-aos="fade-right"
-        className="col-span-1 md:col-span-2 row-span-2 relative overflow-hidden rounded-lg"
+        className="col-span-2 lg:col-span-2 row-span-2 relative overflow-hidden rounded-lg"
       >
         <Image
           src={data?.photos[0] || "/placeholder.svg?height=800&width=1200"}
@@ -88,7 +88,7 @@ export const SingleHeader = ({ data }) => {
       </div>
 
       {/* Top right data */}
-      <div className="col-span-1 md:col-span-1 relative overflow-hidden rounded-lg">
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
         <Image
           src={data?.photos[1] || "/placeholder.svg?height=800&width=1200"}
           alt={data?.title}
@@ -97,7 +97,7 @@ export const SingleHeader = ({ data }) => {
         />
       </div>
 
-      <div className="col-span-1 md:col-span-1 relative overflow-hidden rounded-lg">
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
         <Image
           src={data?.photos[2] || "/placeholder.svg?height=800&width=1200"}
           alt={data?.title}
@@ -107,7 +107,7 @@ export const SingleHeader = ({ data }) => {
       </div>
 
       {/* Bottom right data */}
-      <div className="col-span-1 md:col-span-1 relative overflow-hidden rounded-lg">
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
         <Image
           src={data?.photos[3] || "/placeholder.svg?height=800&width=1200"}
           alt={data?.title}
@@ -116,7 +116,7 @@ export const SingleHeader = ({ data }) => {
         />
       </div>
 
-      <div className="col-span-1 md:col-span-1 relative overflow-hidden rounded-lg">
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
         <Image
           src={data?.photos[4] || "/placeholder.svg?height=800&width=1200"}
           alt={data?.title}

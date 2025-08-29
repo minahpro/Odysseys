@@ -67,7 +67,7 @@ function Galley() {
               <br />
             </p>
           </div>
-          <div className="mt-12">
+          <div className=" md:mt-12 mt-8">
             {/* Masonry Gallery Grid */}
             <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 mb-12">
               {filteredImages.map((item, index) => (

@@ -10,7 +10,7 @@ import { FaStar } from "react-icons/fa6";
 // CARDS I USE ON SITE
 export const DestinationCardProHome = ({ item: destination }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-highlight hover:shadow-xl transition-all duration-300 max-w-sm group">
+    <div className="bg-white rounded-2xl shadow-sm border border-highlight hover:shadow-xl transition-all duration-300 group">
       <div className="p-5">
         <div className="relative h-72 rounded-xl overflow-hidden">
           <Image
@@ -134,9 +134,9 @@ export const TourCardPro = ({ tour, index = 0 }) => {
 
 export const DayTripCardPro = ({ tour }) => {
   return (
-    <div className="bg-white group rounded-xl hover:shadow-2xl shadow-xl overflow-hidden transitions max-w-4xl">
+    <div className="bg-white group rounded-xl hover:shadow-2xl shadow-xl overflow-hidden transitions lg:max-w-4xl">
       <div className="relative">
-        <div className="relative w-full md:h-96">
+        <div className="relative w-full md:h-96 h-80">
           <Image
             src={tour?.photos[0] || "/placeholder.svg"}
             alt={tour?.title}
@@ -277,7 +277,7 @@ export const BlogCardPro = ({ item }) => {
 // Contact Info Card Component
 export const ContactInfoCard = ({ icon: Icon, title, info, description }) => {
   return (
-    <div className="rounded-xl space-y-5 p-8 flex-all flex-col bg-white hover:shadow-xl transitions">
+    <div className="rounded-xl space-y-5 sm:p-8 p-5 flex-all flex-col bg-white hover:shadow-xl transitions">
       <div className="bg-accent flex-all w-14 h-14 rounded-full">
         <Icon className="h-6 w-6 text-primary" />
       </div>
