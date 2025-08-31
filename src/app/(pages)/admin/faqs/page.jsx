@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
+import { getFAQs, createFAQ, updateFAQ, deleteFAQ } from "@/firebase/databaseOperations";
 import {
   Edit,
   Trash,
@@ -14,76 +15,51 @@ import {
   Check,
   X,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 
 const FAQsPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view"); // view, add, edit
   const [selectedFAQ, setSelectedFAQ] = useState(null);
+  const [faqs, setFaqs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(""); // success, error
 
-  // Sample FAQ data
-  const faqs = [
-    {
-      id: 1,
-      question: "What is the best time to visit Tanzania for safari?",
-      answer:
-        "The best time for wildlife viewing in Tanzania is during the dry season from late June to October. The wildebeest migration usually reaches the northern Serengeti in July and August. However, Tanzania is a year-round destination with different experiences in each season.",
-      category: "Safari",
-      status: "active",
-      order: 1,
-      createdAt: "2024-01-15",
-    },
-    {
-      id: 2,
-      question: "Do I need a visa to visit Tanzania?",
-      answer:
-        "Most visitors to Tanzania require a visa. You can obtain a visa on arrival at major entry points or apply online through the Tanzania e-visa portal before your trip. The visa cost varies depending on your nationality and the type of visa (single entry, multiple entry, etc.).",
-      category: "Travel Requirements",
-      status: "active",
-      order: 2,
-      createdAt: "2024-01-16",
-    },
-    {
-      id: 3,
-      question: "What vaccinations do I need for Tanzania?",
-      answer:
-        "Yellow fever vaccination is required if you're arriving from a country with risk of yellow fever transmission. Other recommended vaccinations include hepatitis A and B, typhoid, tetanus, and meningitis. Malaria prophylaxis is also highly recommended. Please consult with a travel health specialist before your trip.",
-      category: "Health & Safety",
-      status: "active",
-      order: 3,
-      createdAt: "2024-01-17",
-    },
-    {
-      id: 4,
-      question: "What should I pack for a safari in Tanzania?",
-      answer:
-        "Pack lightweight, neutral-colored clothing (avoid bright colors and blue/black which attract tsetse flies), a wide-brimmed hat, sunglasses, sturdy walking shoes, sunscreen, insect repellent, a light jacket for evenings, binoculars, and a camera with extra batteries and memory cards. A small daypack is useful for game drives.",
-      category: "Safari",
-      status: "active",
-      order: 4,
-      createdAt: "2024-01-18",
-    },
-    {
-      id: 5,
-      question: "Is it safe to climb Mount Kilimanjaro?",
-      answer:
-        "Climbing Kilimanjaro is generally safe with proper preparation and guidance. However, it's physically demanding and altitude sickness is a risk. Choose a reputable tour operator, train adequately before your trip, acclimatize properly during the climb, stay hydrated, and listen to your guides. The success rate varies by route, with longer routes offering better acclimatization.",
-      category: "Trekking",
-      status: "active",
-      order: 5,
-      createdAt: "2024-01-19",
-    },
-    {
-      id: 6,
-      question: "What currency is used in Tanzania?",
-      answer:
-        "The official currency is the Tanzanian Shilling (TZS). US dollars are widely accepted at tourist establishments, but they should be bills printed after 2009. ATMs are available in major towns and cities, and credit cards are accepted at larger hotels and restaurants, though a surcharge may apply.",
-      category: "Travel Requirements",
-      status: "draft",
-      order: 6,
-      createdAt: "2024-01-20",
-    },
-  ];
+  // Load FAQs from Firebase
+  useEffect(() => {
+    loadFAQs();
+  }, []);
+
+  const loadFAQs = async () => {
+    setLoading(true);
+    try {
+      const result = await getFAQs();
+      if (result.didSucceed) {
+        setFaqs(result.items);
+      } else {
+        setMessage("Failed to load FAQs");
+        setMessageType("error");
+      }
+    } catch (error) {
+      console.error("Error loading FAQs:", error);
+      setMessage("Error loading FAQs");
+      setMessageType("error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const showMessage = (msg, type) => {
+    setMessage(msg);
+    setMessageType(type);
+    setTimeout(() => {
+      setMessage("");
+      setMessageType("");
+    }, 5000);
+  };
 
   // FAQ categories
   const categories = [
@@ -183,22 +159,57 @@ const FAQsPage = () => {
     setShowModal(true);
   };
 
-  const handleDelete = (faq) => {
+  const handleDelete = async (faq) => {
     if (
       window.confirm(
         `Are you sure you want to delete the FAQ: "${faq.question}"?`
       )
     ) {
-      // Delete logic would go here
-      console.log("Deleting FAQ:", faq.id);
+      try {
+        const result = await deleteFAQ(faq.id);
+        if (result.didSucceed) {
+          setFaqs(faqs.filter(f => f.id !== faq.id));
+          showMessage(result.message, "success");
+        } else {
+          showMessage(result.message, "error");
+        }
+      } catch (error) {
+        console.error("Error deleting FAQ:", error);
+        showMessage("Failed to delete FAQ", "error");
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Save logic would go here
-    console.log("Saving FAQ:", selectedFAQ);
-    setShowModal(false);
+    setSaving(true);
+    
+    try {
+      if (modalMode === "add") {
+        const result = await createFAQ(selectedFAQ);
+        if (result.didSucceed) {
+          setFaqs([...faqs, result.createdItem]);
+          showMessage(result.message, "success");
+          setShowModal(false);
+        } else {
+          showMessage(result.message, "error");
+        }
+      } else if (modalMode === "edit") {
+        const result = await updateFAQ(selectedFAQ.id, selectedFAQ);
+        if (result.didSucceed) {
+          setFaqs(faqs.map(f => f.id === selectedFAQ.id ? selectedFAQ : f));
+          showMessage(result.message, "success");
+          setShowModal(false);
+        } else {
+          showMessage(result.message, "error");
+        }
+      }
+    } catch (error) {
+      console.error("Error saving FAQ:", error);
+      showMessage("Failed to save FAQ", "error");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const actions = [
@@ -223,6 +234,7 @@ const FAQsPage = () => {
   ];
 
   return (
+      <div className="w-full max-w-full overflow-hidden">
     <div className="space-y-6">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -284,6 +296,24 @@ const FAQsPage = () => {
         </div>
       </div>
 
+      {/* Message Display */}
+      {message && (
+        <div className={`p-4 rounded-xl border ${
+          messageType === "success" 
+            ? "bg-green-50 border-green-200 text-green-800" 
+            : "bg-red-50 border-red-200 text-red-800"
+        }`}>
+          <div className="flex items-center">
+            {messageType === "success" ? (
+              <Check className="w-5 h-5 mr-2" />
+            ) : (
+              <AlertCircle className="w-5 h-5 mr-2" />
+            )}
+            <span className="font-quicksand">{message}</span>
+          </div>
+        </div>
+      )}
+
       {/* FAQ Table */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-100">
@@ -298,14 +328,28 @@ const FAQsPage = () => {
             </div>
             <button
               onClick={handleAdd}
-              className="flex items-center px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors"
+              disabled={loading || saving}
+              className="flex items-center px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Plus className="w-4 h-4 mr-2" />
-              <span className="font-quicksand">Add New FAQ</span>
+              {loading || saving ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Plus className="w-4 h-4 mr-2" />
+              )}
+              <span className="font-quicksand">
+                {loading ? "Loading..." : saving ? "Saving..." : "Add New FAQ"}
+              </span>
             </button>
           </div>
         </div>
-        <DataTable data={faqs} columns={columns} actions={actions} />
+        {loading ? (
+          <div className="p-8 text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-gray-600 font-quicksand">Loading FAQs...</p>
+          </div>
+        ) : (
+          <DataTable data={faqs} columns={columns} actions={actions} />
+        )}
       </div>
 
       {/* Modal for View/Add/Edit */}
@@ -470,15 +514,25 @@ const FAQsPage = () => {
               {modalMode !== "view" && (
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl"
+                  disabled={saving}
+                  className="px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/90 hover:to-primary/70 transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
-                  {modalMode === "add" ? "Add FAQ" : "Update FAQ"}
+                  {saving && (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  )}
+                  {saving 
+                    ? "Saving..." 
+                    : modalMode === "add" 
+                      ? "Add FAQ" 
+                      : "Update FAQ"
+                  }
                 </button>
               )}
               <button
                 type="button"
                 onClick={() => setShowModal(false)}
-                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors font-quicksand font-medium"
+                disabled={saving}
+                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors font-quicksand font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {modalMode === "view" ? "Close" : "Cancel"}
               </button>
@@ -486,6 +540,7 @@ const FAQsPage = () => {
           </form>
         </Modal>
       )}
+    </div>
     </div>
   );
 };

@@ -421,6 +421,189 @@ const deleteAttribute = async (attributeType, docId) => {
   }
 };
 
+// FAQ Operations
+const getFAQs = async () => {
+  try {
+    const items = [];
+    const q = query(collection(db, 'faqs'), orderBy('order', 'asc'));
+    const querySnapshot = await getDocs(q);
+    
+    querySnapshot.forEach((doc) => {
+      items.push({ id: doc.id, ...doc.data() });
+    });
+    
+    return {
+      didSucceed: true,
+      items
+    };
+  } catch (error) {
+    console.error('Error fetching FAQs: ', error);
+    return {
+      didSucceed: false,
+      items: []
+    };
+  }
+};
+
+const createFAQ = async (faqData) => {
+  try {
+    const timestamp = new Date();
+    const dataToSave = {
+      ...faqData,
+      createdAt: timestamp,
+      updatedAt: timestamp
+    };
+    
+    const docRef = await addDoc(collection(db, 'faqs'), dataToSave);
+    
+    const createdItem = {
+      id: docRef.id,
+      ...dataToSave
+    };
+    
+    return {
+      didSucceed: true,
+      docId: docRef.id,
+      createdItem,
+      message: 'FAQ created successfully'
+    };
+  } catch (error) {
+    console.error('Error creating FAQ: ', error);
+    return {
+      didSucceed: false,
+      message: 'Failed to create FAQ'
+    };
+  }
+};
+
+const updateFAQ = async (docId, faqData) => {
+  try {
+    const timestamp = new Date();
+    const dataToUpdate = {
+      ...faqData,
+      updatedAt: timestamp
+    };
+    
+    await updateDoc(doc(db, 'faqs', docId), dataToUpdate);
+    
+    return {
+      didSucceed: true,
+      message: 'FAQ updated successfully'
+    };
+  } catch (error) {
+    console.error('Error updating FAQ: ', error);
+    return {
+      didSucceed: false,
+      message: 'Failed to update FAQ'
+    };
+  }
+};
+
+const deleteFAQ = async (docId) => {
+  try {
+    await deleteDoc(doc(db, 'faqs', docId));
+    
+    return {
+      didSucceed: true,
+      message: 'FAQ deleted successfully'
+    };
+  } catch (error) {
+    console.error('Error deleting FAQ: ', error);
+    return {
+      didSucceed: false,
+      message: 'Failed to delete FAQ'
+    };
+  }
+};
+
+// Gallery Operations
+const getGalleryImages = async () => {
+  try {
+    const docsQuery = query(
+      collection(db, "gallery"),
+      orderBy("createdAt", "desc")
+    );
+    const querySnapshot = await getDocs(docsQuery);
+    const images = [];
+
+    querySnapshot.forEach((doc) => {
+      const image = { ...doc.data(), id: doc.id };
+      images.push(image);
+    });
+
+    return { didSucceed: true, images };
+  } catch (error) {
+    console.error("Error fetching gallery images: ", error);
+    return { didSucceed: false, images: [], message: "Failed to fetch gallery images" };
+  }
+};
+
+const createGalleryImage = async (imageData) => {
+  try {
+    const galleryImage = {
+      ...imageData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    
+    const docRef = await addDoc(collection(db, "gallery"), galleryImage);
+    return { didSucceed: true, docId: docRef.id, message: "Gallery image added successfully" };
+  } catch (error) {
+    console.error("Error creating gallery image: ", error);
+    return {
+      didSucceed: false,
+      message: "Failed to add gallery image",
+    };
+  }
+};
+
+const updateGalleryImage = async (docId, imageData) => {
+  try {
+    const updatedData = {
+      ...imageData,
+      updatedAt: new Date(),
+    };
+    
+    await updateDoc(doc(db, "gallery", docId), updatedData);
+    return { didSucceed: true, message: "Gallery image updated successfully" };
+  } catch (error) {
+    console.error("Error updating gallery image: ", error);
+    return { didSucceed: false, message: "Failed to update gallery image" };
+  }
+};
+
+const deleteGalleryImage = async (docId) => {
+  try {
+    await deleteDoc(doc(db, "gallery", docId));
+    return { didSucceed: true, message: "Gallery image deleted successfully" };
+  } catch (error) {
+    console.error("Error deleting gallery image: ", error);
+    return { didSucceed: false, message: "Failed to delete gallery image" };
+  }
+};
+
+const getGalleryImagesByCategory = async (category) => {
+  try {
+    const docsQuery = query(
+      collection(db, "gallery"),
+      where("category", "==", category),
+      orderBy("createdAt", "desc")
+    );
+    const querySnapshot = await getDocs(docsQuery);
+    const images = [];
+
+    querySnapshot.forEach((doc) => {
+      const image = { ...doc.data(), id: doc.id };
+      images.push(image);
+    });
+
+    return { didSucceed: true, images };
+  } catch (error) {
+    console.error("Error fetching gallery images by category: ", error);
+    return { didSucceed: false, images: [], message: "Failed to fetch gallery images" };
+  }
+};
+
 export {
   createDocument,
   updateDocument,
@@ -437,4 +620,13 @@ export {
   createAttribute,
   updateAttribute,
   deleteAttribute,
+  getFAQs,
+  createFAQ,
+  updateFAQ,
+  deleteFAQ,
+  getGalleryImages,
+  createGalleryImage,
+  updateGalleryImage,
+  deleteGalleryImage,
+  getGalleryImagesByCategory,
 };

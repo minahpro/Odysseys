@@ -6,10 +6,57 @@ import {
   signOut,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import { runTransaction, doc } from "firebase/firestore";
 import { createDocument, getSingleDocByFieldName } from "./databaseOperations";
 import firebase from "./firebaseInit";
 
-const { auth } = firebase;
+const { auth, db } = firebase;
+
+// Helper function to check if email already exists
+const checkEmailExists = async (email) => {
+  try {
+    const userDoc = await getSingleDocByFieldName("users", [
+      { fieldName: "email", value: email }
+    ]);
+    return userDoc.didSucceed && userDoc.document !== null;
+  } catch (error) {
+    console.error("Error checking email existence:", error);
+    return false;
+  }
+};
+
+// Unified user creation function with transaction
+const createUserWithTransaction = async (userData) => {
+  try {
+    return await runTransaction(db, async (transaction) => {
+      // Check if email already exists within transaction
+      const emailExists = await checkEmailExists(userData.email);
+      if (emailExists) {
+        throw new Error("auth/email-already-in-use");
+      }
+      
+      // Check if userId already exists within transaction
+      const userDoc = await getSingleDocByFieldName("users", [
+        { fieldName: "userId", value: userData.userId }
+      ]);
+      
+      if (userDoc.didSucceed && userDoc.document !== null) {
+        // User already exists, return existing user
+        return { didSucceed: true, isExisting: true, user: userDoc.document };
+      }
+      
+      // Create new user document
+      const result = await createDocument(userData, "users");
+      return { didSucceed: result.didSucceed, isExisting: false, docId: result.docId };
+    });
+  } catch (error) {
+    console.error("Transaction failed:", error);
+    if (error.message === "auth/email-already-in-use") {
+      return { didSucceed: false, message: "An account with this email already exists" };
+    }
+    return { didSucceed: false, message: "Failed to create user account" };
+  }
+};
 
 // Google Auth Provider
 const googleProvider = new GoogleAuthProvider();
@@ -28,7 +75,7 @@ export const signInWithGoogle = async () => {
       { fieldName: "userId", value: user.uid }
     ]);
     
-    // If user doesn't exist, create a new user document
+    // If user doesn't exist, create a new user document using transaction
     if (!userDoc.didSucceed || userDoc.document === null) {
       const userData = {
         userId: user.uid,
@@ -41,7 +88,13 @@ export const signInWithGoogle = async () => {
         authProvider: "google"
       };
       
-      await createDocument(userData, "users");
+      const createResult = await createUserWithTransaction(userData);
+      if (!createResult.didSucceed) {
+        return {
+          didSucceed: false,
+          message: createResult.message
+        };
+      }
     } else {
       // Update last login
       const { updateDocument } = await import("./databaseOperations");
@@ -107,10 +160,19 @@ export const signInWithEmail = async (email, password) => {
 // Create account with email and password
 export const createAccountWithEmail = async (email, password, displayName) => {
   try {
+    // Check if email already exists before creating Firebase auth account
+    const emailExists = await checkEmailExists(email);
+    if (emailExists) {
+      return {
+        didSucceed: false,
+        message: "An account with this email already exists"
+      };
+    }
+    
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     
-    // Create user document in Firestore
+    // Create user document in Firestore using transaction
     const userData = {
       userId: user.uid,
       email: user.email,
@@ -121,7 +183,20 @@ export const createAccountWithEmail = async (email, password, displayName) => {
       authProvider: "email"
     };
     
-    await createDocument(userData, "users");
+    const createResult = await createUserWithTransaction(userData);
+    if (!createResult.didSucceed) {
+      // If Firestore creation fails, we should delete the Firebase auth user
+      // Note: This is a cleanup operation
+      try {
+        await user.delete();
+      } catch (deleteError) {
+        console.error("Failed to cleanup Firebase auth user:", deleteError);
+      }
+      return {
+        didSucceed: false,
+        message: createResult.message
+      };
+    }
     
     return {
       didSucceed: true,

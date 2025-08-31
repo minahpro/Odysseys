@@ -43,4 +43,20 @@ const deleteMultipleImagesFromFirebase = (imgUrls) => {
   // });
 };
 
-export { imageUploadToFirebase,imageDeleteFromFirebase,deleteMultipleImagesFromFirebase };
+// Generic file upload function
+const uploadFile = async (file, folderName = 'uploads') => {
+  return await imageUploadToFirebase(file, folderName);
+};
+
+// Generic file delete function
+const deleteFile = async (fileUrl) => {
+  return await imageDeleteFromFirebase(fileUrl);
+};
+
+export { 
+  imageUploadToFirebase,
+  imageDeleteFromFirebase,
+  deleteMultipleImagesFromFirebase,
+  uploadFile,
+  deleteFile
+};
