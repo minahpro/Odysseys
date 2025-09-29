@@ -111,7 +111,7 @@ function Blogs() {
             All About Tanzania
           </h2>
 
-          <div className="grid w-full grid-cols-12 mt-12 gap-6">
+          <div className="grid w-full grid-cols-12 md:mt-12 mt-8 gap-6">
             {/* Sidebar with Search and Categories */}
             <div
               data-aos="fade-right"
@@ -129,7 +129,7 @@ function Blogs() {
               </div>
 
               {/* Categories Section */}
-              <div className="bg-white rounded-xl p-6 border border-secondary/20">
+              <div className="bg-white lg:block hidden rounded-xl p-6 border border-secondary/20">
                 <h3 className="font-bold text-primary mb-4">Categories</h3>
                 <div className="space-y-2">
                   {isFetchingBlogCategories ? (
@@ -179,7 +179,7 @@ function Blogs() {
               </div>
 
               {/* countries */}
-              <div className="bg-white rounded-xl p-6 border border-secondary/20">
+              <div className="bg-white lg:block hidden rounded-xl p-6 border border-secondary/20">
                 <h3 className="font-bold text-primary mb-4">Destinations</h3>
                 <div className="space-y-2">
                   {demoDataBase?.mainDestinations?.map((dest, index) => (

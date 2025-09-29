@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   ChevronDown,
   Phone,
@@ -18,6 +16,7 @@ import {
 import { PrimaryButton } from "./buttons";
 import { menuData } from "@/data/menuData";
 import { DropDownMenu } from "./DropDownMenu";
+import { MobileNav } from "./mobilenav";
 
 export default function Navigation() {
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -71,13 +70,11 @@ export default function Navigation() {
       className={`w-full z-50 transition-all duration-300 bg-accent/95 backdrop-blur-sm relative`}
     >
       {/* Top Bar */}
-      <div
-        className={`bg-secondary transitions text-white py-2 px-4 hidden md:block`}
-      >
+      <div className={`bg-secondary transitions text-white py-2 px-4`}>
         <div className="respons">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center md:justify-between justify-center text-sm">
             {/* Contact Info */}
-            <div className="flex items-center space-x-6">
+            <div className="md:flex hidden items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
                 <a
@@ -194,13 +191,14 @@ export default function Navigation() {
           </nav>
 
           {/* Contact Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-3">
             <PrimaryButton className="text-sm py-5">
               <Link href="/contact">Contact Us</Link>
             </PrimaryButton>
           </div>
 
           {/* Mobile Menu */}
+          <MobileNav />
         </div>
       </div>
 
@@ -233,84 +231,3 @@ export default function Navigation() {
     </header>
   );
 }
-
-// <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-//             <SheetTrigger asChild>
-//               <Button variant="ghost" size="icon" className="lg:hidden">
-//                 <Menu className="h-6 w-6 text-primary" />
-//               </Button>
-//             </SheetTrigger>
-//             <SheetContent side="right" className="w-80">
-//               <div className="flex flex-col h-full">
-//                 <div className="flex items-center justify-between mb-8">
-//                   <Image
-//                     src="/black2.png"
-//                     alt="Wild Odysseys Tanzania"
-//                     width={150}
-//                     height={50}
-//                     className="h-10 w-auto"
-//                   />
-//                 </div>
-
-//                 <div className="flex flex-col space-y-1 flex-1">
-//                   {menuLink?.map((item) =>
-//                     item.dropdown ? (
-//                       <div
-//                         key={item.name}
-//                         className="py-2 border-b border-gray-100"
-//                       >
-//                         <div className="font-medium text-primary mb-3 text-lg">
-//                           {item.name}
-//                         </div>
-//                         <div className="space-y-3">
-//                           {item.dropdown.items.map((subItem) => (
-//                             <Link
-//                               key={subItem.name}
-//                               href={subItem.href}
-//                               className="flex items-center space-x-3 p-3 rounded-xl hover:bg-highlight transition-colors"
-//                               onClick={() => setIsMobileMenuOpen(false)}
-//                             >
-//                               <div className="relative w-12 h-10 rounded-md overflow-hidden flex-shrink-0">
-//                                 <Image
-//                                   src={subItem.image || "/placeholder.svg"}
-//                                   alt={subItem.name}
-//                                   fill
-//                                   className="object-cover"
-//                                 />
-//                               </div>
-//                               <div className="flex-1 min-w-0">
-//                                 <div className="font-medium text-primary text-sm">
-//                                   {subItem.name}
-//                                 </div>
-//                                 <div className="text-xs text-gray-600 truncate">
-//                                   {subItem.description}
-//                                 </div>
-//                               </div>
-//                             </Link>
-//                           ))}
-//                         </div>
-//                       </div>
-//                     ) : (
-//                       <Link
-//                         key={item.name}
-//                         href={item.href}
-//                         className="text-primary hover:text-accent transition-colors font-medium py-3 border-b border-gray-100"
-//                         onClick={() => setIsMobileMenuOpen(false)}
-//                       >
-//                         {item.name}
-//                       </Link>
-//                     )
-//                   )}
-//                 </div>
-
-//                 <div className="space-y-4 mt-8">
-//                   <Button className="w-full justify-center bg-primary hover:bg-primary/90">
-//                     <Phone className="h-4 w-4 mr-2" /> Call Us
-//                   </Button>
-//                   <Button className="w-full justify-center bg-green-600 hover:bg-green-700">
-//                     <MessageCircle className="h-4 w-4 mr-2" /> WhatsApp
-//                   </Button>
-//                 </div>
-//               </div>
-//             </SheetContent>
-//           </Sheet>

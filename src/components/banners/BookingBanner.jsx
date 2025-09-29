@@ -47,13 +47,13 @@ function BookingBanner() {
   const [active, setActive] = useState(0);
   return (
     <>
-      <section className="py-16 bg-accent">
+      <section className="md:py-16 lg:block hidden py-10 bg-accent">
         <div className="container mx-auto px-4">
           <div className="relative rounded-2xl overflow-hidden" data-animate>
             <div className="py-16 px-8 text-center">
               <div data-aos="fade-down" className="flex justify-center mb-6">
                 <div className="bg-primary p-4 rounded-full">
-                  <FaQuestion className="w-12 h-12 text-accent" />
+                  <FaQuestion className="w-sm:12 sm:h-12 w-8 h-8 text-accent" />
                 </div>
               </div>
               <h2
@@ -64,7 +64,7 @@ function BookingBanner() {
               </h2>
               <p
                 data-aos="fade-down"
-                className="font-quicksand text-lg text-secondary max-w-3xl mx-auto"
+                className="font-quicksand text-lg text-secondary w-full sm:max-w-3xl mx-auto"
               >
                 Our accommodation is both luxurious and authentic. We promise
                 unrivalled comfort and exclusivity while staying true to the
@@ -73,7 +73,7 @@ function BookingBanner() {
               <div className="respons mt-12">
                 {/* tabs */}
                 <div className="w-full flex-all flex-col space-y-12">
-                  <div className="flex-all rounded-xl p-2 overflow-hidden bg-white/20">
+                  <div className="flex-all rounded-xl flex-wrap p-2 overflow-hidden bg-white/20">
                     {whyUsData?.map((item, index) => (
                       <button
                         key={index}

@@ -1,11 +1,12 @@
 "use client";
 import { PrimaryButton } from "@/components/buttons";
+import JourneyFilter from "@/components/Filters/JourneysFilter";
 import AccommodationsHome from "@/components/homeComponents/AccommodationsHome";
 import PaginationSet from "@/components/paginationSet";
 import TitleHeader from "@/components/titleHeader";
 import TourImagesSwiper from "@/components/TourImagesSwiper";
 import { demoDataBase } from "@/data/Demo-database";
-import { List, PawPrint, Tent } from "lucide-react";
+import { List, MapPin, PawPrint, Tent } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -49,12 +50,19 @@ function page() {
               iconic wildlife across Africa’s diverse landscapes.
             </p>
           </div>
+          <div className="w-full md:grid grid-cols-4 mt-12 bg-highlight p-10 rounded-xl gap-4 items-center">
+            <h2 className="font-jua text-xl md:text-2xl text-primary">
+              Filter By
+            </h2>
+
+            <JourneyFilter />
+          </div>
           <div className="w-full mt-12 space-y-10">
             {demoDataBase?.tourTypes?.map((type, index) => (
               <div key={index} className="grid grid-cols-10 ">
-                <div className="col-span-7 ">
+                <div className="xl:col-span-7 sm:col-span-5 col-span-10">
                   <TourImagesSwiper
-                    h={"h-[500px]"}
+                    h={"sm:h-[500px] h-[300px]"}
                     images={[
                       `/images/bg/${index + 1 * 4}.png`,
                       `/images/bg/${index + 4}.png`,
@@ -63,7 +71,7 @@ function page() {
                     ]}
                   />
                 </div>
-                <div className="col-span-3 bg-accent hover:bg-accent/80 group hover:shadow-2xl transitions p-8 flex-all flex-col">
+                <div className="xl:col-span-3 sm:col-span-5 col-span-10 bg-accent hover:bg-accent/80 group hover:shadow-2xl transitions p-8 flex-all flex-col">
                   <div className="space-y-6">
                     <h1
                       data-aos="fade-left"
@@ -90,6 +98,12 @@ function page() {
                           34 Camps
                         </span>
                       </div>
+                      <div className="flex items-center gap-4">
+                        <MapPin className="w-4 h-4 text-secondary" />
+                        <span className="text-sm font-medium text-primary">
+                          Tanzania, Kenya, Ethiopia
+                        </span>
+                      </div>
                     </div>
                     {/* desc */}
                     <p
@@ -101,6 +115,7 @@ function page() {
                       adipisicing elit. Corrupti magnam nesciunt voluptatibus.
                       Voluptatum quae at tempora accusantium. Recusandae maxime
                     </p>
+
                     <hr
                       data-aos="fade-left"
                       data-aos-delay="400"

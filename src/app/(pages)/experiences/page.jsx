@@ -1,12 +1,29 @@
 "use client";
+import WildlifeBanner from "@/components/banners/WildlifeBanner";
+import { DayTripCardPro } from "@/components/cards";
+import DaysTripFilter from "@/components/Filters/DayTripsFilter";
+import SubscribeSection from "@/components/homeComponents/SubscribeHome";
+import PaginationSet from "@/components/paginationSet";
 import TitleHeader from "@/components/titleHeader";
+import { demoDataBase } from "@/data/Demo-database";
 import { ExperiancesData } from "@/data/randomData";
-import { Search, Users } from "lucide-react";
+import { Users } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
 function page() {
   const [active, setActive] = useState(0);
+  const destinations = demoDataBase?.mainDestinations;
+  const dayTripsData = demoDataBase?.experiances
+    ?.slice(0, 12)
+    .map((exp, index) => ({
+      ...exp,
+      destinations: exp?.location?.map((loc) => {
+        const dest = destinations?.find((d) => d?.id === loc?.destination);
+        return dest?.title;
+      }),
+      slug: exp?.id,
+    }));
 
   return (
     <>
@@ -25,10 +42,10 @@ function page() {
       <section className="py-16 bg-accent/40">
         <div className="container mx-auto px-4">
           <div className="relative rounded-2xl overflow-hidden" data-animate>
-            <div className="py-16 px-8 text-center">
+            <div className="py-16 text-center">
               <div data-aos="fade-down" className="flex justify-center mb-6">
                 <div className="bg-primary p-4 rounded-full">
-                  <Users className="w-12 h-12 text-accent" />
+                  <Users className="sm:w-12 sm:h-12 w-8 h-8 text-accent" />
                 </div>
               </div>
               <h2
@@ -51,7 +68,7 @@ function page() {
               <div className="respons mt-12">
                 {/* tabs */}
                 <div className="w-full flex-all flex-col space-y-12">
-                  <div className="flex-all rounded-xl p-2 overflow-hidden bg-white/20">
+                  <div className="flex-all flex-wrap sm:w-auto w-full rounded-xl p-2 overflow-hidden bg-white/20">
                     {ExperiancesData?.map((item, index) => (
                       <button
                         key={index}
@@ -63,8 +80,8 @@ function page() {
                     ))}
                   </div>
                   {/* tab container */}
-                  <div className="grid grid-cols-10 items-center gap-8">
-                    <div className="col-span-6">
+                  <div className="grid xl:grid-cols-10 md:grid-cols-2 grid-cols-1 items-center gap-8">
+                    <div className="xl:col-span-6">
                       <Image
                         data-aos="fade-right"
                         className="w-full h-[350px] object-cover rounded-xl shadow-2xl hover:scale-95 transitions"
@@ -76,7 +93,7 @@ function page() {
                     </div>
                     <div
                       data-aos="fade-left"
-                      className="space-y-4 pl-10 col-span-4 text-start"
+                      className="space-y-4 md:pl-10 xl:col-span-4 text-start"
                     >
                       <h2 className="font-jua text-xl md:text-2xl text-primary">
                         {ExperiancesData[active].subTitle}
@@ -100,12 +117,42 @@ function page() {
       </section>
 
       <div className="respons lg:py-20 py-10">
-        <div className="flex justify-between items-center">
-          <h2 className="font-jua text-3xl md:text-4xl text-primary mb-4">
-            under construction
+        <div className="md:grid grid-cols-4 bg-highlight p-10 rounded-xl gap-4 items-center">
+          <h2 className="font-jua text-3xl md:text-4xl text-primary">
+            Filter By
           </h2>
+
+          <DaysTripFilter />
+        </div>
+        {/* experiances */}
+        <div className="md:grid-cols-2 mt-12 grid gap-6">
+          {dayTripsData?.map((dayTrip, index) => (
+            <div
+              className="w-full"
+              data-aos={
+                // 2 should fade right and 2 should fade left
+                index % 2 === 0 ? "fade-right" : "fade-left"
+              }
+              data-aos-delay={index * 200}
+              key={dayTrip?.id}
+            >
+              <DayTripCardPro tour={dayTrip} />
+            </div>
+          ))}
+        </div>
+        {/* Paginations */}
+
+        <div className="mt-12">
+          <PaginationSet
+            totalPosts={dayTripsData?.length}
+            postsPerPage={4}
+            setCurrentPage={() => {}}
+            currentPage={4}
+          />
         </div>
       </div>
+      <WildlifeBanner />
+      <SubscribeSection />
     </>
   );
 }

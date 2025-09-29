@@ -3,7 +3,7 @@ import { ArrowUpNarrowWide, MapPin, Users } from "lucide-react";
 import { SelectField } from "../inputField";
 import { demoDataBase } from "@/data/Demo-database";
 
-function DaysTripFilter({}) {
+function JourneyFilter({}) {
   const destinations = demoDataBase?.mainDestinations?.map((item) => {
     return {
       label: item?.title,
@@ -21,35 +21,7 @@ function DaysTripFilter({}) {
       />
       <SelectField
         Icon={ArrowUpNarrowWide}
-        placeholder={"Experience Type"}
-        handleSingleSelectChange={(value) => {}}
-        isLoading={false}
-        options={[
-          {
-            label: "Wellness",
-            value: "wellness",
-          },
-          {
-            label: "Photography",
-            value: "photography",
-          },
-          {
-            label: "Cultural",
-            value: "cultural",
-          },
-          {
-            label: "Safari",
-            value: "safari",
-          },
-          {
-            label: "Honeymoon",
-            value: "honeymoon",
-          },
-        ]}
-      />
-      <SelectField
-        Icon={Users}
-        placeholder={"Suitable for"}
+        placeholder={"Journey Type"}
         handleSingleSelectChange={(value) => {}}
         isLoading={false}
         options={[
@@ -83,8 +55,18 @@ function DaysTripFilter({}) {
           },
         ]}
       />
+      <SelectField
+        Icon={Users}
+        placeholder={"Month"}
+        handleSingleSelectChange={(value) => {}}
+        isLoading={false}
+        options={Array.from({ length: 12 }, (_, i) => ({
+          label: new Date(0, i).toLocaleString("default", { month: "long" }),
+          value: i + 1,
+        }))}
+      />
     </>
   );
 }
 
-export default DaysTripFilter;
+export default JourneyFilter;

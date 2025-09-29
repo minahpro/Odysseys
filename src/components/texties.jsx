@@ -73,29 +73,56 @@ export const PlainTitle = ({ first, last }) => {
 
 export const SingleHeader = ({ data }) => {
   return (
-    <div className="relative h-[90vh] overflow-hidden">
-      <div className="absolute inset-0">
-        <img
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 h-[600px] lg:h-[500px]">
+      {/* Large bedroom image - spans 2 rows on larger screens */}
+      <div
+        data-aos="fade-right"
+        className="col-span-2 lg:col-span-2 row-span-2 relative overflow-hidden rounded-lg"
+      >
+        <Image
           src={data?.photos[0] || "/placeholder.svg?height=800&width=1200"}
           alt={data?.title}
-          className="w-full h-full object-cover transitions bg-white"
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-300"
         />
-        <div className="absolute inset-0 bg-black/50" />
       </div>
 
-      {/* Hero Content */}
-      <div className="absolute inset-0 pt-20">
-        <div className="respons flex-all w-full h-full text-center text-white">
-          <div className="flex-all flex-col">
-            <h1 className="font-jua text-2xl md:text-4xl lg:text-5xl text-white mb-4">
-              {data?.title}
-            </h1>
+      {/* Top right data */}
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
+        <Image
+          src={data?.photos[1] || "/placeholder.svg?height=800&width=1200"}
+          alt={data?.title}
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-300"
+        />
+      </div>
 
-            <SecondaryButton onClick={data?.button?.onClick}>
-              {data?.button?.text}
-            </SecondaryButton>
-          </div>
-        </div>
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
+        <Image
+          src={data?.photos[2] || "/placeholder.svg?height=800&width=1200"}
+          alt={data?.title}
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+
+      {/* Bottom right data */}
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
+        <Image
+          src={data?.photos[3] || "/placeholder.svg?height=800&width=1200"}
+          alt={data?.title}
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+
+      <div className="col-span-1 lg:col-span-1 relative overflow-hidden rounded-lg">
+        <Image
+          src={data?.photos[4] || "/placeholder.svg?height=800&width=1200"}
+          alt={data?.title}
+          fill
+          className="object-cover hover:scale-105 transition-transform duration-300"
+        />
       </div>
     </div>
   );

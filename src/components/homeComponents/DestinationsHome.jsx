@@ -7,6 +7,7 @@ import { NoDataFound } from "../Loadings/ErrorComp";
 import { DestinationCardProHome } from "../cards";
 import { MapPin } from "lucide-react";
 import { demoDataBase } from "@/data/Demo-database";
+import SmallScreenSwipers from "../SmallScreenSwiper";
 
 function FeaturesDestinations() {
   // const { allFetchedTours, fetchedDestinations, isLoading } = useAppContext();
@@ -31,21 +32,42 @@ function FeaturesDestinations() {
             "We operate in 8 African countries, with 60+ camps promising exclusive, private wild game viewing, unrivalled style, and local culture."
           }
         />
-        {/* {isLoading ? (
+        <div className="sm:block hidden w-full">
+          {/* {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, i) => (
               <DestinationLoading key={i} />
             ))}
           </div>
         ) : destinations?.length > 0 ? ( */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {demoDataBase?.mainDestinations?.slice(0, 6)?.map((item, index) => (
-            <div
-              className="w-full"
-              data-aos="fade-up"
-              data-aos-delay={index * 200}
-              key={index}
-            >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {demoDataBase?.mainDestinations?.slice(0, 6)?.map((item, index) => (
+              <div
+                className="w-full"
+                data-aos="fade-up"
+                data-aos-delay={index * 200}
+                key={index}
+              >
+                <DestinationCardProHome
+                  item={{
+                    name: item?.title,
+                    destinations: item?.subDestinations?.length + 2 * index,
+                    image: `/images/bg/${index + 1}.png`,
+                    slug: item?.id,
+                    slogan: item?.slogan,
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          {/* ) : (
+          <NoDataFound text="No Destination Found" />
+        )} */}
+        </div>
+        <div className="sm:hidden block w-full">
+          <SmallScreenSwipers
+            datas={demoDataBase?.mainDestinations?.slice(0, 6)}
+            Children={({ item, index }) => (
               <DestinationCardProHome
                 item={{
                   name: item?.title,
@@ -55,12 +77,9 @@ function FeaturesDestinations() {
                   slogan: item?.slogan,
                 }}
               />
-            </div>
-          ))}
+            )}
+          />
         </div>
-        {/* ) : (
-          <NoDataFound text="No Destination Found" />
-        )} */}
       </div>
     </section>
   );

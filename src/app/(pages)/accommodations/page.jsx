@@ -138,7 +138,7 @@ function Tours() {
     <>
       <TitleHeader
         first={"Cam"}
-        last={"mps."}
+        last={"ps."}
         image={"/images/bg/16.png"}
         sub="Discover Africa from some of the world’s premier safari camps, where natural wonders abound and wildlife is plentiful. This is Wilderness."
         link={{

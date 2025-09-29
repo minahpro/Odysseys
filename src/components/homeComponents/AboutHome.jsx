@@ -73,7 +73,10 @@ function AboutHome({ about }) {
         </div>
 
         {/* facts Grid */}
-        <div data-aos="fade-left" className="grid grid-cols-2 gap-6">
+        <div
+          data-aos="fade-left"
+          className="grid sm:grid-cols-2 grid-cols-1 gap-6"
+        >
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (

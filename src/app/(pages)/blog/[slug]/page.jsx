@@ -80,7 +80,7 @@ export default function BlogDetailsPage() {
           {/* Main Content */}
           <div>
             {/* Hero Section */}
-            <section className="md:pt-52 pt-30 pb-32 rounded-xl bg-gradient-to-r from-primary via-primary to-black relative overflow-hidden">
+            <section className="md:pt-52 pt-24 pb-24 md:pb-32 rounded-xl bg-gradient-to-r from-primary via-primary to-black relative overflow-hidden">
               <div className="absolute inset-0 opacity-20">
                 <img
                   src={
@@ -115,7 +115,7 @@ export default function BlogDetailsPage() {
               </div>
             </section>
             <div className="bg-accent/40 py-8">
-              <div className="respons flex justify-between items-center">
+              <div className="respons flex-wrap flex gap-4 justify-between items-center">
                 <div className="flex flex-wrap items-center gap-6 text-primary">
                   <div className="flex items-center gap-2">
                     <span className="w-10 h-10 flex-all bg-primary rounded-full flex-all">

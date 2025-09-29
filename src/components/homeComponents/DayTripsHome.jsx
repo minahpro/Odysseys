@@ -9,6 +9,7 @@ import { Search } from "lucide-react";
 import { SecondaryButton } from "../buttons";
 import Link from "next/link";
 import { demoDataBase } from "@/data/Demo-database";
+import SmallScreenSwipers from "../SmallScreenSwiper";
 
 function DayTripsHome() {
   const destinations = demoDataBase?.mainDestinations;
@@ -43,7 +44,7 @@ function DayTripsHome() {
             experiencing something you’ve never done before.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/tours/day-trips">
+            <Link href="/experiences">
               <SecondaryButton>Explore All Experiences</SecondaryButton>
             </Link>
           </div>
@@ -55,20 +56,30 @@ function DayTripsHome() {
       </div>
 
       <div className="mt-12 relative">
-        <div className="grid-cols-2 grid gap-12">
-          {dayTripsData?.map((dayTrip, index) => (
-            <div
-              className="w-full"
-              data-aos={
-                // 2 should fade right and 2 should fade left
-                index % 2 === 0 ? "fade-right" : "fade-left"
-              }
-              data-aos-delay={index * 200}
-              key={dayTrip?.id}
-            >
-              <DayTripCardPro tour={dayTrip} />
-            </div>
-          ))}
+        <div className="sm:block hidden w-full">
+          <div className="sm:grid-cols-2 grid gap-8 lg:gap-12">
+            {dayTripsData?.map((dayTrip, index) => (
+              <div
+                className="w-full"
+                data-aos={
+                  // 2 should fade right and 2 should fade left
+                  index % 2 === 0 ? "fade-right" : "fade-left"
+                }
+                data-aos-delay={index * 200}
+                key={dayTrip?.id}
+              >
+                <DayTripCardPro tour={dayTrip} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* small screen */}
+        <div className="sm:hidden block w-full">
+          <SmallScreenSwipers
+            datas={dayTripsData}
+            Children={({ item, index }) => <DayTripCardPro tour={item} />}
+          />
         </div>
       </div>
     </div>

@@ -129,7 +129,7 @@ function ContactUs() {
           </h2>
           <div
             data-aos="fade-up"
-            className="w-full grid grid-cols-4 mt-12 gap-4"
+            className="w-full grid lg:grid-cols-4 grid-cols-1 sm:grid-cols-2 mt-12 gap-4"
           >
             <ContactInfoCard
               icon={Phone}
@@ -183,61 +183,70 @@ function ContactUs() {
             className="grid grid-cols-1 py-12 sm:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {/* Name Fields */}
-            <InputField
-              label="First Name"
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-            />
-            <InputField
-              label="Last Name"
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-            />
+            <div>
+              <InputField
+                label="First Name"
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <InputField
+                label="Last Name"
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              {/* Contact Fields */}
+              <InputField
+                label="Email Address"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <InputField
+                label="Phone Number"
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              {/* Inquiry Type */}
 
-            {/* Contact Fields */}
-            <InputField
-              label="Email Address"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-            <InputField
-              label="Phone Number"
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-            />
-
-            {/* Inquiry Type */}
-
-            <SelectField
-              label="Inquiry Type"
-              isLoading={false}
-              Icon={MessageCircle}
-              placeholder={"Select inquiry type"}
-              handleSingleSelectChange={(value) =>
-                handleSelectChange(value, { name: "inquiryType" })
-              }
-              options={inquiryTypeOptions}
-            />
-
-            {/* Subject */}
-            <InputField
-              label="Subject"
-              type="text"
-              name="subject"
-              value={formData.subject}
-              onChange={handleInputChange}
-            />
+              <SelectField
+                label="Inquiry Type"
+                isLoading={false}
+                Icon={MessageCircle}
+                placeholder={"Select inquiry type"}
+                handleSingleSelectChange={(value) =>
+                  handleSelectChange(value, { name: "inquiryType" })
+                }
+                options={inquiryTypeOptions}
+              />
+            </div>
+            <div>
+              {/* Subject */}
+              <InputField
+                label="Subject"
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+              />
+            </div>
 
             {/* Message */}
-            <div className="col-span-3">
+            <div className="lg:col-span-3 sm:col-span-2">
               <TextareaField
                 label="Message"
                 placeholder="Tell us more about your travel plans, dates, group size, and any specific requirements..."
@@ -249,7 +258,7 @@ function ContactUs() {
             </div>
 
             {/* Submit Button */}
-            <div className="grid grid-cols-2 gap-4 col-span-3 ">
+            <div className="grid lg:grid-cols-3 sm:col-span-2 gap-4">
               <PrimaryButton
                 disabled={isSubmiting}
                 type="submit"

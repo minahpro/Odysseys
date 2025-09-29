@@ -32,20 +32,20 @@ function WhyBanner() {
           <div data-aos="fade-up" className="px-8 text-center">
             <div className="flex justify-center mb-6">
               <div className="bg-accent p-5 rounded-full">
-                <Sun className="w-10 h-10 text-primary" />
+                <Sun className="sm:w-10 sm:h-10 w-6 h-6 text-primary" />
               </div>
             </div>
             <h2 className="font-jua text-3xl md:text-4xl text-accent mb-4">
               What Drives Us
             </h2>
-            <p className="font-quicksand text-lg text-accent/80 mb-8 max-w-3xl mx-auto">
+            <p className="font-quicksand sm:text-lg text-accent/80 mb-8 max-w-3xl mx-auto">
               At Wild Odysseys, we believe travel is more than just visiting new
               places — it’s about creating stories that last a lifetime. Our
               passion for conservation, commitment to authentic experiences, and
               deep local expertise are what set us apart.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/tours/day-trips">
+              <Link href="/experiences">
                 <SecondaryButton>Inspirational Trips</SecondaryButton>
               </Link>
             </div>
@@ -58,10 +58,13 @@ function WhyBanner() {
 
         <div className="mt-12 relative space-y-20">
           {datas?.map((dat, index) => (
-            <div key={index} className="grid grid-cols-2 items-center gap-8">
+            <div
+              key={index}
+              className="grid grid-cols-1 md:grid-cols-2 items-center gap-8"
+            >
               <Image
                 data-aos={`${index % 2 === 0 ? "fade-right" : "fade-left"}`}
-                className={`w-full h-[400px] object-cover rounded-xl shadow-2xl hover:scale-95 transitions ${
+                className={`w-full h-[400px] md:block hidden object-cover rounded-xl shadow-2xl hover:scale-95 transitions ${
                   index % 2 === 0 ? "order-1" : "order-2"
                 }`}
                 src={dat.image}
@@ -73,7 +76,7 @@ function WhyBanner() {
               <div
                 data-aos={`${index % 2 === 0 ? "fade-left" : "fade-right"}`}
                 className={`space-y-4 text-start ${
-                  index % 2 === 0 ? "pr-10 order-2" : "pl-10 order-1"
+                  index % 2 === 0 ? "md:pr-10 order-2" : "md:pl-10 order-1"
                 }`}
               >
                 <h2 className="font-jua text-xl md:text-3xl text-primary">

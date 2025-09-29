@@ -138,7 +138,7 @@ function AccommodationsHome() {
                                 }}
                                 className=" text-secondary font-medium line-clamp-3 mb-6 leading-relaxed"
                               />
-                              <div className="grid grid-cols-3 gap-6 mb-6">
+                              <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 mb-6">
                                 {item?.datas?.map((data, index) => (
                                   <div
                                     className="flex-all flex-col p-6 bg-accent/40 rounded gap-3"
@@ -152,7 +152,7 @@ function AccommodationsHome() {
                                 ))}
                               </div>
                               <div className="flex items-center justify-between">
-                                <Link href={`/accommodation/${item?.slug}`}>
+                                <Link href={`/accommodations/${item?.slug}`}>
                                   <PrimaryButton>View Details</PrimaryButton>
                                 </Link>
                                 {/* stars */}

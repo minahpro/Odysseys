@@ -68,10 +68,10 @@ function Faqs() {
           >
             Frequently Asked Questions
           </h2>
-          <div className="grid w-full grid-cols-12 mt-12 gap-6">
+          <div className="grid w-full grid-cols-12 md:mt-12 mt-8 gap-6">
             <div
               data-aos="fade-right"
-              className="col-span-12 lg:col-span-3 bg-white rounded p-4 space-y-2"
+              className="col-span-12 lg:col-span-3 flex lg:flex-col flex-row flex-wrap items-center bg-white rounded p-4 gap-2"
             >
               {categories.map((category, index) => (
                 <button
@@ -84,7 +84,7 @@ function Faqs() {
                     activeTab === category
                       ? "bg-primary text-accent"
                       : "bg-accent/15 text-primary hover:bg-accent/25"
-                  } border border-accent/30 text-sm font-bold w-full py-3 rounded transition-all duration-200`}
+                  } border border-accent/30 text-sm font-bold lg:w-full sm:w-auto w-full sm:px-8 lg:px-0 py-3 rounded transition-all duration-200`}
                 >
                   {category}
                 </button>
