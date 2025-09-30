@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
+import { FormTextEditor } from "@/components/FormTextEditor";
 import {
   Plus,
   Eye,
@@ -21,6 +21,9 @@ import {
   Search,
   Loader2,
   Star,
+  Filter,
+  Heart,
+  AlertCircle,
 } from "lucide-react";
 import {
   getAttributes,
@@ -34,33 +37,6 @@ import {
   createGalleryImage,
 } from "@/firebase/databaseOperations";
 import { uploadFile } from "@/firebase/fileOperations";
-import 'react-quill/dist/quill.snow.css';
-
-// Simple dynamic import for ReactQuill
-const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <div className="h-32 bg-gray-100 rounded animate-pulse flex items-center justify-center">Loading editor...</div>
-});
-
-// QuillJS modules and formats configuration
-const quillModules = {
-  toolbar: [
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-    ['bold', 'italic', 'underline', 'strike'],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'indent': '-1'}, { 'indent': '+1' }],
-    ['link', 'image'],
-    ['blockquote', 'code-block'],
-    [{ 'align': [] }],
-    ['clean']
-  ]
-};
-
-const quillFormats = [
-  'header', 'bold', 'italic', 'underline', 'strike',
-  'list', 'bullet', 'indent', 'link', 'image',
-  'blockquote', 'code-block', 'align'
-];
 
 const BlogsPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -77,6 +53,9 @@ const BlogsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [imageSearchTerm, setImageSearchTerm] = useState("");
   const [gallerySearchTerm, setGallerySearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("All");
+  const [filterStatus, setFilterStatus] = useState("All");
+  const [selectedBlogs, setSelectedBlogs] = useState([]);
   const fileInputRef = useRef(null);
   
   const [formData, setFormData] = useState({
@@ -139,6 +118,65 @@ const BlogsPage = () => {
     }
   };
 
+  // Status options
+  const statusOptions = [
+    { value: "published", label: "Published", icon: Check, color: "text-green-600" },
+    { value: "draft", label: "Draft", icon: AlertCircle, color: "text-yellow-600" },
+    { value: "archived", label: "Archived", icon: X, color: "text-red-600" },
+  ];
+
+  // Filter blogs based on search and filters
+  const filteredBlogs = (blogs || []).filter((blog) => {
+    const matchesSearch = blog.title
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
+      blog.excerpt?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.content?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.author?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.tags?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesCategory = filterCategory === "All" || blog.category === filterCategory;
+    const matchesStatus = filterStatus === "All" || blog.status === filterStatus;
+    
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  // Stats for the dashboard
+  const stats = [
+    {
+      title: "Total Posts",
+      value: blogs.length,
+      icon: FileText,
+      color: "from-blue-500 to-blue-600",
+      bgColor: "bg-blue-50",
+      iconColor: "text-blue-600",
+    },
+    {
+      title: "Published Posts",
+      value: blogs.filter((blog) => blog.status === "published").length,
+      icon: Check,
+      color: "from-green-500 to-green-600",
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600",
+    },
+    {
+      title: "Draft Posts",
+      value: blogs.filter((blog) => blog.status === "draft").length,
+      icon: AlertCircle,
+      color: "from-yellow-500 to-yellow-600",
+      bgColor: "bg-yellow-50",
+      iconColor: "text-yellow-600",
+    },
+    {
+      title: "Featured Posts",
+      value: blogs.filter((blog) => blog.isFeatured).length,
+      icon: Star,
+      color: "from-purple-500 to-purple-600",
+      bgColor: "bg-purple-50",
+      iconColor: "text-purple-600",
+    },
+  ];
+
   // Generate slug from title
   const generateSlug = (title) => {
     return title
@@ -151,33 +189,101 @@ const BlogsPage = () => {
 
   const columns = [
     {
-      key: "featuredImage",
-      label: "Image",
+      key: "select",
+      label: (
+        <input
+          type="checkbox"
+          checked={selectedBlogs.length === filteredBlogs.length && filteredBlogs.length > 0}
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSelectedBlogs(filteredBlogs.map(blog => blog.id));
+            } else {
+              setSelectedBlogs([]);
+            }
+          }}
+          className="rounded border-gray-300 text-primary focus:ring-primary"
+        />
+      ),
       render: (blog) => (
-        <img
-          src={blog.featuredImage || "/placeholder.svg"}
-          alt={blog.title}
-          className="w-16 h-10 object-cover rounded-xl border border-gray-200"
+        <input
+          type="checkbox"
+          checked={selectedBlogs.includes(blog.id)}
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSelectedBlogs(prev => [...prev, blog.id]);
+            } else {
+              setSelectedBlogs(prev => prev.filter(id => id !== blog.id));
+            }
+          }}
+          className="rounded border-gray-300 text-primary focus:ring-primary"
         />
       ),
     },
     {
-      key: "title",
-      label: "Title",
+      key: "featuredImage",
+      label: "Image",
+      responsive: "hidden md:table-cell",
       render: (blog) => (
-        <div>
-          <h3 className="font-semibold text-gray-900 font-quicksand">
-            {blog.title}
-          </h3>
-          <p className="text-sm text-gray-500 mt-1">{blog.excerpt}</p>
+        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
+          <img
+            src={blog.featuredImage || "/placeholder.svg"}
+            alt={blog.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ),
+    },
+    {
+      key: "title",
+      label: "Blog Post",
+      render: (blog) => (
+        <div className="flex items-start space-x-3">
+          {/* Mobile image */}
+          <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden md:hidden">
+            <img
+              src={blog.featuredImage || "/placeholder.svg"}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-gray-900 font-quicksand text-sm md:text-base truncate">
+              {blog.title}
+            </div>
+            <p className="text-xs md:text-sm text-gray-500 mt-1 truncate">{blog.excerpt}</p>
+            {/* Mobile info */}
+            <div className="flex flex-wrap items-center gap-2 mt-2 md:hidden">
+              <span className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                {blog.category}
+              </span>
+              <span
+                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                  blog.status === "published"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-yellow-100 text-yellow-800"
+                }`}
+              >
+                {blog.status}
+              </span>
+              <div className="flex items-center text-xs text-gray-500">
+                <User className="w-3 h-3 mr-1" />
+                {blog.author}
+              </div>
+              <div className="flex items-center text-xs text-gray-500">
+                <Calendar className="w-3 h-3 mr-1" />
+                {blog.publishDate}
+              </div>
+            </div>
+          </div>
         </div>
       ),
     },
     {
       key: "category",
       label: "Category",
+      responsive: "hidden md:table-cell",
       render: (blog) => (
-        <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+        <span className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
           {blog.category}
         </span>
       ),
@@ -185,29 +291,32 @@ const BlogsPage = () => {
     {
       key: "author",
       label: "Author",
+      responsive: "hidden lg:table-cell",
       render: (blog) => (
         <div className="flex items-center space-x-2">
           <User className="w-4 h-4 text-gray-500" />
-          <span>{blog.author}</span>
+          <span className="text-sm text-gray-700">{blog.author}</span>
         </div>
       ),
     },
     {
       key: "publishDate",
       label: "Date",
+      responsive: "hidden lg:table-cell",
       render: (blog) => (
         <div className="flex items-center space-x-2">
           <Calendar className="w-4 h-4 text-gray-500" />
-          <span>{blog.publishDate}</span>
+          <span className="text-sm text-gray-700">{blog.publishDate}</span>
         </div>
       ),
     },
     {
       key: "status",
       label: "Status",
+      responsive: "hidden md:table-cell",
       render: (blog) => (
         <span
-          className={`px-3 py-1 rounded-full text-xs font-medium ${
+          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
             blog.status === "published"
               ? "bg-green-100 text-green-800"
               : "bg-yellow-100 text-yellow-800"
@@ -243,19 +352,19 @@ const BlogsPage = () => {
   const handleEdit = (blog) => {
     setSelectedBlog(blog);
     setFormData({
-      title: blog.title,
+      title: blog.title || "",
       content: blog.content || "",
-      excerpt: blog.excerpt,
-      category: blog.category,
+      excerpt: blog.excerpt || "",
+      category: blog.category || "",
       tags: Array.isArray(blog.tags) ? blog.tags.join(", ") : blog.tags || "",
-      status: blog.status,
+      status: blog.status || "draft",
       featuredImage: blog.featuredImage || "",
       images: blog.images || [],
       author: blog.author || "Admin",
       slug: blog.slug || "",
       isPublished: blog.isPublished || false,
       isFeatured: blog.isFeatured || false,
-      createdAt: blog.createdAt,
+      createdAt: blog.createdAt || new Date(),
       updatedAt: new Date(),
     });
     setSelectedImages(blog.images || []);
@@ -291,33 +400,80 @@ const BlogsPage = () => {
     setLoading(true);
     
     try {
-      const blogData = {
-        ...formData,
+      // Validate required fields
+      if (!formData.title?.trim()) {
+        alert("Title is required");
+        setLoading(false);
+        return;
+      }
+
+      if (!formData.content?.trim()) {
+        alert("Content is required");
+        setLoading(false);
+        return;
+      }
+
+      // Clean and validate form data to prevent undefined values
+      const cleanFormData = {
+        title: formData.title.trim(),
+        content: formData.content,
+        excerpt: formData.excerpt?.trim() || "",
+        category: formData.category || "",
+        tags: formData.tags || "",
+        status: formData.status || "draft",
+        featuredImage: formData.featuredImage || "",
+        author: formData.author || "Admin",
         slug: formData.slug || generateSlug(formData.title),
-        tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        images: selectedImages,
         isPublished: formData.status === 'published',
+        isFeatured: Boolean(formData.isFeatured),
+        publishDate: new Date().toLocaleDateString(),
+      };
+
+      // Process tags safely
+      let processedTags = [];
+      if (cleanFormData.tags) {
+        processedTags = cleanFormData.tags
+          .split(',')
+          .map(tag => tag.trim())
+          .filter(tag => tag.length > 0);
+      }
+
+      const blogData = {
+        ...cleanFormData,
+        tags: processedTags,
+        images: selectedImages || [],
+        // Convert dates to Firestore timestamps
+        createdAt: selectedBlog ? selectedBlog.createdAt : new Date(),
         updatedAt: new Date(),
       };
 
+      console.log("Saving blog data:", blogData);
+
       let result;
       if (selectedBlog) {
+        console.log("Updating blog with ID:", selectedBlog.id);
         result = await updateDocument("blogs", selectedBlog.id, blogData);
       } else {
+        console.log("Creating new blog");
         result = await createDocument(blogData, "blogs");
       }
+
+      console.log("Save result:", result);
 
       if (result.didSucceed) {
         await loadBlogs();
         setShowAddModal(false);
         setShowEditModal(false);
         setSelectedImages([]);
+        setSelectedBlog(null);
+        alert("Blog post saved successfully!");
       } else {
-        alert(result.message || "Failed to save blog post");
+        console.error("Failed to save blog:", result);
+        alert(result.message || "Failed to save blog post. Please check the console for details.");
       }
     } catch (error) {
       console.error("Error saving blog:", error);
-      alert("Error saving blog post");
+      alert(`Error saving blog post: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -378,6 +534,44 @@ const BlogsPage = () => {
     setFormData(prev => ({ ...prev, featuredImage: imageUrl }));
   };
 
+  // Bulk action handlers
+  const handleBulkDelete = async () => {
+    if (selectedBlogs.length === 0) return;
+    
+    if (window.confirm(`Are you sure you want to delete ${selectedBlogs.length} selected blog posts?`)) {
+      try {
+        setLoading(true);
+        await Promise.all(selectedBlogs.map(id => deleteDocument("blogs", id)));
+        setSelectedBlogs([]);
+        await loadBlogs();
+      } catch (error) {
+        console.error("Error deleting blog posts:", error);
+        alert("Error deleting blog posts. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleBulkStatusChange = async (newStatus) => {
+    if (selectedBlogs.length === 0) return;
+    
+    try {
+      setLoading(true);
+      await Promise.all(selectedBlogs.map(id => {
+        const blog = blogs.find(b => b.id === id);
+        return updateDocument("blogs", id, { ...blog, status: newStatus });
+      }));
+      setSelectedBlogs([]);
+      await loadBlogs();
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Error updating status. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const actions = [
     {
       label: "View",
@@ -401,23 +595,151 @@ const BlogsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 font-jua">Blogs</h1>
-          <p className="text-gray-600 font-quicksand">
-            Manage blog posts and articles
-          </p>
-        </div>
-        <button
-          onClick={handleAdd}
-          className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:from-primary/80 hover:to-primary transition-all duration-200 font-quicksand font-medium shadow-lg hover:shadow-xl"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add Blog Post</span>
-        </button>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300"
+          >
+            <div className={`h-2 bg-gradient-to-r ${stat.color}`}></div>
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div className={`p-3 rounded-xl ${stat.bgColor}`}>
+                  <stat.icon className={`w-6 h-6 ${stat.iconColor}`} />
+                </div>
+              </div>
+              <div className="mt-4">
+                <h3 className="text-2xl font-bold text-gray-900 font-jua">
+                  {stat.value}
+                </h3>
+                <p className="text-sm text-gray-600 font-quicksand mt-1">
+                  {stat.title}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <DataTable data={blogs} columns={columns} actions={actions} />
+      {/* Blog Management */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-6 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-xl font-bold text-gray-900 font-jua">
+                Blog Post Management 
+              </h2>
+              <p className="text-gray-600 font-quicksand mt-1">
+                Manage your blog posts with comprehensive tools
+              </p>
+            </div>
+            <button
+              onClick={handleAdd}
+              className="flex items-center px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              <span className="font-quicksand">Add New Post</span>
+            </button>
+          </div>
+
+          {/* Search and Filters */}
+          <div className="flex flex-col lg:flex-row gap-4 mb-6">
+            {/* Search */}
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search posts by title, content, author, or tags..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                />
+              </div>
+            </div>
+            
+            {/* Category Filter */}
+            <div className="flex items-center space-x-2">
+              <Filter className="w-4 h-4 text-gray-500" />
+              <select
+                value={filterCategory}
+                onChange={(e) => setFilterCategory(e.target.value)}
+                className="border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              >
+                <option value="All">All Categories</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            {/* Status Filter */}
+            <div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="border border-gray-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              >
+                <option value="All">All Status</option>
+                {statusOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Bulk Actions */}
+          {selectedBlogs.length > 0 && (
+            <div className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+              <span className="text-sm font-medium text-blue-900">
+                {selectedBlogs.length} blog post(s) selected
+              </span>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => handleBulkStatusChange('published')}
+                  className="px-3 py-1 bg-green-100 text-green-800 rounded-lg text-sm hover:bg-green-200 transition-colors"
+                >
+                  Mark Published
+                </button>
+                <button
+                  onClick={() => handleBulkStatusChange('draft')}
+                  className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-lg text-sm hover:bg-yellow-200 transition-colors"
+                >
+                  Mark Draft
+                </button>
+                <button
+                  onClick={() => handleBulkStatusChange('archived')}
+                  className="px-3 py-1 bg-gray-100 text-gray-800 rounded-lg text-sm hover:bg-gray-200 transition-colors"
+                >
+                  Mark Archived
+                </button>
+                <button
+                  onClick={handleBulkDelete}
+                  className="px-3 py-1 bg-red-100 text-red-800 rounded-lg text-sm hover:bg-red-200 transition-colors"
+                >
+                  Delete Selected
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Results Summary */}
+          <div className="mb-4">
+            <p className="text-sm text-gray-600 font-quicksand">
+              Showing {filteredBlogs.length} of {blogs.length} posts
+              {filterCategory !== "All" && ` in ${filterCategory}`}
+              {filterStatus !== "All" && ` with status ${filterStatus}`}
+            </p>
+          </div>
+
+          <DataTable data={filteredBlogs} columns={columns} actions={actions} />
+        </div>
+      </div>
 
       {/* Add Modal */}
       <Modal
@@ -700,26 +1022,15 @@ const BlogsPage = () => {
           </div>
 
           {/* Content Editor */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
-              Content *
-            </label>
-            <div className="border-2 border-gray-200 rounded-xl">
-              {typeof window !== 'undefined' && (
-                <ReactQuill
-                  theme="snow"
-                  value={formData.content}
-                  onChange={(content) => {
-                    setFormData({ ...formData, content });
-                  }}
-                  modules={quillModules}
-                  formats={quillFormats}
-                  style={{ minHeight: '200px' }}
-                  placeholder="Write your blog content here..."
-                />
-              )}
-            </div>
-          </div>
+          <FormTextEditor
+            label="Content *"
+            value={formData.content}
+            onChange={(content) => {
+              setFormData({ ...formData, content });
+            }}
+            placeholder="Write your blog content here..."
+            minHeight="200px"
+          />
 
           <div className="flex justify-end space-x-3 pt-4 border-t">
             <button
@@ -1025,26 +1336,15 @@ const BlogsPage = () => {
           </div>
 
           {/* Content Editor */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
-              Content *
-            </label>
-            <div className="border-2 border-gray-200 rounded-xl">
-              {typeof window !== 'undefined' && (
-                <ReactQuill
-                  theme="snow"
-                  value={formData.content}
-                  onChange={(content) => {
-                    setFormData({ ...formData, content });
-                  }}
-                  modules={quillModules}
-                  formats={quillFormats}
-                  style={{ minHeight: '200px' }}
-                  placeholder="Write your blog content here..."
-                />
-              )}
-            </div>
-          </div>
+          <FormTextEditor
+            label="Content *"
+            value={formData.content}
+            onChange={(content) => {
+              setFormData({ ...formData, content });
+            }}
+            placeholder="Write your blog content here..."
+            minHeight="200px"
+          />
 
           <div className="flex justify-end space-x-3 pt-4 border-t">
             <button

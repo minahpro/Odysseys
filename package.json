@@ -59,6 +59,7 @@
     "react-leaflet": "5.0.0-rc.1",
     "react-multi-date-picker": "^4.5.1",
     "react-quill": "^2.0.0",
+    "react-quill-new": "^3.4.6",
     "react-select": "^5.8.0",
     "react-slick": "^0.30.2",
     "react-slider": "^2.0.6",

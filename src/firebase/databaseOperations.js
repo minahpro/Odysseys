@@ -17,13 +17,16 @@ import firebase from "./firebaseInit";
 const { db } = firebase;
 const createDocument = async (data, cln) => {
   try {
+    console.log(`Creating document in ${cln}:`, data);
     const docRef = await addDoc(collection(db, cln), data);
+    console.log(`Successfully created document with ID: ${docRef.id} in ${cln}`);
     return { didSucceed: true, docId: docRef.id };
   } catch (error) {
-    console.error("Error creating document: ", error);
+    console.error(`Error creating document in ${cln}:`, error);
     return {
       didSucceed: false,
-      message: "something went wrong..document not added",
+      message: error.message || "Failed to create document",
+      error: error
     };
   }
 };
@@ -47,11 +50,17 @@ const fetchDocuments = async (cln) => {
 
 const updateDocument = async (collection, docId, data) => {
   try {
+    console.log(`Updating document in ${collection} with ID: ${docId}`, data);
     await updateDoc(doc(db, collection, docId), data);
-
+    console.log(`Successfully updated document ${docId} in ${collection}`);
     return { didSucceed: true };
   } catch (error) {
-    return { didSucceed: false };
+    console.error(`Error updating document ${docId} in ${collection}:`, error);
+    return { 
+      didSucceed: false, 
+      message: error.message || "Failed to update document",
+      error: error
+    };
   }
 };
 

@@ -79,14 +79,14 @@ const DataTable = ({
     <div className="bg-white rounded-xl shadow-lg border border-gray-200">
       {/* Header */}
       {title && (
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-4 md:p-6 border-b border-gray-200">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <h2 className="font-jua text-2xl text-primary">{title}</h2>
-            <div className="flex items-center space-x-3">
+            <h2 className="font-jua text-xl md:text-2xl text-primary">{title}</h2>
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
               {exportable && onExport && (
                 <button
                   onClick={onExport}
-                  className="flex items-center px-4 py-2 bg-accent text-white rounded-xl hover:bg-accent/90 transition-colors"
+                  className="flex items-center justify-center px-4 py-2 bg-accent text-white rounded-xl hover:bg-accent/90 transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   <span className="font-quicksand">Export</span>
@@ -95,7 +95,7 @@ const DataTable = ({
               {onAdd && (
                 <button
                   onClick={onAdd}
-                  className="flex items-center px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors"
+                  className="flex items-center justify-center px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   <span className="font-quicksand">Add New</span>
@@ -128,13 +128,13 @@ const DataTable = ({
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className="px-6 py-3 text-left text-xs font-quicksand font-semibold text-gray-500 uppercase tracking-wider"
+                  className={`px-3 md:px-6 py-3 text-left text-xs font-quicksand font-semibold text-gray-500 uppercase tracking-wider ${column.responsive || ''}`}
                 >
                   {column.label}
                 </th>
               ))}
               {defaultActions && defaultActions.length > 0 && (
-                <th className="px-6 py-3 text-right text-xs font-quicksand font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-3 md:px-6 py-3 text-right text-xs font-quicksand font-semibold text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               )}
@@ -147,7 +147,7 @@ const DataTable = ({
                   {columns.map((column) => (
                     <td
                       key={column.key}
-                      className="px-6 py-4 whitespace-nowrap"
+                      className={`px-3 md:px-6 py-4 whitespace-nowrap ${column.responsive || ''}`}
                     >
                       {column.render ? (
                         column.render(item)
@@ -159,13 +159,13 @@ const DataTable = ({
                     </td>
                   ))}
                   {defaultActions && defaultActions.length > 0 && (
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end space-x-2">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex items-center justify-end space-x-1 md:space-x-2">
                         {defaultActions.map((action, actionIndex) => (
                           <button
                             key={actionIndex}
                             onClick={() => action.onClick(item)}
-                            className={`p-2 rounded-xl transition-colors ${action.className || "text-gray-600 hover:text-primary hover:bg-gray-100"}`}
+                            className={`p-1.5 md:p-2 rounded-xl transition-colors ${action.className || "text-gray-600 hover:text-primary hover:bg-gray-100"}`}
                             title={action.label}
                           >
                             <action.icon className="w-4 h-4" />
@@ -183,7 +183,7 @@ const DataTable = ({
                     columns.length +
                     (defaultActions && defaultActions.length > 0 ? 1 : 0)
                   }
-                  className="px-6 py-8 text-center text-gray-500 font-quicksand"
+                  className="px-3 md:px-6 py-8 text-center text-gray-500 font-quicksand"
                 >
                   No data available
                 </td>
@@ -195,41 +195,58 @@ const DataTable = ({
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-6 py-3 border-t border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="font-quicksand text-sm text-gray-700">
+        <div className="px-4 md:px-6 py-3 border-t border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="font-quicksand text-sm text-gray-700 text-center md:text-left">
             Showing {startIndex + 1} to{" "}
             {Math.min(startIndex + itemsPerPage, filteredData.length)} of{" "}
             {filteredData.length} results
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-center space-x-1 md:space-x-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 border border-gray-300 rounded-xl font-quicksand text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-2 md:px-3 py-1 border border-gray-300 rounded-xl font-quicksand text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              Previous
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden">Prev</span>
             </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-3 py-1 border rounded-xl font-quicksand text-sm ${
-                  currentPage === page
-                    ? "bg-primary text-white border-primary"
-                    : "border-gray-300 hover:bg-gray-50"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
+            {/* Show fewer page numbers on mobile */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((page) => {
+                if (totalPages <= 5) return true;
+                if (page === 1 || page === totalPages) return true;
+                if (page >= currentPage - 1 && page <= currentPage + 1) return true;
+                return false;
+              })
+              .map((page, index, array) => {
+                const showEllipsis = index > 0 && page - array[index - 1] > 1;
+                return (
+                  <div key={page} className="flex items-center">
+                    {showEllipsis && (
+                      <span className="px-1 text-gray-400 text-sm">...</span>
+                    )}
+                    <button
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-2 md:px-3 py-1 border rounded-xl font-quicksand text-sm ${
+                        currentPage === page
+                          ? "bg-primary text-white border-primary"
+                          : "border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  </div>
+                );
+              })}
             <button
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="px-3 py-1 border border-gray-300 rounded-xl font-quicksand text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              className="px-2 md:px-3 py-1 border border-gray-300 rounded-xl font-quicksand text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              Next
+              <span className="hidden sm:inline">Next</span>
+              <span className="sm:hidden">Next</span>
             </button>
           </div>
         </div>

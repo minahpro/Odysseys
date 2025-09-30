@@ -3,6 +3,7 @@
 import { useState } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
+import { FormTextEditor } from "@/components/FormTextEditor";
 import {
   Plus,
   Edit,
@@ -518,21 +519,16 @@ const DestinationsPage = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
-                    Overview *
-                  </label>
-                  <textarea
-                    value={formData.overview}
-                    onChange={(e) =>
-                      setFormData({ ...formData, overview: e.target.value })
-                    }
-                    rows={4}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand placeholder-gray-400 resize-none"
-                    placeholder="Enter destination overview"
-                    required
-                  />
-                </div>
+                <FormTextEditor
+                  label="Overview *"
+                  value={formData.overview}
+                  onChange={(content) => {
+                    setFormData({ ...formData, overview: content });
+                  }}
+                  placeholder="Enter destination overview"
+                  minHeight="150px"
+                  required
+                />
 
                 {/* Activities Section */}
                 <div>

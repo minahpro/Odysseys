@@ -3,6 +3,7 @@
 import { PrimaryButton, SecondaryButton } from "@/components/buttons";
 import { ContactInfoCard } from "@/components/cards";
 import FaqsComp from "@/components/homeComponents/FaqsComp";
+import { FormTextEditor } from "@/components/FormTextEditor";
 import {
   InputField,
   SelectField,
@@ -247,13 +248,14 @@ function ContactUs() {
 
             {/* Message */}
             <div className="lg:col-span-3 sm:col-span-2">
-              <TextareaField
+              <FormTextEditor
                 label="Message"
                 placeholder="Tell us more about your travel plans, dates, group size, and any specific requirements..."
-                name="message"
-                rows={6}
                 value={formData.message}
-                onChange={handleInputChange}
+                onChange={(content) => {
+                  setFormData(prev => ({ ...prev, message: content }));
+                }}
+                minHeight="150px"
               />
             </div>
 

@@ -190,7 +190,7 @@ const GalleryPage = () => {
         <div className="flex items-center space-x-3">
           <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
             <img
-              src={img.thumbnail || img.image || "/placeholder.svg"}
+              src={img.thumbnail || img.imageUrl || "/placeholder.svg"}
               alt={img.title}
               className="w-full h-full object-cover"
             />
@@ -274,7 +274,7 @@ const GalleryPage = () => {
     setSelectedImage({
       title: "",
       description: "",
-      image: "",
+      imageUrl: "",
       thumbnail: "",
       location: "",
       category: categories[1], // Skip "All"
@@ -324,9 +324,9 @@ const GalleryPage = () => {
         await deleteGalleryImage(img.id);
         
         // Delete image from Firebase Storage if it exists
-        if (img.image && img.image.includes('firebase')) {
+        if (img.imageUrl && img.imageUrl.includes('firebase')) {
           try {
-            await deleteFile(img.image);
+            await deleteFile(img.imageUrl);
           } catch (error) {
             console.warn("Error deleting image file:", error);
           }
@@ -347,7 +347,7 @@ const GalleryPage = () => {
     try {
       setUploading(true);
       
-      let imageUrl = selectedImage.image;
+      let imageUrl = selectedImage.imageUrl;
       let thumbnailUrl = selectedImage.thumbnail;
       
       // Upload new image if file is selected
@@ -358,7 +358,7 @@ const GalleryPage = () => {
       
       const imageData = {
         ...selectedImage,
-        image: imageUrl,
+        imageUrl: imageUrl,
         thumbnail: thumbnailUrl,
         tags: Array.isArray(selectedImage.tags) ? selectedImage.tags : 
                typeof selectedImage.tags === 'string' ? selectedImage.tags.split(',').map(tag => tag.trim()) : [],
@@ -695,12 +695,12 @@ const GalleryPage = () => {
                     {/* Image */}
                     <div className="aspect-square overflow-hidden">
                       <img
-                        src={img.thumbnail || img.image || "/placeholder.svg"}
+                        src={img.thumbnail || img.imageUrl || "/placeholder.svg"}
                         alt={img.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    
+                   
                     {/* Content */}
                     <div className="p-4">
                       <div className="flex items-start justify-between mb-2">
@@ -801,7 +801,7 @@ const GalleryPage = () => {
               <div className="mb-6">
                 <div className="rounded-xl overflow-hidden">
                   <img
-                    src={selectedImage.image || "/placeholder.svg"}
+                    src={selectedImage.imageUrl || "/placeholder.svg"}
                     alt={selectedImage.title}
                     className="w-full h-auto max-h-96 object-contain"
                   />
@@ -838,10 +838,10 @@ const GalleryPage = () => {
                           Remove Image
                         </button>
                       </div>
-                    ) : selectedImage.image && modalMode === "edit" ? (
+                    ) : selectedImage.imageUrl && modalMode === "edit" ? (
                       <div className="space-y-4">
                         <img
-                          src={selectedImage.image}
+                          src={selectedImage.imageUrl}
                           alt="Current"
                           className="mx-auto max-h-48 rounded-lg"
                         />
@@ -870,7 +870,7 @@ const GalleryPage = () => {
                       className="mt-2 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                     >
                       <Upload className="w-4 h-4 mr-2" />
-                      {imagePreview || (selectedImage.image && modalMode === "edit") ? "Change Image" : "Select Image"}
+                      {imagePreview || (selectedImage.imageUrl && modalMode === "edit") ? "Change Image" : "Select Image"}
                     </button>
                   </div>
                 </div>

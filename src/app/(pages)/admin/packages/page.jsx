@@ -3,6 +3,7 @@
 import { useState } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
+import { FormTextEditor, InlineTextEditor } from "@/components/FormTextEditor";
 import {
   Plus,
   Edit,
@@ -649,21 +650,16 @@ const PackagesPage = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
-                    Overview *
-                  </label>
-                  <textarea
-                    value={formData.overview}
-                    onChange={(e) =>
-                      setFormData({ ...formData, overview: e.target.value })
-                    }
-                    rows={4}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand placeholder-gray-400 resize-none"
-                    placeholder="Enter package overview"
-                    required
-                  />
-                </div>
+                <FormTextEditor
+                  label="Overview *"
+                  value={formData.overview}
+                  onChange={(content) => {
+                    setFormData({ ...formData, overview: content });
+                  }}
+                  placeholder="Enter package overview"
+                  minHeight="150px"
+                  required
+                />
 
                 {/* Itinerary Section */}
                 <div>
@@ -737,18 +733,17 @@ const PackagesPage = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                               Description
                             </label>
-                            <textarea
+                            <InlineTextEditor
                               value={item.description}
-                              onChange={(e) =>
+                              onChange={(content) =>
                                 updateItinerary(
                                   index,
                                   "description",
-                                  e.target.value
+                                  content
                                 )
                               }
-                              rows={2}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand resize-none"
                               placeholder="Day description"
+                              minHeight="80px"
                             />
                           </div>
                           <div className="md:col-span-2">

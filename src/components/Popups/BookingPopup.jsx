@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import MainPopup from "./MainPopup";
 import { createDocument } from "@/firebase/databaseOperations";
 import { InputField, TextareaField } from "../inputField";
+import { FormTextEditor } from "../FormTextEditor";
 import { PrimaryButton, SecondaryButton } from "../buttons";
 import { AlertCircle, CheckCircle, CheckIcon } from "lucide-react";
 import { Sendemail } from "@/lib/hooks/sendEmail";
@@ -195,13 +196,14 @@ function BookingPopup({ handleOpen, handleClose, datas }) {
         </div>
 
         {/* Additional Details */}
-        <TextareaField
+        <FormTextEditor
           label="Additional Information"
           placeholder="Tell us more about your preferences or special requirements"
-          name="additionalDetails"
           value={bookingData.additionalDetails}
-          onChange={handleChange}
-          rows={4}
+          onChange={(content) => {
+            setBookingData(prev => ({ ...prev, additionalDetails: content }));
+          }}
+          minHeight="120px"
         />
 
         {/* Error Message */}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
+import { FormTextEditor } from "@/components/FormTextEditor";
 import { getFAQs, createFAQ, updateFAQ, deleteFAQ } from "@/firebase/databaseOperations";
 import {
   Edit,
@@ -397,29 +398,17 @@ const FAQsPage = () => {
               </div>
 
               {/* Answer */}
-              <div>
-                <label
-                  htmlFor="answer"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Answer
-                </label>
-                <div className="relative">
-                  <MessageCircle className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
-                  <textarea
-                    id="answer"
-                    value={selectedFAQ.answer}
-                    onChange={(e) =>
-                      setSelectedFAQ({ ...selectedFAQ, answer: e.target.value })
-                    }
-                    className="pl-10 w-full rounded-xl border border-gray-300 bg-white py-2.5 px-3 text-gray-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    placeholder="Enter FAQ answer"
-                    rows={6}
-                    disabled={modalMode === "view"}
-                    required
-                  ></textarea>
-                </div>
-              </div>
+              <FormTextEditor
+                label="Answer"
+                value={selectedFAQ.answer}
+                onChange={(content) =>
+                  setSelectedFAQ({ ...selectedFAQ, answer: content })
+                }
+                placeholder="Enter FAQ answer"
+                minHeight="150px"
+                disabled={modalMode === "view"}
+                required
+              />
 
               {/* Category and Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -1,79 +1,25 @@
-generate these datas for me in json format on photos/images just use "/placeholder.svg and dispay number after or text"
+header - [https://oxpinswp.pixydrops.com/]
+hero -[https://fse.jegtheme.com/veterna/]
+after hero -[https://www.radiustheme.com/demo/wordpress/themes/homlisti/]
+about us - [https://ja-vitality.demo.joomlart.com/index.php/about-us-2]
+popular tours - [https://bracketweb.com/trevlowp/home-03/] when you hover card
+why choose us - [https://ja-vitality.demo.joomlart.com/index.php/about-us-2]
+day trips [https://oxpinswp.pixydrops.com/]
+zanzibar trips - [https://ja-vitality.demo.joomlart.com/]
+trekkings - [https://bracketweb.com/trevlowp/tour-listing-02/ https://ja-vitality.demo.joomlart.com/]
+team - [https://ja-vitality.demo.joomlart.com/index.php/about-us-2]
+gallery and testimonials - [https://themegavias.com/wp/halpes/]
+footer -[https://themegavias.com/wp/halpes/home-3/]
+blog - [https://fse.jegtheme.com/humanite/?storefront=envato-elements]
+faqs - [https://oxpinswp.pixydrops.com/]
+destinations - on picture
+accomodations - [https://ultra.realhomes.io/hotel]
 
-1. main destination {example [tanzania,kenya,rwanda and so on]}
+# banners
 
-- title
-- slogan
-- overview
-- photos
-- facts {populationSize, bestTimeTogo, language, currency, and many more add}
-- weather {description, list[title, description]}
-- wildlifes -> [from wildlifes array]
-- Faqs
-- experiances -> [from experiances array]
-- Camps -> [from camps array]
-- SubDestinations -> [from subDestinations array]
-
-2. SubDestinations {example [tarangire,masai mara, linyati,kafue and many more]}
-
-- title
-- overview
-- Highlights
-- photos
-- whenToGo {description, list[title, description]}
-- wildlifes -> [from wildlifes array]
-- Faqs
-- experiances -> [from experiances array]
-- Camps -> [from camps array]
-- location [long,lat]
-- parentDestination {just id from main destination}
-
-3. Experiances
-
-- title
-- overview
-- photos
-- location -> [destination -> subdestination]
-- Camps -> [from camps array]
-- Packages -> [from packages array]
-- blogs -> [from blogs array]
-- whyThisExperiance - {description, list[title, description]}
-
-4. Tour Packages
-
-- title
-- overview
-- photos
-- category -> [from experiances array]
-- type -> [from tourTypes array]
-- locations [destination -> subdestination]
-- itenaries [images,title,destination(one from subdestination),accommodation (one from camps), inclusion/exclusion]
-
-5. tourTypes
-
-- title
-- overview
-- photos
-- inclusion
-- exclusion
-- Packages -> [from packages array]
-
-6. camps
-
-- title
-- overview
-- photos
-- 3D
-- highlights
-- activities [image,title,description]
-- facilities [name]
-- animeties [title,image,description]. example {bar,swimingPool, and more}
-- location -> {destination -> subdestination}
-- experiances -> [from experiances array]
-- packages -> [from packages array [itenaries]]
-
-7. wildlifes
-
-- images
-- title
-- description
+banner - [https://fse.jegtheme.com/veterna/]
+banner - [https://themegavias.com/wp/halpes/]
+banner - [https://themegavias.com/wp/halpes/home-3/]
+banner - [https://ja-vitality.demo.joomlart.com/index.php/services]
+banner - [https://themegavias.com/wp/halpes/home-3/]
+banner inside page - [https://demo2.wpopal.com/havezic/home-3/]

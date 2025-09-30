@@ -247,7 +247,7 @@ const AdminLayout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-6">{children}</main>
+        <main className="container mx-auto px-4 py-4 ">{children}</main>
       </div>
     </div>
     </AdminProtectedRoute>
