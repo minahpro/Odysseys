@@ -15,7 +15,7 @@ import {
 import firebase from "./firebaseInit";
 
 const { db } = firebase;
-const createDocument = async (data, cln) => {
+const createDocument = async (cln, data) => {
   try {
     console.log(`Creating document in ${cln}:`, data);
     const docRef = await addDoc(collection(db, cln), data);

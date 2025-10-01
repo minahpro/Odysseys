@@ -85,7 +85,7 @@ function ContactUs() {
       const createdAt = new Date();
       //saving data to database........ ....... ..............
       setIsSubmiting(true);
-      const rs = await createDocument({ ...formData, createdAt }, "messages");
+      const rs = await createDocument("messages", { ...formData, createdAt });
       if (rs.didSucceed) {
         // send data to GA4
         gtag("event", "contact_form_submit_click");

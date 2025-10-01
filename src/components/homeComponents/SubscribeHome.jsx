@@ -20,7 +20,7 @@ export default function SubscribeSection() {
     const createdAt = new Date();
     //saving data to database........ ....... ............. .
     setIsLoading(true);
-    const rs = await createDocument({ email, createdAt }, "mailing_list");
+    const rs = await createDocument("mailing_list", { email, createdAt });
 
     if (rs?.didSucceed) {
       setIsLoading(false);

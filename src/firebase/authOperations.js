@@ -46,7 +46,7 @@ const createUserWithTransaction = async (userData) => {
       }
       
       // Create new user document
-      const result = await createDocument(userData, "users");
+      const result = await createDocument("users", userData);
       return { didSucceed: result.didSucceed, isExisting: false, docId: result.docId };
     });
   } catch (error) {

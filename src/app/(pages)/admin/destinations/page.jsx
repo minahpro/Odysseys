@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
 import { FormTextEditor } from "@/components/FormTextEditor";
+import ImageUploadGallerySelection from "@/components/admin/ImageUploadGallerySelection";
+import { 
+  createDocument, 
+  updateDocument, 
+  deleteDocument, 
+  fetchDocuments,
+  getGalleryImages,
+  createGalleryImage
+} from "@/firebase/databaseOperations";
+import { uploadFile } from "@/firebase/fileOperations";
 import {
   Plus,
   Edit,
@@ -13,70 +23,11 @@ import {
   X,
   Save,
   ImageIcon,
-  Activity,
+  Activity
 } from "lucide-react";
 
 const DestinationsPage = () => {
-  const [destinations, setDestinations] = useState([
-    {
-      id: 1,
-      name: "Serengeti National Park",
-      slug: "serengeti-national-park",
-      location: "Northern Tanzania",
-      type: "National Park",
-      photos: ["/placeholder.svg?height=200&width=300"],
-      overview:
-        "World-famous national park known for the Great Migration and abundant wildlife including the Big Five.",
-      activities: [
-        "Game Drives",
-        "Hot Air Balloon",
-        "Walking Safari",
-        "Photography",
-        "Bird Watching",
-      ],
-      status: "active",
-      createdAt: "2024-01-15",
-    },
-    {
-      id: 2,
-      name: "Mount Kilimanjaro",
-      slug: "mount-kilimanjaro",
-      location: "Northern Tanzania",
-      type: "Mountain",
-      photos: ["/placeholder.svg?height=200&width=300"],
-      overview:
-        "Africa's highest peak and the world's tallest free-standing mountain, offering multiple climbing routes.",
-      activities: [
-        "Trekking",
-        "Mountain Climbing",
-        "Photography",
-        "Camping",
-        "Sunrise Viewing",
-      ],
-      status: "active",
-      createdAt: "2024-01-16",
-    },
-    {
-      id: 3,
-      name: "Zanzibar Island",
-      slug: "zanzibar-island",
-      location: "Indian Ocean, Tanzania",
-      type: "Island",
-      photos: ["/placeholder.svg?height=200&width=300"],
-      overview:
-        "Tropical paradise with pristine beaches, rich cultural heritage, and historic Stone Town.",
-      activities: [
-        "Beach Relaxation",
-        "Snorkeling",
-        "Diving",
-        "Spice Tours",
-        "Cultural Tours",
-        "Dhow Sailing",
-      ],
-      status: "active",
-      createdAt: "2024-01-17",
-    },
-  ]);
+  const [destinations, setDestinations] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
@@ -91,6 +42,142 @@ const DestinationsPage = () => {
     activities: [""],
     status: "active",
   });
+
+  // Image handling states
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [gallerySearchTerm, setGallerySearchTerm] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Load destinations from Firebase
+  const loadDestinations = async () => {
+    try {
+      setLoading(true);
+      const result = await fetchDocuments("destinations");
+      if (result.didSucceed) {
+        setDestinations(result.items || []);
+      } else {
+        setError("Failed to load destinations");
+        setDestinations([]);
+      }
+    } catch (error) {
+      console.error("Error loading destinations:", error);
+      setError("Error loading destinations");
+      setDestinations([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load gallery images for selection
+  const loadGalleryImages = async () => {
+    try {
+      const result = await getGalleryImages();
+      if (result.didSucceed) {
+        setGalleryImages(result.images || []);
+      }
+    } catch (error) {
+      console.error("Error loading gallery images:", error);
+    }
+  };
+
+  // Load data on component mount
+  useEffect(() => {
+    loadDestinations();
+    loadGalleryImages();
+  }, []);
+
+  // Image upload handler
+  const handleImageUpload = async (files) => {
+    if (!files || files.length === 0) return;
+    
+    setUploading(true);
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const imageUrl = await uploadFile(file, 'gallery');
+        
+        // Also save to gallery collection
+        const galleryData = {
+          title: file.name.split('.')[0],
+          description: `Uploaded for destination: ${formData.name}`,
+          imageUrl,
+          category: 'destination',
+          tags: ['destination', 'uploaded'],
+          photographer: 'Admin',
+          uploadDate: new Date(),
+          status: 'active',
+        };
+        
+        await createGalleryImage(galleryData);
+        return imageUrl;
+      });
+      
+      const uploadedUrls = await Promise.all(uploadPromises);
+      setSelectedImages(prev => [...prev, ...uploadedUrls]);
+      await loadGalleryImages(); // Refresh gallery
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      setError('Error uploading images');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Image selection handlers
+  const handleImageSelect = (imageUrl) => {
+    setSelectedImages(prev => {
+      if (prev.includes(imageUrl)) {
+        return prev.filter(url => url !== imageUrl);
+      } else {
+        return [...prev, imageUrl];
+      }
+    });
+  };
+
+  const handleRemoveSelectedImage = (imageUrl) => {
+    setSelectedImages(prev => prev.filter(url => url !== imageUrl));
+  };
+
+  const handleSetFeaturedImage = (imageUrl) => {
+    setFormData(prev => ({ ...prev, featuredImage: imageUrl }));
+  };
+
+  // Form validation
+  const validateForm = () => {
+    const errors = [];
+    
+    if (!formData.name.trim()) {
+      errors.push("Destination name is required");
+    }
+    
+    if (!formData.slug.trim()) {
+      errors.push("Slug is required");
+    }
+    
+    if (!formData.location.trim()) {
+      errors.push("Location is required");
+    }
+    
+    if (!formData.type) {
+      errors.push("Destination type is required");
+    }
+    
+    if (!formData.overview.trim()) {
+      errors.push("Overview is required");
+    }
+    
+    if (formData.activities.length === 0 || formData.activities.every(activity => !activity.trim())) {
+      errors.push("At least one activity is required");
+    }
+    
+    if (selectedImages.length === 0) {
+      errors.push("At least one photo is required");
+    }
+    
+    return errors;
+  };
 
   const destinationTypes = [
     "National Park",
@@ -180,11 +267,14 @@ const DestinationsPage = () => {
       location: "",
       type: "",
       photos: [],
+      featuredImage: "",
       overview: "",
       activities: [""],
       status: "active",
     });
+    setSelectedImages([]);
     setSelectedDestination(null);
+    setError("");
     setShowModal(true);
   };
 
@@ -197,10 +287,13 @@ const DestinationsPage = () => {
       location: dest.location || "",
       type: dest.type || "",
       photos: dest.photos || [],
+      featuredImage: dest.featuredImage || "",
       overview: dest.overview || "",
       activities: dest.activities || [""],
       status: dest.status || "active",
     });
+    setSelectedImages(dest.photos || []);
+    setError("");
     setShowModal(true);
   };
 
@@ -210,33 +303,87 @@ const DestinationsPage = () => {
     setShowModal(true);
   };
 
-  const handleDelete = (dest) => {
+  const handleDelete = async (dest) => {
     if (window.confirm(`Are you sure you want to delete "${dest.name}"?`)) {
-      setDestinations(destinations.filter((d) => d.id !== dest.id));
+      setLoading(true);
+      setError("");
+      
+      try {
+        const result = await deleteDocument("destinations", dest.id);
+        
+        if (result.success) {
+          await loadDestinations(); // Reload data
+        } else {
+          setError(result.error || "Failed to delete destination");
+        }
+      } catch (error) {
+        console.error("Error deleting destination:", error);
+        setError("An unexpected error occurred while deleting");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    if (modalMode === "add") {
-      const newDestination = {
-        ...formData,
-        id: Math.max(...destinations.map((d) => d.id), 0) + 1,
-        createdAt: new Date().toISOString().split("T")[0],
-      };
-      setDestinations([...destinations, newDestination]);
-    } else if (modalMode === "edit") {
-      setDestinations(
-        destinations.map((d) =>
-          d.id === selectedDestination.id
-            ? { ...formData, id: selectedDestination.id }
-            : d
-        )
-      );
+    // Validate form
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      setError(validationErrors.join(", "));
+      setLoading(false);
+      return;
     }
 
-    setShowModal(false);
+    try {
+      // Prepare destination data with selected images
+      const destinationData = {
+        ...formData,
+        photos: selectedImages,
+        updatedAt: new Date(),
+      };
+
+      if (modalMode === "add") {
+        destinationData.createdAt = new Date();
+        const result = await createDocument("destinations", destinationData);
+        
+        if (result.didSucceed) {
+          await loadDestinations(); // Reload data
+          setShowModal(false);
+          // Reset form
+          setFormData({
+            name: "",
+            slug: "",
+            location: "",
+            type: "",
+            photos: [],
+            overview: "",
+            activities: [""],
+            status: "active",
+          });
+          setSelectedImages([]);
+        } else {
+          setError(result.message || "Failed to create destination");
+        }
+      } else if (modalMode === "edit") {
+        const result = await updateDocument("destinations", selectedDestination.id, destinationData);
+        
+        if (result.didSucceed) {
+          await loadDestinations(); // Reload data
+          setShowModal(false);
+        } else {
+          setError(result.message || "Failed to update destination");
+        }
+      }
+    } catch (error) {
+      console.error("Error submitting destination:", error);
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const generateSlug = (name) => {
@@ -443,6 +590,13 @@ const DestinationsPage = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Error Display */}
+                {error && (
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <p className="text-red-600 text-sm font-quicksand">{error}</p>
+                  </div>
+                )}
+
                 {/* Form Mode Content */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -576,27 +730,20 @@ const DestinationsPage = () => {
                   <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
                     Photos
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
-                    <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 font-quicksand mb-2">
-                      Upload destination photos
-                    </p>
-                    <p className="text-sm text-gray-500 font-quicksand">
-                      Drag and drop files here or click to browse
-                    </p>
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <button
-                      type="button"
-                      className="mt-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors font-quicksand"
-                    >
-                      Choose Files
-                    </button>
-                  </div>
+                  <ImageUploadGallerySelection
+                    selectedImages={selectedImages}
+                    galleryImages={galleryImages}
+                    gallerySearchTerm={gallerySearchTerm}
+                    onGallerySearchChange={setGallerySearchTerm}
+                    onImageUpload={handleImageUpload}
+                    onImageSelect={handleImageSelect}
+                    onRemoveSelectedImage={handleRemoveSelectedImage}
+                    onSetFeaturedImage={handleSetFeaturedImage}
+                    featuredImage={formData.featuredImage}
+                    uploading={uploading}
+                    maxImages={10}
+                    allowFeatured={true}
+                  />
                 </div>
 
                 {/* Status */}

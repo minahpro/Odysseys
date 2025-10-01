@@ -76,12 +76,12 @@ function BookingPopup({ handleOpen, handleClose, datas }) {
       setIsLoading(true);
       const createdAt = new Date();
       const rs = await createDocument(
+        "bookings",
         {
           ...bookingInfo,
           createdAt,
           bookingStatus: "requested",
-        },
-        "bookings"
+        }
       );
 
       if (rs.didSucceed) {

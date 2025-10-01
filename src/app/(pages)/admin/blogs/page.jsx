@@ -455,7 +455,7 @@ const BlogsPage = () => {
         result = await updateDocument("blogs", selectedBlog.id, blogData);
       } else {
         console.log("Creating new blog");
-        result = await createDocument(blogData, "blogs");
+        result = await createDocument("blogs", blogData);
       }
 
       console.log("Save result:", result);
