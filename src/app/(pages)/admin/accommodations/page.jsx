@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import DataTable from "@/components/admin/DataTable";
 import Modal from "@/components/admin/Modal";
 import { FormTextEditor } from "@/components/FormTextEditor";
@@ -17,112 +17,43 @@ import {
   Globe,
   Home,
   Activity,
+  Upload,
+  Check,
+  Loader2,
+  Star,
 } from "lucide-react";
+import {
+  createDocument,
+  updateDocument,
+  deleteDocument,
+  fetchDocuments,
+} from "@/firebase/databaseOperations";
+import {
+  getGalleryImages,
+  createGalleryImage,
+} from "@/firebase/databaseOperations";
+import { uploadFile } from "@/firebase/fileOperations";
 
 const AccommodationsPage = () => {
-  const [accommodations, setAccommodations] = useState([
-    {
-      id: 1,
-      name: "Serengeti Safari Lodge",
-      slug: "serengeti-safari-lodge",
-      location: "Serengeti National Park",
-      category: "Luxury",
-      photos: ["/placeholder.svg?height=200&width=300"],
-      overview:
-        "Luxury safari lodge with stunning views of the Serengeti plains, offering world-class amenities and exceptional wildlife viewing opportunities.",
-      where: "inPark",
-      hotel_website_url: "https://serengetisafarilodge.com",
-      hotel_phone_number: "+255 123 456 789",
-      amenities: [
-        "WiFi",
-        "Restaurant",
-        "Pool",
-        "Spa",
-        "Game Drives",
-        "Bar",
-        "Laundry",
-      ],
-      activities: [
-        "Game Drives",
-        "Bush Walks",
-        "Cultural Visits",
-        "Sundowners",
-        "Photography",
-      ],
-      status: "active",
-      createdAt: "2024-01-15",
-    },
-    {
-      id: 2,
-      name: "Kilimanjaro View Hotel",
-      slug: "kilimanjaro-view-hotel",
-      location: "Moshi, Tanzania",
-      category: "Mid-range",
-      photos: ["/placeholder.svg?height=200&width=300"],
-      overview:
-        "Modern hotel with spectacular views of Mount Kilimanjaro, perfect for trekkers and business travelers.",
-      where: "outPark",
-      hotel_website_url: "https://kilimanjaroviewhotel.com",
-      hotel_phone_number: "+255 987 654 321",
-      amenities: [
-        "WiFi",
-        "Restaurant",
-        "Gym",
-        "Conference Room",
-        "Airport Transfer",
-        "Bar",
-      ],
-      activities: [
-        "City Tours",
-        "Coffee Farm Visits",
-        "Cultural Tours",
-        "Shopping",
-      ],
-      status: "active",
-      createdAt: "2024-01-16",
-    },
-    {
-      id: 3,
-      name: "Zanzibar Beach Resort",
-      slug: "zanzibar-beach-resort",
-      location: "Stone Town, Zanzibar",
-      category: "Luxury",
-      photos: ["/placeholder.svg?height=200&width=300"],
-      overview:
-        "Beachfront resort with pristine white sand beaches, offering luxury accommodations and water sports.",
-      where: "outPark",
-      hotel_website_url: "https://zanzibarbeachresort.com",
-      hotel_phone_number: "+255 456 789 123",
-      amenities: [
-        "WiFi",
-        "Restaurant",
-        "Beach Access",
-        "Water Sports",
-        "Spa",
-        "Pool",
-        "Bar",
-      ],
-      activities: [
-        "Snorkeling",
-        "Diving",
-        "Spice Tours",
-        "Dhow Sailing",
-        "Cultural Tours",
-      ],
-      status: "active",
-      createdAt: "2024-01-17",
-    },
-  ]);
+  const [accommodations, setAccommodations] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
   const [selectedAccommodation, setSelectedAccommodation] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [gallerySearchTerm, setGallerySearchTerm] = useState("");
+  const [showImageSelector, setShowImageSelector] = useState(false);
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
     slug: "",
     location: "",
     category: "",
     photos: [],
+    featuredImage: "",
     overview: "",
     where: "outPark",
     hotel_website_url: "",
@@ -137,6 +68,94 @@ const AccommodationsPage = () => {
     { value: "inPark", label: "In Park" },
     { value: "outPark", label: "Out of Park" },
   ];
+
+  // Load data on component mount
+  useEffect(() => {
+    loadAccommodations();
+    loadGalleryImages();
+  }, []);
+
+  const loadAccommodations = async () => {
+    try {
+      setLoading(true);
+      const result = await fetchDocuments('accommodations');
+      if (result.didSucceed) {
+        setAccommodations(result.items || []);
+      } else {
+        console.error('Error loading accommodations:', result.message);
+      }
+    } catch (error) {
+      console.error('Error loading accommodations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadGalleryImages = async () => {
+    try {
+      const result = await getGalleryImages();
+      if (result.didSucceed) {
+        setGalleryImages(result.images || []);
+      }
+    } catch (error) {
+      console.error("Error loading gallery images:", error);
+    }
+  };
+
+  // Image upload handler
+  const handleImageUpload = async (files) => {
+    if (!files || files.length === 0) return;
+    
+    setUploading(true);
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const imageUrl = await uploadFile(file, 'gallery');
+        
+        // Also save to gallery collection
+        const galleryData = {
+          title: file.name.split('.')[0],
+          description: `Uploaded for accommodation: ${formData.name}`,
+          imageUrl,
+          category: 'accommodation',
+          tags: ['accommodation', 'uploaded'],
+          photographer: 'Admin',
+          uploadDate: new Date(),
+          status: 'active',
+        };
+        
+        await createGalleryImage(galleryData);
+        return imageUrl;
+      });
+      
+      const uploadedUrls = await Promise.all(uploadPromises);
+      setSelectedImages(prev => [...prev, ...uploadedUrls]);
+      await loadGalleryImages(); // Refresh gallery
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      alert('Error uploading images');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Image selection handlers
+  const handleImageSelect = (imageUrl) => {
+    setSelectedImages(prev => {
+      if (prev.includes(imageUrl)) {
+        return prev.filter(url => url !== imageUrl);
+      } else {
+        return [...prev, imageUrl];
+      }
+    });
+  };
+
+  const handleRemoveSelectedImage = (imageUrl) => {
+    setSelectedImages(prev => prev.filter(url => url !== imageUrl));
+  };
+
+  const handleSetFeaturedImage = (imageUrl) => {
+    setFormData(prev => ({ ...prev, featuredImage: imageUrl }));
+  };
 
   const columns = [
     {
@@ -238,6 +257,7 @@ const AccommodationsPage = () => {
       location: "",
       category: "",
       photos: [],
+      featuredImage: "",
       overview: "",
       where: "outPark",
       hotel_website_url: "",
@@ -246,6 +266,7 @@ const AccommodationsPage = () => {
       activities: [""],
       status: "active",
     });
+    setSelectedImages([]);
     setSelectedAccommodation(null);
     setShowModal(true);
   };
@@ -259,6 +280,7 @@ const AccommodationsPage = () => {
       location: acc.location || "",
       category: acc.category || "",
       photos: acc.photos || [],
+      featuredImage: acc.featuredImage || "",
       overview: acc.overview || "",
       where: acc.where || "outPark",
       hotel_website_url: acc.hotel_website_url || "",
@@ -267,6 +289,7 @@ const AccommodationsPage = () => {
       activities: acc.activities || [""],
       status: acc.status || "active",
     });
+    setSelectedImages(acc.photos || []);
     setShowModal(true);
   };
 
@@ -276,33 +299,67 @@ const AccommodationsPage = () => {
     setShowModal(true);
   };
 
-  const handleDelete = (acc) => {
+  const handleDelete = async (acc) => {
     if (window.confirm(`Are you sure you want to delete "${acc.name}"?`)) {
-      setAccommodations(accommodations.filter((a) => a.id !== acc.id));
+      setLoading(true);
+      try {
+        const result = await deleteDocument('accommodations', acc.id);
+        if (result.didSucceed) {
+          console.log('Accommodation deleted successfully');
+          await loadAccommodations(); // Reload data from database
+        } else {
+          console.error('Error deleting accommodation:', result.message);
+          alert('Error deleting accommodation: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error deleting accommodation:', error);
+        alert('Error deleting accommodation: ' + error.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    if (modalMode === "add") {
-      const newAccommodation = {
+    try {
+      const accommodationData = {
         ...formData,
-        id: Math.max(...accommodations.map((a) => a.id), 0) + 1,
-        createdAt: new Date().toISOString().split("T")[0],
+        photos: selectedImages || [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
-      setAccommodations([...accommodations, newAccommodation]);
-    } else if (modalMode === "edit") {
-      setAccommodations(
-        accommodations.map((a) =>
-          a.id === selectedAccommodation.id
-            ? { ...formData, id: selectedAccommodation.id }
-            : a
-        )
-      );
-    }
 
-    setShowModal(false);
+      if (modalMode === "add") {
+        const result = await createDocument(accommodationData, 'accommodations');
+        if (result.didSucceed) {
+          console.log('Accommodation created successfully');
+          await loadAccommodations(); // Reload data from database
+        } else {
+          console.error('Error creating accommodation:', result.message);
+          alert('Error creating accommodation: ' + result.message);
+        }
+      } else if (modalMode === "edit") {
+        const result = await updateDocument('accommodations', selectedAccommodation.id, accommodationData);
+        if (result.didSucceed) {
+          console.log('Accommodation updated successfully');
+          await loadAccommodations(); // Reload data from database
+        } else {
+          console.error('Error updating accommodation:', result.message);
+          alert('Error updating accommodation: ' + result.message);
+        }
+      }
+
+      setSelectedImages([]);
+      setShowModal(false);
+    } catch (error) {
+      console.error('Error submitting accommodation:', error);
+      alert('Error submitting accommodation: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const generateSlug = (name) => {
@@ -718,6 +775,118 @@ const AccommodationsPage = () => {
                   required
                 />
 
+                {/* Gallery Images Section */}
+            
+                   <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
+                  Gallery Images ({selectedImages.length} selected)
+                </label>
+                
+                {/* Upload Section */}
+                <div className="mb-4">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e.target.files)}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-xl hover:border-primary focus:outline-none focus:border-primary disabled:opacity-50"
+                  >
+                    {uploading ? (
+                      <div className="flex items-center justify-center">
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                        Uploading...
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center">
+                        <Upload className="h-5 w-5 mr-2" />
+                        Upload Images
+                      </div>
+                    )}
+                  </button>
+                </div>
+
+                {/* Gallery Selection */}
+                <div className="border rounded-xl p-3 max-h-64 overflow-y-auto">
+                  <div className="mb-2">
+                    <input
+                      type="text"
+                      placeholder="Search gallery..."
+                      value={gallerySearchTerm}
+                      onChange={(e) => setGallerySearchTerm(e.target.value)}
+                      className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 md:grid-cols-5 gap-2">
+                    {galleryImages
+                      .filter(img => 
+                        img.title?.toLowerCase().includes(gallerySearchTerm.toLowerCase()) ||
+                        img.tags?.some(tag => tag.toLowerCase().includes(gallerySearchTerm.toLowerCase()))
+                      )
+                      .map((image) => (
+                      <div key={image.id} className="relative group">
+                        <img
+                          src={image.imageUrl}
+                          alt={image.title}
+                          className={`w-full h-16 object-cover rounded cursor-pointer border-2 ${
+                            selectedImages.includes(image.imageUrl)
+                              ? 'border-primary'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                          onClick={() => handleImageSelect(image.imageUrl)}
+                        />
+                        <div className="absolute top-1 right-1 flex space-x-1">
+                          {selectedImages.includes(image.imageUrl) && (
+                            <div className="bg-primary text-white rounded-full p-1">
+                              <Check className="h-3 w-3" />
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleSetFeaturedImage(image.imageUrl)}
+                            className="bg-yellow-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            title="Set as featured image"
+                          >
+                            <Star className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Selected Images Preview */}
+                {selectedImages.length > 0 && (
+                  <div className="mt-3">
+                    <p className="text-sm font-semibold text-gray-700 mb-2 font-quicksand">Selected Images:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedImages.map((imageUrl, index) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={imageUrl}
+                            alt={`Selected ${index + 1}`}
+                            className="w-12 h-12 object-cover rounded border"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveSelectedImage(imageUrl)}
+                            className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
@@ -835,33 +1004,7 @@ const AccommodationsPage = () => {
                   </div>
                 </div>
 
-                {/* Photo Upload */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
-                    Photos
-                  </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
-                    <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600 font-quicksand mb-2">
-                      Upload accommodation photos
-                    </p>
-                    <p className="text-sm text-gray-500 font-quicksand">
-                      Drag and drop files here or click to browse
-                    </p>
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      className="hidden"
-                    />
-                    <button
-                      type="button"
-                      className="mt-4 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors font-quicksand"
-                    >
-                      Choose Files
-                    </button>
-                  </div>
-                </div>
+
 
                 {/* Status */}
                 <div>
@@ -902,6 +1045,94 @@ const AccommodationsPage = () => {
                 </div>
               </form>
             )}
+          </Modal>
+        )}
+
+        {/* Image Selector Modal */}
+        {showImageSelector && (
+          <Modal
+            isOpen={showImageSelector}
+            onClose={() => setShowImageSelector(false)}
+            title="Select Images from Gallery"
+            size="4xl"
+          >
+            <div className="space-y-6">
+              {/* Search */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Search images..."
+                  value={gallerySearchTerm}
+                  onChange={(e) => setGallerySearchTerm(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand"
+                />
+              </div>
+
+              {/* Gallery Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 max-h-96 overflow-y-auto">
+                {galleryImages
+                  .filter((image) =>
+                    image.name
+                      ?.toLowerCase()
+                      .includes(gallerySearchTerm.toLowerCase())
+                  )
+                  .map((image) => (
+                    <div
+                      key={image.id}
+                      className="relative group cursor-pointer"
+                    >
+                      <img
+                        src={image.url}
+                        alt={image.name}
+                        className="w-full h-24 object-cover rounded-lg border-2 border-gray-200 hover:border-primary transition-colors"
+                        onClick={() => handleImageSelect(image.url)}
+                      />
+                      {selectedImages.includes(image.url) && (
+                        <div className="absolute inset-0 bg-primary/20 rounded-lg flex items-center justify-center">
+                          <Check className="w-6 h-6 text-primary" />
+                        </div>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSetFeaturedImage(image.url);
+                        }}
+                        className={`absolute top-1 right-1 p-1 rounded-full transition-all ${
+                          formData.featuredImage === image.url
+                            ? "bg-yellow-500 text-white"
+                            : "bg-white/80 text-gray-600 hover:bg-yellow-500 hover:text-white"
+                        }`}
+                        title="Set as featured image"
+                      >
+                        <Star className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+              </div>
+
+              {/* Actions */}
+              <div className="flex justify-between items-center pt-4 border-t">
+                <span className="text-sm text-gray-600 font-quicksand">
+                  {selectedImages.length} image(s) selected
+                </span>
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowImageSelector(false)}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors font-quicksand"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowImageSelector(false)}
+                    className="px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-quicksand"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
           </Modal>
         )}
       </div>
