@@ -84,7 +84,7 @@ export default function BlogDetailsPage() {
               <div className="absolute inset-0 opacity-20">
                 <img
                   src={
-                    blogData?.photos[0] ||
+                    blogData?.featuredImage ||
                     "/placeholder.svg?height=600&width=1200&query=travel blog"
                   }
                   alt={blogData?.title}

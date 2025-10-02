@@ -28,6 +28,7 @@ import {
 
 const DestinationsPage = () => {
   const [destinations, setDestinations] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
@@ -36,6 +37,7 @@ const DestinationsPage = () => {
     name: "",
     slug: "",
     location: "",
+    countryId: "",
     type: "",
     photos: [],
     overview: "",
@@ -83,10 +85,24 @@ const DestinationsPage = () => {
     }
   };
 
+  // Load countries from Firebase
+  const loadCountries = async () => {
+    try {
+      const result = await fetchDocuments("countries");
+      if (result.didSucceed) {
+        setCountries(result.items || []);
+      }
+    } catch (error) {
+      console.error("Error loading countries:", error);
+      setCountries([]);
+    }
+  };
+
   // Load data on component mount
   useEffect(() => {
     loadDestinations();
     loadGalleryImages();
+    loadCountries();
   }, []);
 
   // Image upload handler
@@ -265,6 +281,7 @@ const DestinationsPage = () => {
       name: "",
       slug: "",
       location: "",
+      countryId: "",
       type: "",
       photos: [],
       featuredImage: "",
@@ -285,6 +302,7 @@ const DestinationsPage = () => {
       name: dest.name || "",
       slug: dest.slug || "",
       location: dest.location || "",
+      countryId: dest.countryId || "",
       type: dest.type || "",
       photos: dest.photos || [],
       featuredImage: dest.featuredImage || "",
@@ -635,7 +653,7 @@ const DestinationsPage = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
                       Location *
@@ -650,6 +668,26 @@ const DestinationsPage = () => {
                       placeholder="Enter location"
                       required
                     />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
+                      Country *
+                    </label>
+                    <select
+                      value={formData.countryId}
+                      onChange={(e) =>
+                        setFormData({ ...formData, countryId: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand"
+                      required
+                    >
+                      <option value="">Select Country</option>
+                      {countries.map((country) => (
+                        <option key={country.id} value={country.id}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">

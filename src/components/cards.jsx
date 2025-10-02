@@ -241,7 +241,7 @@ export const BlogCardPro = ({ item }) => {
         <div className="p-6">
           <div className="relative h-48 rounded-xl overflow-hidden mb-6">
             <Image
-              src={item?.photos[0] || "/placeholder.svg"}
+              src={item?.featuredImage || "/placeholder.svg"}
               alt={item?.title}
               fill
               className="object-cover"

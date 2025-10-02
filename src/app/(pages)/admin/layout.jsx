@@ -25,6 +25,7 @@ import {
   ChevronDown,
   User,
   Bell,
+  Flag,
 } from "lucide-react";
 
 const AdminLayout = ({ children }) => {
@@ -50,6 +51,12 @@ const AdminLayout = ({ children }) => {
       label: "Destinations",
       icon: MapPin,
       href: "/admin/destinations",
+    },
+    {
+      id: "countries",
+      label: "Countries",
+      icon: Flag,
+      href: "/admin/countries",
     },
     {
       id: "accommodations",

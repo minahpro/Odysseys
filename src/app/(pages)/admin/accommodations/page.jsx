@@ -33,6 +33,8 @@ import { uploadFile } from "@/firebase/fileOperations";
 
 const AccommodationsPage = () => {
   const [accommodations, setAccommodations] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+  const [countries, setCountries] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
@@ -47,7 +49,8 @@ const AccommodationsPage = () => {
   const [formData, setFormData] = useState({
     name: "",
     slug: "",
-    location: "",
+    destinationId: "",
+    countryId: "",
     category: "",
     photos: [],
     featuredImage: "",
@@ -69,6 +72,8 @@ const AccommodationsPage = () => {
   // Load data on component mount
   useEffect(() => {
     loadAccommodations();
+    loadDestinations();
+    loadCountries();
     loadGalleryImages();
   }, []);
 
@@ -85,6 +90,32 @@ const AccommodationsPage = () => {
       console.error('Error loading accommodations:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadDestinations = async () => {
+    try {
+      const result = await fetchDocuments('destinations');
+      if (result.didSucceed) {
+        setDestinations(result.items || []);
+      } else {
+        console.error('Error loading destinations:', result.message);
+      }
+    } catch (error) {
+      console.error('Error loading destinations:', error);
+    }
+  };
+
+  const loadCountries = async () => {
+    try {
+      const result = await fetchDocuments('countries');
+      if (result.didSucceed) {
+        setCountries(result.items || []);
+      } else {
+        console.error('Error loading countries:', result.message);
+      }
+    } catch (error) {
+      console.error('Error loading countries:', error);
     }
   };
 
@@ -251,7 +282,8 @@ const AccommodationsPage = () => {
     setFormData({
       name: "",
       slug: "",
-      location: "",
+      destinationId: "",
+      countryId: "",
       category: "",
       photos: [],
       featuredImage: "",
@@ -274,7 +306,8 @@ const AccommodationsPage = () => {
     setFormData({
       name: acc.name || "",
       slug: acc.slug || "",
-      location: acc.location || "",
+      destinationId: acc.destinationId || "",
+      countryId: acc.countryId || "",
       category: acc.category || "",
       photos: acc.photos || [],
       featuredImage: acc.featuredImage || "",
@@ -704,21 +737,46 @@ const AccommodationsPage = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
-                      Location *
+                      Country *
                     </label>
-                    <input
-                      type="text"
-                      value={formData.location}
+                    <select
+                      value={formData.countryId}
                       onChange={(e) =>
-                        setFormData({ ...formData, location: e.target.value })
+                        setFormData({ ...formData, countryId: e.target.value })
                       }
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand placeholder-gray-400"
-                      placeholder="Enter location"
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand"
                       required
-                    />
+                    >
+                      <option value="">Select Country</option>
+                      {countries.map((country) => (
+                        <option key={country.id} value={country.id}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
+                      Destination *
+                    </label>
+                    <select
+                      value={formData.destinationId}
+                      onChange={(e) =>
+                        setFormData({ ...formData, destinationId: e.target.value })
+                      }
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200 font-quicksand"
+                      required
+                    >
+                      <option value="">Select Destination</option>
+                      {destinations.map((destination) => (
+                        <option key={destination.id} value={destination.id}>
+                          {destination.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2 font-quicksand">
